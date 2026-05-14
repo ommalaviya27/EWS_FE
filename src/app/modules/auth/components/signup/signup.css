@@ -74,6 +74,10 @@
 
 .form-group {
   margin-bottom: 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 15px;
 }
 
 .form-label {
@@ -83,8 +87,7 @@
   color: #374151;
   margin-bottom: 6px;
 }
-
-/* ── Role dropdown ───────────────────────────────────────── */
+ 
 .role-dropdown {
   position: relative;
 }

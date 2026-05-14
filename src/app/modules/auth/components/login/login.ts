@@ -47,8 +47,8 @@ export class Login implements OnInit {
   }
 
   private initConfigs(): void {
-    this.emailConfig = { formControlName: 'email', placeholder: 'Enter your email' };
-    this.passwordConfig = { formControlName: 'password', placeholder: 'Enter your password' };
+    this.emailConfig = { formControlName: 'email', placeholder: 'Email', floating:true };
+    this.passwordConfig = { formControlName: 'password', placeholder: 'Password', floating:true };
   }
 
   onSubmit(): void {

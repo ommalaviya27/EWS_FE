@@ -18,7 +18,6 @@ export interface SignupRequest {
   email: string;
   password: string;
   mobileNumber: string;
-  roleId: number;
 }
 
 export interface SignupResponse {
@@ -38,14 +37,12 @@ export interface ResetPasswordRequest {
 export interface RefreshTokenRequest {
   refreshToken: string;
 }
-
 // Role IDs matching backend (role_id column)
 export enum UserRole {
   Admin     = 1,
   TeamLead  = 2,
   Employee  = 3,
 }
-
 export const ROLE_NAMES: Record<number, string> = {
   1: 'Admin',
   2: 'Team Lead',

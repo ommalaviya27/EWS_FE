@@ -1,6 +1,7 @@
 export interface NameFieldConfig {
-  formControlName: string;
-  placeholder?: string;
   label?: string;
+  placeholder?: string;
+  required?: boolean;
+  formControlName: string;
   floating?: boolean;
 }

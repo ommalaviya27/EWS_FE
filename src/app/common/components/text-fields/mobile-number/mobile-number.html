@@ -1,28 +1,31 @@
-<div class="input-wrapper" [formGroup]="formGroup">
-  <span class="input-icon">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
-      <line x1="12" y1="18" x2="12.01" y2="18"/>
-    </svg>
-  </span>
+<div
+  class="position-relative w-100 mobile-wrapper"
+  [class.floating-wrapper]="isFloating"
+  [formGroup]="formGroup " 
+  appRequiredField
+>
   <input
     type="tel"
-    class="form-input"
-    [class.is-invalid]="isTouched && isInvalid"
+    class="form-control custom-input"
+    [class.floating-input]="isFloating"
+    [class.is-invalid]="isTouched && isInvalidMobile"
     [formControlName]="config.formControlName"
-    [placeholder]="config.placeholder || 'Enter mobile number'"
     (input)="onInput($event)"
     (blur)="onBlur($event)"
-    autocomplete="tel"
+    [placeholder]="isFloating ? ' ' : (config.placeholder || 'Mobile Number')" 
+    maxlength="15"
+    inputmode="numeric"
+    oninput="this.value = this.value.replace(/[^0-9]/g, '')"
   />
+  <label class="floating-label">{{ config.placeholder || 'Mobile Number' }}</label>  
 </div>
 
-@if (isTouched && isInvalid) {
-  <div class="error-text">
+@if (isTouched && isInvalidMobile) {
+  <div class="invalid-feedback d-block text-start">
     @if (control.hasError('required')) {
       Mobile number is required.
     } @else {
-      Please enter a valid mobile number.
+      Please enter a valid mobile number (up to 15 digits).
     }
   </div>
 }

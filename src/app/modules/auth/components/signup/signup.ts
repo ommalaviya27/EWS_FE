@@ -3,23 +3,17 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Email, Password, NameField, MobileNumber, EmailInputConfig, PasswordInputConfig, NameFieldConfig, MobileNumberConfig} from '@common';
+import { Email, Password, Name, MobileNumber, EmailInputConfig, PasswordInputConfig, NameFieldConfig, MobileNumberConfig } from '@common';
 import { AppValidators } from '../../../../common/validators/app.validators';
 import { AuthService } from '../../services/auth.service';
 import { ROUTES } from '../../../../common/constants/route-paths';
-import { ROLE_NAMES } from '../../models/auth.model';
 import { ApiResponse } from '../../../../common/models/api-response.model';
 import { SignupResponse } from '../../models/auth.model';
-
-interface RoleOption {
-  id: number;
-  name: string;
-}
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [ CommonModule, ReactiveFormsModule, Email, Password, NameField, MobileNumber ],
+  imports: [ CommonModule, ReactiveFormsModule, Email, Password, Name, MobileNumber ],
   templateUrl: './signup.html',
   styleUrls: ['./signup.css'],
 })
@@ -36,12 +30,6 @@ export class Signup implements OnInit {
   confirmPasswordConfig!: PasswordInputConfig;
   mobileConfig!: MobileNumberConfig;
   isLoading = false;
-  showRoleDropdown = false;
-
-  roles: RoleOption[] = Object.entries(ROLE_NAMES).map(([id, name]) => ({
-    id: Number(id),
-    name: name as string,
-  }));
 
   ngOnInit(): void {
     this.initForm();
@@ -54,7 +42,6 @@ export class Signup implements OnInit {
         name: ['', [Validators.required, AppValidators.name]],
         email: ['', [Validators.required, AppValidators.email]],
         mobileNumber: ['', [Validators.required, AppValidators.phone]],
-        roleId: [null, [Validators.required]],
         password: ['', [Validators.required, AppValidators.password]],
         confirmPassword: ['', [Validators.required]],
       },
@@ -63,40 +50,11 @@ export class Signup implements OnInit {
   }
 
   private initConfigs(): void {
-    this.nameConfig = { formControlName: 'name', placeholder: 'Enter your full name' };
-    this.emailConfig = { formControlName: 'email', placeholder: 'Enter your email' };
-    this.mobileConfig = { formControlName: 'mobileNumber', placeholder: 'Enter mobile number' };
-    this.passwordConfig = { formControlName: 'password', placeholder: 'Create password' };
-    this.confirmPasswordConfig = { formControlName: 'confirmPassword', placeholder: 'Confirm password' };
-  }
-
-  get selectedRoleName(): string {
-    const roleId = this.signupForm.get('roleId')?.value;
-    if (!roleId) return 'Select Role';
-    return ROLE_NAMES[roleId] || 'Select Role';
-  }
-
-  get isRoleTouched(): boolean {
-    return !!this.signupForm.get('roleId')?.touched;
-  }
-
-  get isRoleInvalid(): boolean {
-    return !!this.signupForm.get('roleId')?.invalid;
-  }
-
-  selectRole(role: RoleOption): void {
-    this.signupForm.patchValue({ roleId: role.id });
-    this.signupForm.get('roleId')?.markAsTouched();
-    this.showRoleDropdown = false;
-  }
-
-  toggleDropdown(): void {
-    this.showRoleDropdown = !this.showRoleDropdown;
-  }
-
-  closeDropdown(): void {
-    this.showRoleDropdown = false;
-    this.signupForm.get('roleId')?.markAsTouched();
+    this.nameConfig = { formControlName: 'name', placeholder: 'Name', floating: true };
+    this.emailConfig = { formControlName: 'email', placeholder: 'Email', floating: true };
+    this.mobileConfig = { formControlName: 'mobileNumber', placeholder: 'Mobile Number', floating: true };
+    this.passwordConfig = { formControlName: 'password', placeholder: 'Password', floating: true };
+    this.confirmPasswordConfig = { formControlName: 'confirmPassword', placeholder: 'Confirm Password', floating: true };
   }
 
   onSubmit(): void {
@@ -113,7 +71,7 @@ export class Signup implements OnInit {
       next: (res: ApiResponse<SignupResponse>) => {
         this.isLoading = false;
         if (res.isSuccess) {
-          this.toastr.success('Account created successfully! Please sign in.');
+          this.toastr.success(res.message || 'Account created successfully! Please sign in.');
           this.router.navigate([ROUTES.AUTH.LOGIN.LOGIN_ABSOLUTE]);
         } else {
           this.toastr.error(res.errorMessages?.[0] || res.message || 'Signup failed.');

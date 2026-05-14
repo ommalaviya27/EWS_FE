@@ -31,7 +31,7 @@ export class ForgotPassword implements OnInit {
     this.forgotForm = this.fb.group({
       email: ['', [Validators.required, AppValidators.email]],
     });
-    this.emailConfig = { formControlName: 'email', placeholder: 'Enter your registered email' };
+    this.emailConfig = { formControlName: 'email', placeholder: 'Enter Email', floating:true };
   }
 
   onSubmit(): void {

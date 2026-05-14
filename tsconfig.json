@@ -19,6 +19,7 @@
 
     "paths": {
       "@common": ["src/app/common/components/index.ts"],
+      "@Validators": ["src/app/common/validators/index.ts"],
       
     }
   },

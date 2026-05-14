@@ -1,18 +1,18 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AbstractControl, ControlContainer, FormGroup, ReactiveFormsModule, ValidationErrors } from '@angular/forms';
-import { NameFieldConfig } from './name.config';
+import { DescriptionFieldConfig } from './description.config';
 
 @Component({
-  selector: 'app-name-field',
+  selector: 'app-description-field',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './name.html',
-  styleUrls: ['./name.css'],
+  templateUrl: './description.html',
+  styleUrls: ['./description.css'],
 })
-export class Name implements OnInit {
+export class Description implements OnInit {
   @Input() formGroup!: FormGroup;
-  @Input() config!: NameFieldConfig;
+  @Input() config!: DescriptionFieldConfig;
 
   private controlContainer = inject(ControlContainer);
 

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, AbstractControl, ControlContainer } from '@angular/forms';
-import { EmailInputConfig } from './email.config';
+import { EmailInputConfig } from '@common';
 
 @Component({
   selector: 'app-email',
@@ -28,8 +28,12 @@ export class Email implements OnInit {
     return !!this.control?.touched;
   }
 
-  get isInvalid(): boolean {
+  get isInvalidEmail(): boolean {
     return !!this.control?.invalid;
+  }
+
+  get isFloating(): boolean {
+    return this.config?.floating === true;
   }
 
   onInput(e: Event): void {
