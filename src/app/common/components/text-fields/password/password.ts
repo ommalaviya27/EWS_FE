@@ -1,8 +1,8 @@
 import { Component, Input, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, AbstractControl, ControlContainer } from '@angular/forms';
-import { AppValidators } from '../../../validators/app.validators';
-import { PasswordInputConfig } from './password.config';
+import { AppValidators } from '@Validators';
+import { PasswordInputConfig } from '@common';
 
 @Component({
   selector: 'app-password',
@@ -35,6 +35,10 @@ export class Password implements OnInit {
     const value = this.control?.value;
     if (!value) return !!this.control?.invalid;
     return !!AppValidators.password({ value } as AbstractControl);
+  }
+
+  get isFloating(): boolean {
+    return this.config?.floating === true;
   }
 
   togglePassword(): void {

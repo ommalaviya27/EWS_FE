@@ -28,8 +28,12 @@ export class MobileNumber implements OnInit {
     return !!this.control?.touched;
   }
 
-  get isInvalid(): boolean {
+  get isInvalidMobile(): boolean {
     return !!this.control?.invalid;
+  }
+
+  get isFloating(): boolean {
+    return this.config?.floating === true;
   }
 
   onInput(e: Event): void {

@@ -46,8 +46,8 @@ export class ResetPassword implements OnInit {
       { validators: AppValidators.matchPasswords('newPassword', 'confirmPassword') }
     );
 
-    this.newPasswordConfig = { formControlName: 'newPassword', placeholder: 'Enter new password' };
-    this.confirmPasswordConfig = { formControlName: 'confirmPassword', placeholder: 'Confirm new password' };
+    this.newPasswordConfig = { formControlName: 'newPassword', placeholder: 'Enter Password', floating:true };
+    this.confirmPasswordConfig = { formControlName: 'confirmPassword', placeholder: 'Confirm Password', floating:true };
   }
 
   onSubmit(): void {

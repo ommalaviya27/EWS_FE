@@ -1,24 +1,24 @@
-<div class="input-wrapper" [formGroup]="formGroup">
-  <span class="input-icon">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <rect x="2" y="4" width="20" height="16" rx="2"/>
-      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-    </svg>
-  </span>
+<div
+  class="position-relative w-100 email-wrapper"
+  [class.floating-wrapper]="isFloating"
+  [formGroup]="formGroup"
+  appRequiredField
+>
   <input
     type="email"
-    class="form-input"
-    [class.is-invalid]="isTouched && isInvalid"
+    class="form-control custom-input"
+    [class.floating-input]="isFloating"
+    [class.is-invalid]="isTouched && isInvalidEmail"
     [formControlName]="config.formControlName"
-    [placeholder]="config.placeholder || 'Enter your email'"
     (input)="onInput($event)"
     (blur)="onBlur($event)"
-    autocomplete="email"
+    [placeholder]="isFloating ? ' ' : config.placeholder || 'Email'"
   />
+  <label class="floating-label">{{ config.placeholder || 'Email' }}</label>
 </div>
 
-@if (isTouched && isInvalid) {
-  <div class="error-text">
+@if (isTouched && isInvalidEmail) {
+  <div class="invalid-feedback d-block text-start">
     @if (control.hasError('required')) {
       Email is required.
     } @else {
