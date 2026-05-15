@@ -1,56 +1,9 @@
-/* Global reset & base */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+@import 'ngx-toastr/toastr';
+
+html, body {
   margin: 0;
   padding: 0;
-}
-
-html,
-body {
+  overflow: hidden;
   height: 100%;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 16px;
-  color: #1f2937;
-  background: #f0f2fa;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* Toastr overrides */
-#toast-container > div {
-  border-radius: 10px !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12) !important;
-  font-family: 'Inter', sans-serif !important;
-  font-size: 14px !important;
-}
-
-.toast-success {
-  background-color: #059669 !important;
-}
-
-.toast-error {
-  background-color: #dc2626 !important;
-}
-
-.toast-warning {
-  background-color: #d97706 !important;
-}
-
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #d1d5db;
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af;
+  font-family: 'Alexandria', sans-serif;
 }

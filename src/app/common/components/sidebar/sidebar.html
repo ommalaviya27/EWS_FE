@@ -1,0 +1,37 @@
+<!-- Overlay: shown on mobile when sidebar is open -->
+<div class="sidebar-overlay" [class.active]="isOpen" (click)="close()"></div>
+
+<aside class="sidebar-container" [class.open]="isOpen">
+  <div class="user-summary">
+    <div class="avatar">{{ initials }}</div>
+    <div class="user-detail">
+      <span class="name">{{ userName }}</span>
+      <span class="email">{{ userEmail }}</span>
+    </div>
+  </div>
+
+  <nav class="nav-section">
+    <p class="nav-label">NAVIGATION</p>
+    <ul class="nav-list">
+      <li *ngFor="let item of config?.navItems">
+        <a [routerLink]="item.route" routerLinkActive="active" class="nav-item" (click)="close()">
+          <span class="material-icons">{{ item.icon }}</span>
+          <span class="label-text">{{ item.label }}</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="footer-user">
+      <div class="mini-avatar">{{ initials }}</div>
+      <div class="mini-info">
+        <p>{{ userName }}</p>
+        <span>{{ userRoleName }}</span>
+      </div>
+    </div>
+    <button class="logout-btn" (click)="logout()">
+      <span class="material-icons">logout</span>
+    </button>
+  </div>
+</aside>

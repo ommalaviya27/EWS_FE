@@ -3,3 +3,10 @@ export const APP_CONSTANTS = {
   REFRESH_TOKEN_KEY: 'ews_refresh_token',
   USER_KEY: 'ews_user',
 };
+
+export const DEFAULT_PAGINATION = {
+  currentPage:     1,
+  itemsPerPage:    10,
+  totalItems:      0,
+  pageSizeOptions: [5, 10, 20, 100],
+};

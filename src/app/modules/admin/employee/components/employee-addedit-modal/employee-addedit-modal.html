@@ -1,0 +1,72 @@
+@if (visible) {
+<div class="pm-overlay">
+  <div class="pm-modal">
+    <div class="pm-card">
+      <div class="pm-header">
+        <h4 class="pm-title">{{ isEditMode ? 'Edit Employee' : 'Create New Employee' }}</h4>
+        <button type="button" class="pm-close" (click)="onCancel()">✕</button>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+        <div class="pm-two-col">
+          <div class="pm-field">
+            <label class="pm-label">Full Name</label
+            ><app-name-field [config]="nameConfig"></app-name-field>
+          </div>
+          <div class="pm-field">
+            <label class="pm-label">Mobile Number</label
+            ><app-mobile [config]="mobileConfig"></app-mobile>
+          </div>
+        </div>
+
+        <div class="pm-field">
+          <label class="pm-label">Email Address</label
+          ><app-email [config]="emailConfig"></app-email>
+        </div>
+
+        @if (!isEditMode) {
+        <div class="pm-field">
+          <label class="pm-label">Password</label
+          ><app-password [config]="passwordConfig"></app-password>
+        </div>
+        }
+
+        <div class="pm-two-col">
+          <div class="pm-field">
+            <label class="pm-label">Role</label>
+            <select
+              class="form-select pm-input"
+              formControlName="roleId"
+              [class.is-invalid]="isInvalid('roleId')"
+            >
+              <option [ngValue]="null" disabled>Select role</option>
+              @for (r of roleList; track r.value) {
+              <option [value]="r.value">{{ r.label }}</option>
+              }
+            </select>
+            @if (isInvalid('roleId')) {
+            <div class="pm-error">Role is required.</div>
+            }
+          </div>
+          <div class="pm-field">
+            <label class="pm-label">Status</label>
+            <select class="form-select pm-input" formControlName="status">
+              <option [ngValue]="true">Active</option>
+              <option [ngValue]="false">Inactive</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="pm-footer">
+          <button type="button" class="pm-btn pm-btn-cancel" (click)="onCancel()">Cancel</button>
+          <button type="submit" class="pm-btn pm-btn-primary" [disabled]="isLoading">
+            @if (isLoading) {
+            <span class="spinner-border spinner-border-sm me-2"></span> Processing... } @else {
+            {{ isEditMode ? 'Update Employee' : 'Create Employee' }} }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+}

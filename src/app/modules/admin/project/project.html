@@ -1,0 +1,122 @@
+<div class="project-wrapper">
+  <!-- HEADER -->
+  <div class="header-bar">
+    <div>
+      <h3 class="page-title">Project Management</h3>
+      <p class="page-subtitle">Create and manage projects, assign team leads.</p>
+    </div>
+    <button class="btn-create" (click)="openAddModal()">
+      <span class="material-icons">add</span>
+      Create Project
+    </button>
+  </div>
+
+  <!-- LOADER -->
+  @if (isLoading) {
+  <div class="center-state">
+    <div class="spinner-border text-primary"></div>
+  </div>
+  }
+
+  <!-- EMPTY -->
+  @else if (projects.length === 0) {
+  <div class="center-state empty-state">
+    <span class="material-icons">inventory_2</span>
+    <h4>No Projects Found</h4>
+    <p>No projects have been created yet.</p>
+  </div>
+  }
+
+  <!-- GRID TABLE -->
+  @else {
+  <div class="table-card">
+    <div class="grid-scroll">
+      <div class="grid-container">
+        <!-- HEADER ROW -->
+        <div class="grid-row grid-header">
+          <div class="grid-th">Project</div>
+          <div class="grid-th">Description</div>
+          <div class="grid-th">Team Lead</div>
+          <div class="grid-th">Start Date</div>
+          <div class="grid-th">End Date</div>
+          <div class="grid-th">Status</div>
+          <div class="grid-th text-center">Actions</div>
+        </div>
+
+        <!-- DATA ROWS -->
+        @for (project of projects; track project.id) {
+        <div class="grid-row">
+          <div class="grid-td fw-semibold cell-truncate">{{ project.name }}</div>
+
+          <!-- Description cell — tooltip via mouse events -->
+          <div
+            class="grid-td cell-truncate desc-cell"
+            (mouseenter)="showTooltip($event, project.description)"
+            (mousemove)="moveTooltip($event)"
+            (mouseleave)="hideTooltip()"
+          >
+            {{ project.description }}
+          </div>
+
+          <div class="grid-td cell-truncate">{{ getTeamLeaderName(project.userId) }}</div>
+
+          <div class="grid-td">{{ formatDate(project.startDate) }}</div>
+
+          <div class="grid-td">{{ formatDate(project.endDate) }}</div>
+
+          <div class="grid-td">
+            <span class="status-badge" [attr.data-status]="project.projectStatus">
+              {{ getStatusLabel(project.projectStatus) }}
+            </span>
+          </div>
+
+          <div class="grid-td text-center">
+            <div class="action-group">
+              <button class="icon-btn edit" (click)="openEditModal(project)">
+                <span class="material-icons">edit</span>
+              </button>
+              <button class="icon-btn delete" (click)="openDeleteModal(project)">
+                <span class="material-icons">delete</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+      <app-pagination
+        [currentPage]="currentPage"
+        [totalItems]="totalItems"
+        [itemsPerPage]="itemsPerPage"
+        (pageChange)="onPageChange($event)"
+        (pageSizeChange)="onPageSizeChange($event)"
+      >
+      </app-pagination>
+    </div>
+  </div>
+  }
+</div>
+
+<!-- Floating tooltip rendered at root level -->
+@if (tooltip.visible) {
+<div class="desc-tooltip" [style.top.px]="tooltip.y" [style.left.px]="tooltip.x">
+  {{ tooltip.text }}
+</div>
+}
+
+<!-- MODALS -->
+<app-project-addedit-modal
+  [visible]="showModal"
+  [isLoading]="isModalLoading"
+  [project]="selectedProject"
+  [teamLeaders]="teamLeaders"
+  (save)="onSave($event)"
+  (closed)="closeModal()"
+></app-project-addedit-modal>
+
+<app-delete-model
+  [visible]="showDeleteModal"
+  [isLoading]="isDeleteLoading"
+  [config]="deleteConfig"
+  (confirm)="onConfirmDelete()"
+  (closed)="closeDeleteModal()"
+></app-delete-model>

@@ -1,0 +1,122 @@
+/* Overlay — same pattern as pm-overlay in project-addedit-modal */
+.dm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1060;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+}
+
+.dm-modal {
+  width: 100%;
+  max-width: 460px;
+}
+
+.dm-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 28px 28px 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+/* Header */
+.dm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.dm-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.dm-close {
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.dm-close:hover {
+  color: #374151;
+}
+
+/* Body */
+.dm-body {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.dm-icon-wrap {
+  margin-bottom: 12px;
+}
+
+.dm-danger-icon {
+  font-size: 48px;
+  color: #ef4444;
+}
+
+.dm-message {
+  font-size: 15px;
+  color: #374151;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Footer */
+.dm-footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.dm-btn {
+  height: 48px;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.dm-btn-cancel {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.dm-btn-cancel:hover {
+  background: #d1d5db;
+}
+
+.dm-btn-danger {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+.dm-btn-danger:hover:not(:disabled) {
+  background: #dc2626;
+}
+
+.dm-btn-danger:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .dm-footer {
+    grid-template-columns: 1fr;
+  }
+}

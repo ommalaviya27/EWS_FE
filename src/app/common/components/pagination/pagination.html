@@ -1,0 +1,32 @@
+<div class="pagination-wrapper d-flex align-items-center justify-content-end gap-3">
+
+  <div class="rows-per-page d-flex align-items-center gap-1">
+    <span class="label">Rows per page:</span>
+    <select class="page-size-select" (change)="changePageSize($any($event.target).value)">
+      @for (size of pageSizeOptions; track size) {
+        <option [value]="size" [selected]="size === itemsPerPage">{{ size }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="pagination-controls d-flex align-items-center gap-2">
+    <span class="range">{{ currentPage }}–{{ totalPages }} of {{ totalPages }}</span>
+
+    <button
+      class="arrow-btn"
+      (click)="changePage(currentPage - 1)"
+      [disabled]="currentPage === 1"
+      title="Previous page">
+      &#8249;
+    </button>
+
+    <button
+      class="arrow-btn"
+      (click)="changePage(currentPage + 1)"
+      [disabled]="currentPage === totalPages"
+      title="Next page">
+      &#8250;
+    </button>
+  </div>
+
+</div>

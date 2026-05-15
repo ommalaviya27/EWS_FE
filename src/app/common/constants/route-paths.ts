@@ -21,6 +21,10 @@ export const ROUTES = {
   ADMIN: {
     DASHBOARD: 'dashboard',
     DASHBOARD_ABSOLUTE: '/admin/dashboard',
+    PROJECT: 'project',
+    PROJECT_ABSOLUTE: '/admin/project',
+    EMPLOYEE: 'employee',
+    EMPLOYEE_ABSOLUTE: '/admin/employee',
     ADMIN_ABSOLUTE: '/admin',
   },
 

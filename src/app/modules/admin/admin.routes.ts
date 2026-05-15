@@ -1,10 +1,12 @@
 import { Routes } from '@angular/router';
 import { AuthGuard, AdminGuard } from '../../common/guards/auth.guard';
 import { ROUTES } from '../../common/constants/route-paths';
+import { Layout } from 'src/app/common/components/layout/layout';
 
 export const ADMIN_ROUTES: Routes = [
   {
     path: '',
+    component: Layout,
     canActivate: [AuthGuard, AdminGuard],
     children: [
       {
@@ -13,6 +15,20 @@ export const ADMIN_ROUTES: Routes = [
           import('./dashboard/admin-dashboard').then(
             (m) => m.AdminDashboardComponent
           ),
+      },
+      {
+        path: ROUTES.ADMIN.PROJECT,
+        loadComponent: () =>
+          import('./project/project').then(
+            (m) => m.ProjectModule
+          )
+      },
+      {
+        path: ROUTES.ADMIN.EMPLOYEE,
+        loadComponent: () =>
+          import('./employee/employee').then(
+            (m) => m.EmployeeModule
+          )
       },
       { path: '', redirectTo: ROUTES.ADMIN.DASHBOARD, pathMatch: 'full' },
     ],
