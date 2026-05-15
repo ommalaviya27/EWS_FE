@@ -6,3 +6,8 @@ export * from './text-fields/name/name';
 export * from './text-fields/name/name.config';
 export * from './text-fields/mobile-number/mobile-number';
 export * from './text-fields/mobile-number/mobile-number.config';
+export * from './delete-model/delete-model.config.js';
+export * from './delete-model/delete-model.js';
+export * from './text-fields/description/description';
+export * from './text-fields/description/description.config';
+export * from './pagination/pagination';

@@ -1,6 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../auth/services/auth.service';
 import { SessionService } from '../../../common/services/session.service';
 
 @Component({
@@ -10,11 +9,14 @@ import { SessionService } from '../../../common/services/session.service';
   templateUrl: './admin-dashboard.html',
   styleUrls: ['./admin-dashboard.css'],
 })
-export class AdminDashboardComponent {
-  private authService = inject(AuthService);
+export class AdminDashboardComponent implements OnInit {
   sessionService = inject(SessionService);
 
-  logout(): void {
-    this.authService.logout();
+  ngOnInit(): void {
+    
+  }
+
+  addNewEmployee() {
+    console.log('Opening add employee modal...');
   }
 }

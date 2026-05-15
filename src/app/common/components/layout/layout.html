@@ -1,0 +1,11 @@
+<div class="master-layout">
+  <app-header class="header-area" (menuToggle)="toggleSidebar()"></app-header>
+
+  <div class="layout-body">
+    <app-sidebar class="sidebar-area"></app-sidebar>
+
+    <main class="main-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

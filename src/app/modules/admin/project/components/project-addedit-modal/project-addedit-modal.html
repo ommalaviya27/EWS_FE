@@ -1,0 +1,115 @@
+@if (visible) {
+<div class="pm-overlay">
+  <div class="pm-modal">
+    <div class="pm-card">
+      <!-- Header -->
+      <div class="pm-header">
+        <h4 class="pm-title">
+          {{ isEditMode ? 'Edit Project' : 'Create New Project' }}
+        </h4>
+
+        <button type="button" class="pm-close" (click)="onCancel()" aria-label="Close">✕</button>
+      </div>
+
+      <!-- Form -->
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+        <!-- Project Name -->
+        <div class="pm-field">
+          <label class="pm-label"> Project Name </label>
+          <app-name-field [config]="nameConfig"></app-name-field>
+        </div>
+
+        <!-- Description -->
+        <div class="pm-field">
+          <label class="pm-label"> Description </label>
+          <app-description-field [config]="descriptionConfig"></app-description-field>
+        </div>
+
+        <!-- Team Lead -->
+        <div class="pm-field">
+          <label class="pm-label"> Assign Team Lead </label><br />
+
+          <select
+            class="form-select pm-input"
+            formControlName="userId"
+            [class.is-invalid]="isInvalid('userId')"
+          >
+            <option [ngValue]="null" disabled>Select team leader</option>
+
+            @for (tl of teamLeaders; track tl.userId) {
+            <option [value]="tl.userId">
+              {{ tl.name }}
+            </option>
+            }
+          </select>
+
+          @if (isInvalid('userId')) {
+          <div class="pm-error">Team lead is required.</div>
+          }
+        </div>
+
+        <!-- Dates -->
+        <div class="pm-date-row">
+          <!-- Start Date -->
+          <div class="pm-field">
+            <label class="pm-label"> Start Date </label>
+
+            <input
+              type="date"
+              class="form-control pm-input"
+              formControlName="startDate"
+              [class.is-invalid]="isInvalid('startDate')"
+            />
+
+            @if (isInvalid('startDate')) {
+            <div class="pm-error">Start date is required.</div>
+            }
+          </div>
+
+          <!-- End Date -->
+          <div class="pm-field">
+            <label class="pm-label"> End Date </label>
+
+            <input
+              type="date"
+              class="form-control pm-input"
+              formControlName="endDate"
+              [class.is-invalid]="isInvalid('endDate')"
+            />
+
+            @if (isInvalid('endDate')) {
+            <div class="pm-error">End date is required.</div>
+            }
+          </div>
+        </div>
+
+        <!-- Status -->
+        <div class="pm-field">
+          <label class="pm-label"> Status </label>
+
+          <select class="form-select pm-input" formControlName="projectStatus">
+            @for (s of statusList; track s.value) {
+            <option [value]="s.value">
+              {{ s.label }}
+            </option>
+            }
+          </select>
+        </div>
+
+        <!-- Footer -->
+        <div class="pm-footer">
+          <button type="button" class="pm-btn pm-btn-cancel" (click)="onCancel()">Cancel</button>
+
+          <button type="submit" class="pm-btn pm-btn-primary" [disabled]="isLoading">
+            @if (isLoading) {
+            <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+            Processing... } @else {
+            {{ isEditMode ? 'Update Project' : 'Create Project' }}
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+}

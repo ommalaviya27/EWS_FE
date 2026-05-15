@@ -1,0 +1,88 @@
+<div class="project-wrapper">
+  <div class="header-bar">
+    <div>
+      <h3 class="page-title">Employee Management</h3>
+      <p class="page-subtitle">Create and manage employees, assign roles.</p>
+    </div>
+    <button class="btn-create" (click)="openAddModal()">
+      <span class="material-icons">person_add</span>
+      Add Employee
+    </button>
+  </div>
+
+  @if (isLoading) {
+  <div class="center-state">
+    <div class="spinner-border text-primary"></div>
+  </div>
+  }
+
+  @else if (employees.length === 0) {
+  <div class="center-state empty-state">
+    <span class="material-icons">group</span>
+    <h4>No Employees Found</h4>
+    <p>No employees have been added yet.</p>
+  </div>
+  }
+
+  @else {
+  <div class="table-card">
+    <div class="grid-scroll">
+      <div class="grid-container">
+        <div class="grid-row grid-header">
+          <div class="grid-th">Name</div>
+          <div class="grid-th">Email</div>
+          <div class="grid-th">Mobile</div>
+          <div class="grid-th">Role</div>
+          <div class="grid-th">Status</div>
+          <div class="grid-th">Joined</div>
+          <div class="grid-th text-center">Actions</div>
+        </div>
+
+        @for (employee of employees; track employee.userId) {
+        <div class="grid-row">
+          <div class="grid-td fw-semibold cell-truncate">{{ employee.name }}</div>
+
+          <div class="grid-td">{{ employee.email }}</div>
+
+          <div class="grid-td">{{ employee.mobileNumber }}</div>
+
+          <div class="grid-td">
+            <span class="role-badge" [attr.data-role]="employee.roleId">
+              {{ getRoleLabel(employee.roleId) }}
+            </span>
+          </div>
+
+          <div class="grid-td">
+            <span class="status-badge" [attr.data-active]="employee.status">
+              {{ employee.status ? 'Active' : 'Inactive' }}
+            </span>
+          </div>
+
+          <div class="grid-td">{{ formatDate(employee.createdAt) }}</div>
+
+          <div class="grid-td text-center">
+            <div class="action-group">
+              <button class="icon-btn edit" (click)="openEditModal(employee)">
+                <span class="material-icons">edit</span>
+              </button>
+              <button class="icon-btn delete" (click)="openDeleteModal(employee)">
+                <span class="material-icons">delete</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+    
+    <app-pagination
+      [currentPage]="currentPage"
+      [totalItems]="totalItems"
+      [itemsPerPage]="itemsPerPage"
+      (pageChange)="onPageChange($event)"
+      (pageSizeChange)="onPageSizeChange($event)"
+    >
+    </app-pagination>
+  </div>
+  }
+</div>

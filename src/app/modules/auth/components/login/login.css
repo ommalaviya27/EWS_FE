@@ -24,16 +24,10 @@
   margin-bottom: 36px;
 }
 
-.brand-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background: #4f46e5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 16px;
-  box-shadow: 0 4px 16px rgba(79, 70, 229, 0.35);
+.logo-box img {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
 }
 
 .brand-title {
