@@ -1,0 +1,131 @@
+<div class="task-wrapper">
+  <!-- HEADER -->
+  <div class="header-bar">
+    <div>
+      <h3 class="page-title">Task Management</h3>
+      <p class="page-subtitle">Create and assign tasks to your team members</p>
+    </div>
+    <button class="btn-create" (click)="openAddModal()">
+      <span class="material-icons">add</span>
+      Create Task
+    </button>
+  </div>
+
+  <!-- LOADER -->
+  @if (isLoading) {
+  <div class="center-state">
+    <div class="spinner-border text-primary"></div>
+  </div>
+  }
+
+  <!-- EMPTY -->
+  @else if (tasks.length === 0) {
+  <div class="center-state empty-state">
+    <span class="material-icons">assignment</span>
+    <h4>No Tasks Found</h4>
+    <p>No tasks have been created yet.</p>
+  </div>
+  }
+
+  <!-- GRID TABLE -->
+  @else {
+  <div class="table-card">
+    <div class="grid-scroll">
+      <div class="grid-container">
+        <!-- HEADER ROW -->
+        <div class="grid-row grid-header">
+          <div class="grid-th">Task</div>
+          <div class="grid-th">Project</div>
+          <div class="grid-th">Assigned To</div>
+          <div class="grid-th">Status</div>
+          <div class="grid-th">Priority</div>
+          <div class="grid-th">Due Date</div>
+          <div class="grid-th text-center">Actions</div>
+        </div>
+
+        <!-- DATA ROWS -->
+        @for (task of tasks; track task.id) {
+        <div class="grid-row">
+          <!-- Task title + description -->
+          <div class="grid-td">
+            <div class="task-title">{{ task.title }}</div>
+            <div
+              class="task-desc cell-truncate"
+              (mouseenter)="showTooltip($event, task.description)"
+              (mousemove)="moveTooltip($event)"
+              (mouseleave)="hideTooltip()"
+            >
+              {{ task.description }}
+            </div>
+          </div>
+
+          <div class="grid-td cell-truncate">{{ task.projectName }}</div>
+
+          <div class="grid-td cell-truncate">{{ task.assignedToUserName }}</div>
+
+          <div class="grid-td">
+            <span class="status-badge" [attr.data-status]="task.taskStatus">
+              {{ getStatusLabel(task.taskStatus) }}
+            </span>
+          </div>
+
+          <div class="grid-td">
+            <span class="priority-badge" [attr.data-priority]="task.priority">
+              {{ getPriorityLabel(task.priority) }}
+            </span>
+          </div>
+
+          <div class="grid-td">{{ formatDate(task.dueDate) }}</div>
+
+          <div class="grid-td text-center">
+            <div class="action-group">
+              <button class="icon-btn edit" (click)="openEditModal(task)">
+                <span class="material-icons">edit</span>
+              </button>
+              <button class="icon-btn delete" (click)="openDeleteModal(task)">
+                <span class="material-icons">delete</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+
+      <app-pagination
+        [currentPage]="currentPage"
+        [totalItems]="totalItems"
+        [itemsPerPage]="itemsPerPage"
+        (pageChange)="onPageChange($event)"
+        (pageSizeChange)="onPageSizeChange($event)"
+      >
+      </app-pagination>
+    </div>
+  </div>
+  }
+</div>
+
+<!-- Floating tooltip -->
+@if (tooltip.visible) {
+<div class="desc-tooltip" [style.top.px]="tooltip.y" [style.left.px]="tooltip.x">
+  {{ tooltip.text }}
+</div>
+}
+
+<!-- MODALS -->
+<app-task-addedit-modal
+  [visible]="showModal"
+  [isLoading]="isModalLoading"
+  [task]="selectedTask"
+  [teamMembers]="teamMembers"
+  [projects]="projects"
+  (save)="onSave($event)"
+  (closed)="closeModal()"
+></app-task-addedit-modal>
+
+<app-delete-model
+  [visible]="showDeleteModal"
+  [isLoading]="isDeleteLoading"
+  [config]="deleteConfig"
+  (confirm)="onConfirmDelete()"
+  (closed)="closeDeleteModal()"
+></app-delete-model>

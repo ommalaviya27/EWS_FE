@@ -1,4 +1,3 @@
-<!-- Overlay: shown on mobile when sidebar is open -->
 <div class="sidebar-overlay" [class.active]="isOpen" (click)="close()"></div>
 
 <aside class="sidebar-container" [class.open]="isOpen">
@@ -35,3 +34,10 @@
     </button>
   </div>
 </aside>
+
+<app-confirmation-model
+  [visible]="showLogoutConfirmation"
+  [config]="logoutConfig"
+  (confirm)="confirmLogout()"
+  (closed)="cancelLogout()"
+></app-confirmation-model>

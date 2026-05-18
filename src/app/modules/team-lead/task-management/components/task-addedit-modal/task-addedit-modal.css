@@ -1,0 +1,173 @@
+.pm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1060;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+}
+
+.pm-modal {
+  width: 100%;
+  max-width: 640px;
+}
+
+.pm-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 24px 24px 22px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+/* Header */
+
+.pm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.pm-title {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.pm-close {
+  border: none;
+  background: transparent;
+  font-size: 22px;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.pm-close:hover {
+  color: #374151;
+}
+
+/* Fields */
+
+.pm-field {
+  margin-bottom: 18px;
+}
+
+.pm-label {
+  display: inline-block;
+  margin-bottom: 8px;
+
+  font-size: 15px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.pm-label span {
+  color: #ef4444;
+}
+
+.pm-input,
+.form-control,
+.form-select {
+  height: 48px;
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  font-size: 15px;
+  box-shadow: none;
+}
+
+textarea.form-control {
+  min-height: 110px;
+  resize: none;
+  padding-top: 12px;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #5b3df5;
+  box-shadow: 0 0 0 0.15rem rgba(91, 61, 245, 0.15);
+}
+
+/* Date Row */
+
+.pm-date-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Buttons */
+
+.pm-footer {
+  margin-top: 28px;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.pm-btn {
+  height: 48px;
+  border: none;
+  border-radius: 12px;
+
+  font-size: 16px;
+  font-weight: 600;
+
+  transition: 0.2s ease;
+}
+
+.pm-btn-cancel {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.pm-btn-cancel:hover {
+  background: #d1d5db;
+}
+
+.pm-btn-primary {
+  background: #5b3df5;
+  color: #ffffff;
+}
+
+.pm-btn-primary:hover:not(:disabled) {
+  background: #4c30e0;
+}
+
+.pm-btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Validation */
+
+.pm-error {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #dc2626;
+}
+
+/* Responsive */
+
+@media (max-width: 576px) {
+  .pm-card {
+    padding: 20px;
+  }
+
+  .pm-title {
+    font-size: 24px;
+  }
+
+  .pm-date-row,
+  .pm-footer {
+    grid-template-columns: 1fr;
+  }
+}

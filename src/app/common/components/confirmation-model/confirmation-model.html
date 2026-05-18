@@ -1,0 +1,40 @@
+@if (visible) {
+  <div class="cm-overlay">
+    <div class="cm-modal">
+      <div class="cm-card">
+        <!-- Header -->
+        <div class="cm-header">
+          <h4 class="cm-title">{{ config.title }}</h4>
+          <button type="button" class="cm-close" (click)="onCancel()" aria-label="Close">✕</button>
+        </div>
+
+        <!-- Body -->
+        <div class="cm-body">
+          <div class="cm-icon-wrap">
+            <span class="cm-warning-icon">⚠</span>
+          </div>
+          <p class="cm-message">{{ config.message }}</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="cm-footer">
+          <button
+            type="button"
+            class="cm-btn cm-btn-cancel"
+            (click)="onCancel()"
+          >
+            {{ config.cancelText }}
+          </button>
+
+          <button
+            type="button"
+            class="cm-btn cm-btn-confirm"
+            (click)="onSave()"
+          >
+            {{ config.confirmText }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+}

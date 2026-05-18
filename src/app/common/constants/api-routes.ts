@@ -23,4 +23,13 @@ export const API_ROUTES = {
     UPDATE:    (id: number) => `/api/users/${id}`,
     DELETE:    (id: number) => `/api/users/${id}`,
   },
+  TASK: {
+    GET_ALL: '/api/tasks',
+    GET_BY_ID: (id: number) => `/api/tasks/${id}`,
+    GET_MY_PROJECTS: '/api/tasks/my-projects',   // ← add
+    GET_TEAM_MEMBERS: '/api/tasks/team-members',
+    CREATE: '/api/tasks',
+    UPDATE: (id: number) => `/api/tasks/${id}`,
+    DELETE: (id: number) => `/api/tasks/${id}`,
+  },
 };

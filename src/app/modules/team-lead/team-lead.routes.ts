@@ -16,6 +16,13 @@ export const TEAM_LEAD_ROUTES: Routes = [
             (m) => m.TeamLeadDashboardComponent
           ),
       },
+      {
+        path: ROUTES.TEAM_LEAD.TASK_MANAGEMENT,
+        loadComponent:() =>
+          import('./task-management/task-management').then(
+            (m) => m.TaskManagement
+          ),
+      },
       { path: '', redirectTo: ROUTES.TEAM_LEAD.DASHBOARD, pathMatch: 'full' },
     ],
   },
