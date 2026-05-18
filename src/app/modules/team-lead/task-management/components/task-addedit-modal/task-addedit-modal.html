@@ -1,0 +1,113 @@
+@if (visible) {
+<div class="pm-overlay">
+  <div class="pm-modal">
+    <div class="pm-card">
+      <!-- Header -->
+      <div class="pm-header">
+        <h4 class="pm-title">
+          {{ isEditMode ? 'Edit Task' : 'Create New Task' }}
+        </h4>
+        <button type="button" class="pm-close" (click)="onCancel()" aria-label="Close">✕</button>
+      </div>
+
+      <!-- Form -->
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+        <!-- Title -->
+        <div class="pm-field">
+          <label class="pm-label">Task Title</label>
+          <app-name-field [config]="nameConfig"></app-name-field>
+        </div>
+
+        <!-- Description -->
+        <div class="pm-field">
+          <label class="pm-label">Description</label>
+          <app-description-field [config]="descriptionConfig"></app-description-field>
+        </div>
+
+        <!-- Project -->
+        <div class="pm-field">
+          <label class="pm-label">Project</label>
+          <select
+            class="form-select pm-input"
+            formControlName="projectId"
+            [class.is-invalid]="isInvalid('projectId')"
+          >
+            <option [ngValue]="null" disabled>Select project</option>
+            @for (p of projects; track p.id) {
+            <option [value]="p.id">{{ p.name }}</option>
+            }
+          </select>
+          @if (isInvalid('projectId')) {
+          <div class="pm-error">Project is required.</div>
+          }
+        </div>
+
+        <!-- Assigned To -->
+        <div class="pm-field">
+          <label class="pm-label">Assign To</label>
+          <select
+            class="form-select pm-input"
+            formControlName="assignedToUserId"
+            [class.is-invalid]="isInvalid('assignedToUserId')"
+          >
+            <option [ngValue]="null" disabled>Select team member</option>
+            @for (m of teamMembers; track m.userId) {
+            <option [value]="m.userId">{{ m.name }}</option>
+            }
+          </select>
+          @if (isInvalid('assignedToUserId')) {
+          <div class="pm-error">Assignee is required.</div>
+          }
+        </div>
+
+        <!-- Due Date + Priority -->
+        <div class="pm-date-row">
+          <div class="pm-field">
+            <label class="pm-label">Due Date</label>
+            <input
+              type="date"
+              class="form-control pm-input"
+              formControlName="dueDate"
+              [class.is-invalid]="isInvalid('dueDate')"
+            />
+            @if (isInvalid('dueDate')) {
+            <div class="pm-error">Due date is required.</div>
+            }
+          </div>
+
+          <div class="pm-field">
+            <label class="pm-label">Priority</label>
+            <select class="form-select pm-input" formControlName="priority">
+              @for (p of priorityList; track p.value) {
+              <option [value]="p.value">{{ p.label }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <!-- Status -->
+        <div class="pm-field">
+          <label class="pm-label">Status</label>
+          <select class="form-select pm-input" formControlName="status">
+            @for (s of statusList; track s.value) {
+            <option [value]="s.value">{{ s.label }}</option>
+            }
+          </select>
+        </div>
+
+        <!-- Footer -->
+        <div class="pm-footer">
+          <button type="button" class="pm-btn pm-btn-cancel" (click)="onCancel()">Cancel</button>
+          <button type="submit" class="pm-btn pm-btn-primary" [disabled]="isLoading">
+            @if (isLoading) {
+            <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+            Processing... } @else {
+            {{ isEditMode ? 'Update Task' : 'Create Task' }}
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+}

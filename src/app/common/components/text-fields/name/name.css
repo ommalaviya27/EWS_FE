@@ -6,7 +6,6 @@
   height: 56px;
   width: 100%;
   border-radius: 8px;
-  font-family: 'DM Sans', sans-serif;
   box-sizing: border-box;
   font-size: 16px;
 }
@@ -53,4 +52,10 @@
 .floating-input:focus {
   border-color: #007bff;
   box-shadow: none;
+}
+
+.invalid-feedback {
+  color: #dc3545;
+  font-size: 0.85rem;
+  margin-top: 4px;
 }

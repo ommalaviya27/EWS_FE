@@ -31,6 +31,8 @@ export const ROUTES = {
   TEAM_LEAD: {
     DASHBOARD: 'dashboard',
     DASHBOARD_ABSOLUTE: '/team-lead/dashboard',
+    TASK_MANAGEMENT: 'task-management',
+    TASK_MANAGEMENT_ABSOLUTE: '/team-lead/task-management',
     TEAM_LEAD_ABSOLUTE: '/team-lead',
   },
 

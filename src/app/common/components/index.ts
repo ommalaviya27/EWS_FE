@@ -11,3 +11,5 @@ export * from './delete-model/delete-model.js';
 export * from './text-fields/description/description';
 export * from './text-fields/description/description.config';
 export * from './pagination/pagination';
+export * from './confirmation-model/confirmation-model';
+export * from './confirmation-model/confirmation-model.config';
