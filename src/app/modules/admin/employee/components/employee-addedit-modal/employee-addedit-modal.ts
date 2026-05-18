@@ -1,31 +1,9 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-  inject,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import {
-  Employee,
-  EMPLOYEE_ROLE_LIST,
-  CreateEmployeeRequest,
-  UpdateEmployeeRequest,
-} from '../../models/employee.model';
-import {
-  NameFieldConfig,
-  Name,
-  EmailInputConfig,
-  Email,
-  MobileNumberConfig,
-  MobileNumber,
-  PasswordInputConfig,
-  Password,
-} from '@common';
+import { Employee, TeamLead, EMPLOYEE_ROLE_LIST, EmployeeRole, CreateEmployeeRequest, UpdateEmployeeRequest } from '../../models/employee.model';
+import { NameFieldConfig, Name, EmailInputConfig, Email, MobileNumberConfig, MobileNumber, PasswordInputConfig, Password } from '@common';
+import { EmployeeService } from '../../services/employee.service';
 
 @Component({
   selector: 'app-employee-addedit-modal',
@@ -41,6 +19,7 @@ export class EmployeeAddeditModal implements OnInit, OnChanges {
   @Output() closed = new EventEmitter<void>();
 
   private fb = inject(FormBuilder);
+  private employeeService = inject(EmployeeService);
 
   nameConfig!: NameFieldConfig;
   emailConfig!: EmailInputConfig;
@@ -49,23 +28,49 @@ export class EmployeeAddeditModal implements OnInit, OnChanges {
 
   form!: FormGroup;
   roleList = EMPLOYEE_ROLE_LIST;
+  teamLeads: TeamLead[] = [];
+  readonly EmployeeRole = EmployeeRole;
 
   get isEditMode(): boolean {
     return this.employee !== null;
   }
 
+  get selectedRoleId(): number {
+    return Number(this.form?.get('roleId')?.value);
+  }
+
+  get showTeamLeadField(): boolean {
+    return this.selectedRoleId === EmployeeRole.Employee;
+  }
+
   ngOnInit(): void {
     this.buildForm();
     this.initConfigs();
+    this.loadTeamLeads();
   }
+
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['visible'] && this.visible) this.buildForm();
+    if (changes['visible'] && this.visible) {
+      this.buildForm();
+      this.loadTeamLeads();
+    }
+  }
+
+  private loadTeamLeads(): void {
+    this.employeeService.getTeamLeads().subscribe({
+      next: (res) => {
+        this.teamLeads = res.data ?? [];
+      },
+      error: () => {
+        this.teamLeads = [];
+      },
+    });
   }
 
   private initConfigs(): void {
-    this.nameConfig = { formControlName: 'name', placeholder: 'Enter employee name' };
+    this.nameConfig = { formControlName: 'name', placeholder: 'Enter first name' };
     this.emailConfig = { formControlName: 'email', placeholder: 'Enter email address' };
-    this.mobileConfig = { formControlName: 'mobileNumber', placeholder: 'Enter mobile number' };
+    this.mobileConfig = { formControlName: 'mobileNumber', placeholder: 'Enter last name' };
     this.passwordConfig = { formControlName: 'password', placeholder: 'Enter password' };
   }
 
@@ -80,8 +85,28 @@ export class EmployeeAddeditModal implements OnInit, OnChanges {
       mobileNumber: [e?.mobileNumber ?? '', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       password: ['', this.isEditMode ? [] : [Validators.required, Validators.minLength(8)]],
       roleId: [e?.roleId ?? null, [Validators.required]],
+      teamLeadId: [e?.teamLeadId ?? null],
       status: [e?.status ?? true],
     });
+
+    this.updateTeamLeadControlState();
+  }
+
+  onRoleChange(): void {
+    if (this.selectedRoleId !== EmployeeRole.Employee) {
+      this.form.get('teamLeadId')?.setValue(null);
+    }
+    this.updateTeamLeadControlState();
+  }
+
+  private updateTeamLeadControlState(): void {
+    const ctrl = this.form?.get('teamLeadId');
+    if (!ctrl) return;
+    if (this.showTeamLeadField) {
+      ctrl.enable();
+    } else {
+      ctrl.disable();
+    }
   }
 
   onSubmit(): void {
@@ -89,14 +114,17 @@ export class EmployeeAddeditModal implements OnInit, OnChanges {
       this.form.markAllAsTouched();
       return;
     }
-    const v = this.form.value;
+    const v = this.form.getRawValue();
     const status = v.status === true || v.status === 'true';
+    const teamLeadId = this.showTeamLeadField && v.teamLeadId ? Number(v.teamLeadId) : null;
+
     const payload = this.isEditMode
       ? ({
           name: v.name,
           email: v.email,
           mobileNumber: v.mobileNumber,
           roleId: Number(v.roleId),
+          teamLeadId,
           status,
         } as UpdateEmployeeRequest)
       : ({
@@ -105,6 +133,7 @@ export class EmployeeAddeditModal implements OnInit, OnChanges {
           password: v.password,
           mobileNumber: v.mobileNumber,
           roleId: Number(v.roleId),
+          teamLeadId,
           status,
         } as CreateEmployeeRequest);
     this.save.emit(payload as any);
@@ -118,6 +147,7 @@ export class EmployeeAddeditModal implements OnInit, OnChanges {
     const c = this.form.get(field);
     return !!(c && c.invalid && c.touched);
   }
+
   getError(field: string): string {
     const c = this.form.get(field);
     if (!c || !c.errors || !c.touched) return '';
