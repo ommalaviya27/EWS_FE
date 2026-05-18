@@ -2,7 +2,7 @@
   <div class="header-bar">
     <div>
       <h3 class="page-title">Employee Management</h3>
-      <p class="page-subtitle">Create and manage employees, assign roles.</p>
+      <p class="page-subtitle">Manage employees and assign them to team leads</p>
     </div>
     <button class="btn-create" (click)="openAddModal()">
       <span class="material-icons">person_add</span>
@@ -10,21 +10,39 @@
     </button>
   </div>
 
+  <!-- Tabs -->
+  <div class="tab-bar">
+    <button class="tab-btn" [class.active]="activeTab === 'all'" (click)="setTab('all')">
+      <span class="material-icons tab-icon">groups</span>
+      <span class="tab-label">All Employees</span>
+      <span class="tab-count">{{ summary.totalEmployees }}</span>
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 'assigned'" (click)="setTab('assigned')">
+      <span class="material-icons tab-icon">supervisor_account</span>
+      <span class="tab-label">Assigned Employees</span>
+      <span class="tab-count">{{ summary.assignedCount }}</span>
+    </button>
+    <button
+      class="tab-btn"
+      [class.active]="activeTab === 'unassigned'"
+      (click)="setTab('unassigned')"
+    >
+      <span class="material-icons tab-icon">person_off</span>
+      <span class="tab-label">Unassigned Employees</span>
+      <span class="tab-count">{{ summary.unassignedCount }}</span>
+    </button>
+  </div>
+
   @if (isLoading) {
   <div class="center-state">
     <div class="spinner-border text-primary"></div>
   </div>
-  }
-
-  @else if (employees.length === 0) {
+  } @else if (employees.length === 0) {
   <div class="center-state empty-state">
     <span class="material-icons">group</span>
     <h4>No Employees Found</h4>
-    <p>No employees have been added yet.</p>
   </div>
-  }
-
-  @else {
+  } @else {
   <div class="table-card">
     <div class="grid-scroll">
       <div class="grid-container">
@@ -33,8 +51,8 @@
           <div class="grid-th">Email</div>
           <div class="grid-th">Mobile</div>
           <div class="grid-th">Role</div>
+          <div class="grid-th">Team Lead</div>
           <div class="grid-th">Status</div>
-          <div class="grid-th">Joined</div>
           <div class="grid-th text-center">Actions</div>
         </div>
 
@@ -53,12 +71,23 @@
           </div>
 
           <div class="grid-td">
+            @if (employee.roleId !== 3) {
+            <span class="tl-na">N/A</span>
+            } @else if (employee.teamLeadName) {
+            <span class="team-lead-chip">
+              <span class="material-icons tl-icon">supervisor_account</span>
+              {{ employee.teamLeadName }}
+            </span>
+            } @else {
+            <span class="tl-unassigned">—</span>
+            }
+          </div>
+
+          <div class="grid-td">
             <span class="status-badge" [attr.data-active]="employee.status">
               {{ employee.status ? 'Active' : 'Inactive' }}
             </span>
           </div>
-
-          <div class="grid-td">{{ formatDate(employee.createdAt) }}</div>
 
           <div class="grid-td text-center">
             <div class="action-group">
@@ -74,7 +103,7 @@
         }
       </div>
     </div>
-    
+
     <app-pagination
       [currentPage]="currentPage"
       [totalItems]="totalItems"
@@ -86,3 +115,19 @@
   </div>
   }
 </div>
+
+<app-employee-addedit-modal
+  [visible]="showModal"
+  [isLoading]="isModalLoading"
+  [employee]="selectedEmployee"
+  (save)="onSave($event)"
+  (closed)="closeModal()"
+></app-employee-addedit-modal>
+
+<app-delete-model
+  [visible]="showDeleteModal"
+  [isLoading]="isDeleteLoading"
+  [config]="deleteConfig"
+  (confirm)="onConfirmDelete()"
+  (closed)="closeDeleteModal()"
+></app-delete-model>

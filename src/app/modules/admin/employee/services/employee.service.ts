@@ -3,23 +3,29 @@ import { Observable } from 'rxjs';
 import { ApiService } from '../../../../common/services/api.service';
 import { API_ROUTES } from '../../../../common/constants/api-routes';
 import { ApiResponse } from '../../../../common/models/api-response.model';
-import { PaginationRequest, PaginationResponse } from '../../../../common/components/pagination/pagination.model';
-import { Employee, CreateEmployeeRequest, UpdateEmployeeRequest } from '../models/employee.model';
+import { Employee, TeamLead, CreateEmployeeRequest, UpdateEmployeeRequest, UserPaginationRequest, UserPagedResponse } from '../models/employee.model';
 
 @Injectable({ providedIn: 'root' })
 export class EmployeeService {
   private apiService = inject(ApiService);
 
-  getAll(pagination: PaginationRequest): Observable<ApiResponse<PaginationResponse<Employee>>> {
-    const params = {
+  getAll(pagination: UserPaginationRequest): Observable<ApiResponse<UserPagedResponse>> {
+    const params: Record<string, string> = {
       PageNumber: pagination.pageNumber.toString(),
       PageSize: pagination.pageSize.toString(),
     };
-    return this.apiService.get<PaginationResponse<Employee>>(API_ROUTES.EMPLOYEE.GET_ALL, params);
+    if (pagination.filter !== 'all') {
+      params['Filter'] = pagination.filter;
+    }
+    return this.apiService.get<UserPagedResponse>(API_ROUTES.EMPLOYEE.GET_ALL, params);
   }
 
   getById(id: number): Observable<ApiResponse<Employee>> {
     return this.apiService.get<Employee>(API_ROUTES.EMPLOYEE.GET_BY_ID(id));
+  }
+
+  getTeamLeads(): Observable<ApiResponse<TeamLead[]>> {
+    return this.apiService.get<TeamLead[]>(API_ROUTES.PROJECT.GET_TEAM_LEADERS);
   }
 
   create(payload: CreateEmployeeRequest): Observable<ApiResponse<Employee>> {
