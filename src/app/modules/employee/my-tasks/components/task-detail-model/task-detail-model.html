@@ -1,0 +1,178 @@
+@if (visible && task) {
+<div class="td-overlay" (click)="onClose()">
+  <div class="td-modal" (click)="$event.stopPropagation()">
+    <!-- Header -->
+    <div class="td-header">
+      <div class="td-header-left">
+        <span class="td-project-name">{{ task.projectName }}</span>
+        <h3 class="td-title">{{ task.title }}</h3>
+      </div>
+      <button class="td-close" (click)="onClose()">✕</button>
+    </div>
+
+    <!-- Meta row -->
+    <div class="td-meta">
+      <span class="status-badge" [attr.data-status]="task.taskStatus">
+        {{ getStatusLabel(task.taskStatus) }}
+      </span>
+      <span class="priority-badge" [attr.data-priority]="task.priority">
+        {{ getPriorityLabel(task.priority) }}
+      </span>
+      <span class="td-meta-item">
+        <span class="material-icons td-meta-icon">person</span>
+        {{ task.assignedByUserName }}
+      </span>
+      <span class="td-meta-item">
+        <span class="material-icons td-meta-icon">calendar_today</span>
+        Due {{ formatDate(task.dueDate) }}
+      </span>
+    </div>
+
+    <!-- Description -->
+    <p class="td-description">{{ task.description }}</p>
+
+    <!-- Tabs -->
+    <div class="td-tabs">
+      <button class="td-tab" [class.active]="activeTab === 'comments'" (click)="setTab('comments')">
+        <span class="material-icons">chat_bubble_outline</span>
+        Comments @if (comments.length > 0) {
+        <span class="td-tab-count">{{ comments.length }}</span>
+        }
+      </button>
+      <button
+        class="td-tab"
+        [class.active]="activeTab === 'attachments'"
+        (click)="setTab('attachments')"
+      >
+        <span class="material-icons">attach_file</span>
+        Attachments @if (attachments.length > 0) {
+        <span class="td-tab-count">{{ attachments.length }}</span>
+        }
+      </button>
+    </div>
+
+    <!-- Tab Body -->
+    <div class="td-tab-body">
+      <!-- ── COMMENTS TAB ── -->
+      @if (activeTab === 'comments') {
+      <div class="td-comments">
+        <!-- Comment list -->
+        <div class="td-comments-list">
+          @if (isLoadingComments) {
+          <div class="td-loading">
+            <div class="spinner-border spinner-border-sm text-primary"></div>
+          </div>
+          } @else if (comments.length === 0) {
+          <div class="td-empty">
+            <span class="material-icons">chat_bubble_outline</span>
+            <p>No comments yet. Be the first!</p>
+          </div>
+          } @else { @for (c of comments; track c.id) {
+          <div class="td-comment-item">
+            <div class="td-comment-avatar">{{ c.userName.charAt(0).toUpperCase() }}</div>
+            <div class="td-comment-body">
+              <div class="td-comment-meta">
+                <span class="td-comment-author">{{ c.userName }}</span>
+                <span class="td-comment-time">{{ formatDateTime(c.createdAt) }}</span>
+              </div>
+              <p class="td-comment-text">{{ c.comment }}</p>
+            </div>
+          </div>
+          } }
+        </div>
+
+        <!-- Add comment -->
+        <div class="td-comment-input-row">
+          <textarea
+            class="td-textarea"
+            rows="3"
+            placeholder="Write a comment..."
+            [(ngModel)]="commentText"
+          ></textarea>
+          <button
+            class="td-btn-primary"
+            [disabled]="!commentText.trim() || isSubmittingComment"
+            (click)="submitComment()"
+          >
+            @if (isSubmittingComment) {
+            <span class="spinner-border spinner-border-sm me-1"></span>
+            Posting... } @else {
+            <span class="material-icons">send</span>
+            Post }
+          </button>
+        </div>
+      </div>
+      }
+
+      <!-- ── ATTACHMENTS TAB ── -->
+      @if (activeTab === 'attachments') {
+      <div class="td-attachments">
+        <!-- File list -->
+        <div class="td-attach-list">
+          @if (isLoadingAttachments) {
+          <div class="td-loading">
+            <div class="spinner-border spinner-border-sm text-primary"></div>
+          </div>
+          } @else if (attachments.length === 0 && selectedFiles.length === 0) {
+          <div class="td-empty">
+            <span class="material-icons">folder_open</span>
+            <p>No attachments yet.</p>
+          </div>
+          } @else { @for (a of attachments; track a.id) {
+          <div class="td-attach-item">
+            <span class="material-icons td-attach-icon">{{ getFileIcon(a.fileName) }}</span>
+            <div class="td-attach-info">
+              <span class="td-attach-name">{{ a.fileName }}</span>
+              <span class="td-attach-meta">
+                {{ formatFileSize(a.fileSize) }} · {{ a.userName }} · {{ formatDate(a.createdAt) }}
+              </span>
+            </div>
+          </div>
+          } }
+        </div>
+
+        <!-- Selected files preview -->
+        @if (selectedFiles.length > 0) {
+        <div class="td-selected-files">
+          <p class="td-selected-label">Ready to upload ({{ selectedFiles.length }})</p>
+          @for (f of selectedFiles; track f.name; let i = $index) {
+          <div class="td-selected-item">
+            <span class="material-icons td-attach-icon">{{ getFileIcon(f.name) }}</span>
+            <span class="td-selected-name">{{ f.name }}</span>
+            <span class="td-selected-size">{{ formatFileSize(f.size) }}</span>
+            <button class="td-remove-file" (click)="removeSelectedFile(i)">✕</button>
+          </div>
+          }
+        </div>
+        }
+
+        <!-- Upload controls -->
+        <div class="td-upload-row">
+          <label class="td-btn-outline">
+            <span class="material-icons">upload_file</span>
+            Choose Files
+            <input
+              type="file"
+              multiple
+              accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx,.txt"
+              style="display: none"
+              (change)="onFilesSelected($event)"
+            />
+          </label>
+          @if (selectedFiles.length > 0) {
+          <button class="td-btn-primary" [disabled]="isUploadingFiles" (click)="uploadFiles()">
+            @if (isUploadingFiles) {
+            <span class="spinner-border spinner-border-sm me-1"></span>
+            Uploading... } @else {
+            <span class="material-icons">cloud_upload</span>
+            Upload {{ selectedFiles.length }} file{{ selectedFiles.length > 1 ? 's' : '' }}
+            }
+          </button>
+          }
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</div>
+}
