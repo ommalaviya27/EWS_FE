@@ -39,6 +39,8 @@ export const ROUTES = {
   EMPLOYEE: {
     DASHBOARD: 'dashboard',
     DASHBOARD_ABSOLUTE: '/employee/dashboard',
+    MY_TASKS: 'my-tasks',
+    MY_TASKS_ABSOLUTE: '/employee/my-tasks',
     EMPLOYEE_ABSOLUTE: '/employee',
   },
 };

@@ -1,0 +1,83 @@
+<div class="mt-wrapper">
+  <!-- Header -->
+  <div class="mt-header-bar">
+    <div>
+      <h3 class="mt-page-title">My Tasks</h3>
+      <p class="mt-page-subtitle">View and manage your assigned tasks</p>
+    </div>
+  </div>
+
+  <!-- Loader -->
+  @if (isLoading) {
+  <div class="mt-center-state">
+    <div class="spinner-border text-primary"></div>
+  </div>
+  }
+
+  <!-- Empty -->
+  @else if (tasks.length === 0) {
+  <div class="mt-center-state mt-empty-state">
+    <span class="material-icons">assignment</span>
+    <h4>No Tasks Assigned</h4>
+    <p>You have no tasks assigned to you yet.</p>
+  </div>
+  }
+
+  <!-- Cards -->
+  @else {
+  <div class="mt-cards-scroll">
+    <div class="mt-cards-grid">
+      @for (task of tasks; track task.id) {
+      <div class="mt-card" (click)="openTaskDetail(task)">
+        <div class="mt-card-body">
+          <h4 class="mt-card-title">{{ task.title }}</h4>
+          <p class="mt-card-desc">{{ task.description }}</p>
+
+          <div class="mt-card-badges">
+            <span class="status-badge" [attr.data-status]="task.taskStatus">
+              {{ getStatusLabel(task.taskStatus) }}
+            </span>
+            <span class="priority-badge" [attr.data-priority]="task.priority">
+              {{ getPriorityLabel(task.priority) }}
+            </span>
+          </div>
+
+          <div class="mt-card-meta">
+            <span class="mt-card-project">Project: {{ task.projectName }}</span>
+            <span
+              class="mt-card-due"
+              [class.mt-due-overdue]="
+                isOverdue(task.dueDate) && task.taskStatus !== TaskStatuses.Completed
+              "
+              [class.mt-due-soon]="isDueSoon(task.dueDate)"
+            >
+              <span class="material-icons mt-due-icon">calendar_today</span>
+              Due: {{ formatDate(task.dueDate) }}
+            </span>
+          </div>
+        </div>
+
+        <div class="mt-card-footer">
+          <span class="mt-card-stat">
+            <span class="material-icons">chat_bubble_outline</span>
+            {{ task.comments?.length ?? 0 }}
+          </span>
+          <span class="mt-card-stat">
+            <span class="material-icons">attach_file</span>
+            {{ task.attachments?.length ?? 0 }}
+          </span>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  }
+</div>
+
+<!-- Detail modal -->
+<app-task-detail-model
+  [visible]="showDetailModal"
+  [task]="selectedTask"
+  (closed)="closeDetailModal()"
+  (refreshTasks)="loadTasks()"
+></app-task-detail-model>

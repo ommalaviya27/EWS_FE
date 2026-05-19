@@ -26,10 +26,16 @@ export const API_ROUTES = {
   TASK: {
     GET_ALL: '/api/tasks',
     GET_BY_ID: (id: number) => `/api/tasks/${id}`,
-    GET_MY_PROJECTS: '/api/tasks/my-projects',   // ← add
+    GET_MY_PROJECTS: '/api/tasks/my-projects',
     GET_TEAM_MEMBERS: '/api/tasks/team-members',
     CREATE: '/api/tasks',
     UPDATE: (id: number) => `/api/tasks/${id}`,
     DELETE: (id: number) => `/api/tasks/${id}`,
   },
+  MY_TASKS: {
+    GET_MY_TASKS: '/api/my-tasks/my-tasks',
+    GET_COMMENTS:     (id: number) => `/api/my-tasks/${id}/comments`,
+    ADD_COMMENT:      (id: number) => `/api/my-tasks/${id}/comments`,
+    ADD_ATTACHMENTS:  (id: number) => `/api/my-tasks/${id}/attachments`,
+  }
 };

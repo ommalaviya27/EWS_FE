@@ -16,6 +16,11 @@ export const EMPLOYEE_ROUTES: Routes = [
             (m) => m.EmployeeDashboardComponent
           ),
       },
+      {
+        path: ROUTES.EMPLOYEE.MY_TASKS,
+        loadComponent: () =>
+          import('./my-tasks/my-tasks').then((m) => m.MyTasks),
+      },
       { path: '', redirectTo: ROUTES.EMPLOYEE.DASHBOARD, pathMatch: 'full' },
     ],
   },
