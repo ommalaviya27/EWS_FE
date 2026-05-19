@@ -80,55 +80,6 @@
   font-weight: 600;
 }
 
-/* ── Footer ── */
-.sidebar-footer {
-  padding: 20px;
-  border-top: 1px solid #f0f0f0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.footer-user {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 0;
-}
-.mini-avatar {
-  width: 32px;
-  height: 32px;
-  background: #8e00ed;
-  color: white;
-  border-radius: 50%;
-  font-size: 0.7rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-.mini-info p {
-  margin: 0;
-  font-size: 0.85rem;
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.mini-info span {
-  font-size: 0.7rem;
-  color: #999;
-}
-.logout-btn {
-  border: none;
-  background: none;
-  color: #ccc;
-  cursor: pointer;
-  flex-shrink: 0;
-}
-.logout-btn:hover {
-  color: #ff4d4d;
-}
-
 /* ── Overlay (mobile only) ── */
 .sidebar-overlay {
   display: none;

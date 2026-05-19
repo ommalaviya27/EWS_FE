@@ -24,7 +24,6 @@ export const ROLE_SIDEBAR_CONFIGS: Record<number, SidebarConfig> = {
     navItems: [
       { label: 'Dashboard', icon: 'dashboard', route: '/team-lead/dashboard' },
       { label: 'Task Management', icon: 'assignment', route: '/team-lead/task-management' },
-      { label: 'My Projects', icon: 'groups', route: '/team-lead/my-team' },
     ],
   },
   3: {

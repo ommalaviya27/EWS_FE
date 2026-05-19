@@ -4,19 +4,16 @@ import { RouterModule } from '@angular/router';
 import { SidebarConfig, ROLE_SIDEBAR_CONFIGS } from './sidebar.config';
 import { ROLE_NAMES } from '../../../modules/auth/models/auth.model';
 import { SessionService } from '../../services';
-import { AuthService } from '../../../modules/auth/services/auth.service';
-import { ConfirmationModel, ConfirmationModelConfig } from '@common';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, RouterModule, ConfirmationModel],
+  imports: [CommonModule, RouterModule], // Removed ConfirmationModel
   templateUrl: './sidebar.html',
   styleUrls: ['./sidebar.css'],
 })
 export class Sidebar implements OnInit {
   private sessionService = inject(SessionService);
-  private authService = inject(AuthService);
 
   config!: SidebarConfig;
   userName: string = '';
@@ -24,14 +21,6 @@ export class Sidebar implements OnInit {
   userRoleName: string = '';
   initials: string = '';
   isOpen: boolean = false;
-
-  showLogoutConfirmation = false;
-  logoutConfig: ConfirmationModelConfig = {
-    title: 'Confirm Logout',
-    message: 'Are you sure you want to log out?',
-    cancelText: 'Cancel',
-    confirmText: 'Logout',
-  };
 
   ngOnInit(): void {
     this.loadUserAndConfig();
@@ -43,19 +32,6 @@ export class Sidebar implements OnInit {
 
   close(): void {
     this.isOpen = false;
-  }
-
-  logout(): void {
-    this.showLogoutConfirmation = true;
-  }
-
-  confirmLogout(): void {
-    this.showLogoutConfirmation = false;
-    this.authService.logout();
-  }
-
-  cancelLogout(): void {
-    this.showLogoutConfirmation = false;
   }
 
   private loadUserAndConfig(): void {
