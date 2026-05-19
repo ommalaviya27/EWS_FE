@@ -117,15 +117,13 @@
 .grid-td {
   padding: 10px 14px;
   font-size: 13.5px;
-  color: #212529;
   overflow: hidden;
 }
 
 /* ===== Task cell ===== */
 .task-title {
   font-weight: 600;
-  font-size: 13.5px;
-  color: #1a1a2e;
+  font-size: semibold;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -133,7 +131,6 @@
 
 .task-desc {
   font-size: 12px;
-  color: #6c757d;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

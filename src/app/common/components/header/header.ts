@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { HeaderConfig, DEFAULT_HEADER_CONFIG } from './header.config';
 import { SessionService } from '../../services';
 import { ROLE_NAMES } from 'src/app/modules/auth/models';
+import { AuthService } from '../../../modules/auth/services/auth.service'; 
+import { ConfirmationModel, ConfirmationModelConfig } from '@common';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ConfirmationModel],
   templateUrl: './header.html',
   styleUrls: ['./header.css'],
 })
@@ -16,10 +18,20 @@ export class Header implements OnInit {
   @Output() menuToggle = new EventEmitter<void>();
 
   sessionService = inject(SessionService);
+  private authService = inject(AuthService);
 
   userRole: string = '';
   initials: string = '';
   currentDate: string = '';
+
+  isProfileOpen = false;
+  showLogoutConfirmation = false;
+  logoutConfig: ConfirmationModelConfig = {
+    title: 'Confirm Logout',
+    message: 'Are you sure you want to log out?',
+    cancelText: 'Cancel',
+    confirmText: 'Logout',
+  };
 
   ngOnInit(): void {
     this.setCurrentDate();
@@ -28,6 +40,24 @@ export class Header implements OnInit {
 
   onMenuToggle(): void {
     this.menuToggle.emit();
+  }
+
+  toggleProfileDropdown(): void {
+    this.isProfileOpen = !this.isProfileOpen;
+  }
+
+  logout(): void {
+    this.isProfileOpen = false;
+    this.showLogoutConfirmation = true;
+  }
+
+  confirmLogout(): void {
+    this.showLogoutConfirmation = false;
+    this.authService.logout();
+  }
+
+  cancelLogout(): void {
+    this.showLogoutConfirmation = false;
   }
 
   private setCurrentDate(): void {
@@ -45,11 +75,7 @@ export class Header implements OnInit {
     const roleId = this.sessionService.roleId;
 
     if (name) {
-      this.initials = name
-        .split(' ')
-        .map((n) => n[0])
-        .join('')
-        .toUpperCase();
+      this.initials = name.split(' ').map((n) => n[0]).join('').toUpperCase();
     }
 
     if (roleId !== null) {
