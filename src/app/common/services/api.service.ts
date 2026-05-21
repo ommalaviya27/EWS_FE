@@ -29,6 +29,12 @@ export class ApiService {
       .pipe(catchError(this.handleError));
   }
 
+  patch<T>(endpoint: string, body?: unknown | null): Observable<ApiResponse<T>> {
+    return this.http
+      .patch<ApiResponse<T>>(`${this.baseUrl}${endpoint}`, body ?? null)
+      .pipe(catchError(this.handleError));
+  }
+
   delete<T>(endpoint: string): Observable<ApiResponse<T>> {
     return this.http
       .delete<ApiResponse<T>>(`${this.baseUrl}${endpoint}`)

@@ -1,154 +1,265 @@
 @if (visible && task) {
 <div class="td-overlay" (click)="onClose()">
   <div class="td-modal" (click)="$event.stopPropagation()">
-    <!-- Header -->
+    <!-- HEADER -->
     <div class="td-header">
-      <div class="td-header-left">
-        <span class="td-project-name">{{ task.projectName }}</span>
-        <h3 class="td-title">{{ task.title }}</h3>
+      <div>
+        <h4 class="td-title">{{ task.title }}</h4>
+        <small class="td-project-name">{{ task.projectName }}</small>
       </div>
       <button class="td-close" (click)="onClose()">✕</button>
     </div>
 
-    <!-- Meta row -->
-    <div class="td-meta">
-      <span class="status-badge" [attr.data-status]="task.taskStatus">
-        {{ getStatusLabel(task.taskStatus) }}
-      </span>
-      <span class="priority-badge" [attr.data-priority]="task.priority">
-        {{ getPriorityLabel(task.priority) }}
-      </span>
-      <span class="td-meta-item">
-        <span class="material-icons td-meta-icon">person</span>
-        {{ task.assignedByUserName }}
-      </span>
-      <span class="td-meta-item">
-        <span class="material-icons td-meta-icon">calendar_today</span>
-        Due {{ formatDate(task.dueDate) }}
-      </span>
-    </div>
-
-    <!-- Description -->
-    <p class="td-description">{{ task.description }}</p>
-
-    <!-- Tabs -->
+    <!-- TABS -->
     <div class="td-tabs">
-      <button class="td-tab" [class.active]="activeTab === 'comments'" (click)="setTab('comments')">
-        <span class="material-icons">chat_bubble_outline</span>
-        Comments @if (comments.length > 0) {
-        <span class="td-tab-count">{{ comments.length }}</span>
-        }
+      <button
+        class="td-nav-link"
+        [class.active]="activeTab === 'details'"
+        (click)="setTab('details')"
+      >
+        <span class="material-icons">info_outline</span>
+        <span>Details</span>
       </button>
       <button
-        class="td-tab"
+        class="td-nav-link"
+        [class.active]="activeTab === 'comments'"
+        (click)="setTab('comments')"
+      >
+        <span class="material-icons">chat_bubble_outline</span>
+        <span>Comments</span>
+      </button>
+      <button
+        class="td-nav-link"
         [class.active]="activeTab === 'attachments'"
         (click)="setTab('attachments')"
       >
         <span class="material-icons">attach_file</span>
-        Attachments @if (attachments.length > 0) {
-        <span class="td-tab-count">{{ attachments.length }}</span>
-        }
+        <span>Attachments</span>
       </button>
     </div>
 
-    <!-- Tab Body -->
-    <div class="td-tab-body">
-      <!-- ── COMMENTS TAB ── -->
+    <!-- BODY -->
+    <div class="td-body">
+      <!-- DETAILS TAB -->
+      @if (activeTab === 'details') {
+      <div class="td-details-grid">
+        <div class="td-status-priority-row">
+          <div>
+            <label class="td-label">Status</label>
+            <div class="td-field-wrap">
+              <select
+                class="td-status-select"
+                [attr.data-status]="currentStatus"
+                [ngModel]="currentStatus"
+                [disabled]="isUpdatingStatus"
+                (change)="onStatusChange($event)"
+              >
+                @for(s of allStatuses; track s){
+                <option [value]="s">{{ getStatusLabel(s) }}</option>
+                }
+              </select>
+              @if(isUpdatingStatus){
+              <span class="td-spinner"></span>
+              }
+            </div>
+          </div>
+
+          <div>
+            <label class="td-label">Priority</label>
+            <div class="td-field-wrap">
+              <span class=" td-status-select td-priority-badge" [attr.data-priority]="task.priority">
+                {{ getPriorityLabel(task.priority) }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="td-label">Description</label>
+          <p class="td-description">{{ task.description }}</p>
+        </div>
+
+        <div class="td-meta-row">
+          <div>
+            <label class="td-label">Due Date</label>
+            <p class="td-meta-text">
+              {{ formatDate(task.dueDate) }}
+            </p>
+          </div>
+          <div>
+            <label class="td-label">Assigned By</label>
+            <p class="td-meta-text">{{ task.assignedByUserName }}</p>
+          </div>
+        </div>
+      </div>
+      }
+
+      <!-- COMMENTS TAB -->
       @if (activeTab === 'comments') {
-      <div class="td-comments">
-        <!-- Comment list -->
+      <div class="td-tab-content">
         <div class="td-comments-list">
           @if (isLoadingComments) {
-          <div class="td-loading">
-            <div class="spinner-border spinner-border-sm text-primary"></div>
+          <div class="td-center-state">
+            <span class="td-spinner"></span>
           </div>
           } @else if (comments.length === 0) {
-          <div class="td-empty">
+          <div class="td-center-state td-empty-state">
             <span class="material-icons">chat_bubble_outline</span>
             <p>No comments yet. Be the first!</p>
           </div>
-          } @else { @for (c of comments; track c.id) {
+          } @else { @for (c of pagedComments; track c.id) { @if (editingCommentId === c.id) {
           <div class="td-comment-item">
-            <div class="td-comment-avatar">{{ c.userName.charAt(0).toUpperCase() }}</div>
-            <div class="td-comment-body">
-              <div class="td-comment-meta">
-                <span class="td-comment-author">{{ c.userName }}</span>
-                <span class="td-comment-time">{{ formatDateTime(c.createdAt) }}</span>
-              </div>
-              <p class="td-comment-text">{{ c.comment }}</p>
+            <textarea
+              class="td-textarea"
+              rows="3"
+              [(ngModel)]="editCommentText"
+              [disabled]="isSavingEdit"
+            ></textarea>
+            <div class="td-edit-actions">
+              <button
+                class="td-btn td-btn-primary"
+                [disabled]="!editCommentText.trim() || isSavingEdit"
+                (click)="saveEdit(c)"
+              >
+                @if(isSavingEdit){<span class="td-spinner td-spinner-sm"></span>} Save
+              </button>
+              <button class="td-btn td-btn-ghost" [disabled]="isSavingEdit" (click)="cancelEdit()">
+                Cancel
+              </button>
             </div>
+          </div>
+          } @else {
+          <div class="td-comment-item">
+            <p class="td-comment-text">{{ c.comment }}</p>
+            @if (isOwnComment(c)) {
+            <div class="td-menu-wrap" (click)="$event.stopPropagation()">
+              <button
+                class="td-menu-btn"
+                (click)="toggleCommentMenu(c.id)"
+                [class.active]="openMenuCommentId === c.id"
+              >
+                <span class="material-icons">more_vert</span>
+              </button>
+              @if (openMenuCommentId === c.id) {
+              <div class="td-dropdown">
+                <button class="td-drop-item" (click)="startEdit(c); closeMenu()">
+                  <span class="material-icons">edit</span> Edit
+                </button>
+                <button
+                  class="td-drop-item td-drop-danger"
+                  (click)="deleteComment(c); closeMenu()"
+                  [disabled]="deletingCommentId === c.id"
+                >
+                  @if(deletingCommentId === c.id){
+                  <span class="td-spinner td-spinner-sm"></span>
+                  } @else {
+                  <span class="material-icons">delete_outline</span>
+                  } Delete
+                </button>
+              </div>
+              }
+            </div>
+            }
+          </div>
+          } }
+
+          @if (totalCommentPages > 1) {
+          <div class="td-pagination">
+            <button
+              class="td-page-btn"
+              [disabled]="commentPage === 1"
+              (click)="goToCommentPage(commentPage - 1)"
+            >
+              <span class="material-icons">chevron_left</span>
+            </button>
+            @for(p of commentPageNumbers; track p){
+            <button
+              class="td-page-btn"
+              [class.active]="p === commentPage"
+              (click)="goToCommentPage(p)"
+            >
+              {{ p }}
+            </button>
+            }
+            <button
+              class="td-page-btn"
+              [disabled]="commentPage === totalCommentPages"
+              (click)="goToCommentPage(commentPage + 1)"
+            >
+              <span class="material-icons">chevron_right</span>
+            </button>
           </div>
           } }
         </div>
 
-        <!-- Add comment -->
-        <div class="td-comment-input-row">
+        <!-- COMPOSE -->
+        <div class="td-compose">
           <textarea
             class="td-textarea"
-            rows="3"
+            rows="2"
             placeholder="Write a comment..."
             [(ngModel)]="commentText"
           ></textarea>
           <button
-            class="td-btn-primary"
+            class="td-btn td-btn-primary"
             [disabled]="!commentText.trim() || isSubmittingComment"
             (click)="submitComment()"
           >
-            @if (isSubmittingComment) {
-            <span class="spinner-border spinner-border-sm me-1"></span>
-            Posting... } @else {
+            @if(isSubmittingComment){
+            <span class="td-spinner td-spinner-sm"></span>
+            } @else {
             <span class="material-icons">send</span>
-            Post }
+            } Post
           </button>
         </div>
       </div>
       }
 
-      <!-- ── ATTACHMENTS TAB ── -->
       @if (activeTab === 'attachments') {
-      <div class="td-attachments">
-        <!-- File list -->
-        <div class="td-attach-list">
-          @if (isLoadingAttachments) {
-          <div class="td-loading">
-            <div class="spinner-border spinner-border-sm text-primary"></div>
-          </div>
-          } @else if (attachments.length === 0 && selectedFiles.length === 0) {
-          <div class="td-empty">
+      <div class="td-tab-content">
+        <div class="td-attach-grid">
+          @if (attachments.length === 0 && selectedFiles.length === 0) {
+          <div class="td-center-state td-empty-state td-attach-empty">
             <span class="material-icons">folder_open</span>
             <p>No attachments yet.</p>
           </div>
           } @else { @for (a of attachments; track a.id) {
-          <div class="td-attach-item">
-            <span class="material-icons td-attach-icon">{{ getFileIcon(a.fileName) }}</span>
-            <div class="td-attach-info">
-              <span class="td-attach-name">{{ a.fileName }}</span>
-              <span class="td-attach-meta">
-                {{ formatFileSize(a.fileSize) }} · {{ a.userName }} · {{ formatDate(a.createdAt) }}
-              </span>
+          <div class="td-attach-card" [class.td-faded]="deletingAttachmentId === a.id">
+            <div class="td-attach-icon-wrap" [ngClass]="getFileColorClass(a.fileName)">
+              <span class="material-icons">{{ getFileIcon(a.fileName) }}</span>
+            </div>
+            <span class="td-attach-name">{{ a.fileName }}</span>
+            <span class="td-attach-meta">{{ formatFileSize(a.fileSize) }}</span>
+            <span class="td-attach-meta">{{ a.userName }}</span>
+            <div class="td-attach-overlay">
+              @if(deletingAttachmentId === a.id){
+              <span class="td-spinner td-spinner-white"></span>
+              } @else {
+              <button class="td-attach-del-btn" (click)="deleteAttachment(a)" title="Delete">
+                <span class="material-icons">delete_outline</span>
+              </button>
+              }
             </div>
           </div>
           } }
         </div>
 
-        <!-- Selected files preview -->
         @if (selectedFiles.length > 0) {
-        <div class="td-selected-files">
-          <p class="td-selected-label">Ready to upload ({{ selectedFiles.length }})</p>
+        <div class="td-pending-files">
+          <small class="td-label">READY TO UPLOAD ({{ selectedFiles.length }})</small>
           @for (f of selectedFiles; track f.name; let i = $index) {
-          <div class="td-selected-item">
-            <span class="material-icons td-attach-icon">{{ getFileIcon(f.name) }}</span>
-            <span class="td-selected-name">{{ f.name }}</span>
-            <span class="td-selected-size">{{ formatFileSize(f.size) }}</span>
-            <button class="td-remove-file" (click)="removeSelectedFile(i)">✕</button>
+          <div class="td-pending-item">
+            <span class="material-icons td-pending-icon">{{ getFileIcon(f.name) }}</span>
+            <span class="td-pending-name">{{ f.name }}</span>
+            <span class="td-pending-size">{{ formatFileSize(f.size) }}</span>
+            <button class="td-remove-btn" (click)="removeSelectedFile(i)">✕</button>
           </div>
           }
         </div>
         }
 
-        <!-- Upload controls -->
-        <div class="td-upload-row">
-          <label class="td-btn-outline">
+        <div class="td-upload-bar">
+          <label class="td-btn td-btn-outline">
             <span class="material-icons">upload_file</span>
             Choose Files
             <input
@@ -160,10 +271,13 @@
             />
           </label>
           @if (selectedFiles.length > 0) {
-          <button class="td-btn-primary" [disabled]="isUploadingFiles" (click)="uploadFiles()">
-            @if (isUploadingFiles) {
-            <span class="spinner-border spinner-border-sm me-1"></span>
-            Uploading... } @else {
+          <button
+            class="td-btn td-btn-primary"
+            [disabled]="isUploadingFiles"
+            (click)="uploadFiles()"
+          >
+            @if(isUploadingFiles){
+            <span class="td-spinner td-spinner-sm"></span> Uploading... } @else {
             <span class="material-icons">cloud_upload</span>
             Upload {{ selectedFiles.length }} file{{ selectedFiles.length > 1 ? 's' : '' }}
             }
@@ -175,4 +289,11 @@
     </div>
   </div>
 </div>
+
+<app-confirmation-model
+  [visible]="showStatusConfirm"
+  [config]="statusConfirmConfig"
+  (confirm)="confirmStatusChange()"
+  (closed)="cancelStatusChange()"
+></app-confirmation-model>
 }
