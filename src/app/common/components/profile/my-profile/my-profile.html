@@ -1,0 +1,72 @@
+<div class="profile-page">
+  <div class="loading-wrapper" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Loading profile...</p>
+  </div>
+
+  <ng-container *ngIf="!isLoading">
+    <div class="profile-container-centered">
+      <div class="profile-card">
+        <div class="card-header-actions">
+          <button type="button" class="back-btn" (click)="goBack()" title="Go Back">
+            <span class="material-icons">arrow_back</span>
+          </button>
+        </div>
+
+        <div class="avatar-header-section">
+          <div class="avatar-circle">{{ initials }}</div>
+          <h1 class="page-title">{{ profile?.name }}</h1>
+        </div>
+
+        <div class="alert alert-success" *ngIf="successMessage">
+          <span class="material-icons">check_circle</span>
+          {{ successMessage }}
+        </div>
+        <div class="alert alert-error" *ngIf="errorMessage">
+          <span class="material-icons">error</span>
+          {{ errorMessage }}
+        </div>
+
+        <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <app-name-field [config]="nameConfig" />
+          </div>
+
+          <div class="form-group">
+            <app-email [config]="emailConfig" />
+          </div>
+
+          <div class="form-group">
+            <app-mobile [config]="mobileConfig" />
+          </div>
+
+          <div class="form-group">
+            <div class="input-wrapper readonly">
+              <span class="material-icons input-icon">shield</span>
+              <input class="form-input" type="text" [value]="roleName" readonly />
+              <span class="lock-icon material-icons">lock</span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            class="change-password-link-btn"
+            (click)="navigateToChangePassword()"
+          >
+            <span class="material-icons">lock</span>
+            Change Password
+          </button>
+
+          <div class="form-actions-row">
+            <button type="button" class="btn-secondary" (click)="goBack()">Cancel</button>
+            <button type="submit" class="btn-primary" [disabled]="isSaving">
+              <span class="material-icons" *ngIf="isSaving">hourglass_empty</span>
+              <span class="material-icons" *ngIf="!isSaving">save</span>
+              {{ isSaving ? 'Saving...' : 'Save Changes' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </ng-container>
+</div>

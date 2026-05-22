@@ -43,4 +43,11 @@ export const ROUTES = {
     MY_TASKS_ABSOLUTE: '/employee/my-tasks',
     EMPLOYEE_ABSOLUTE: '/employee',
   },
+
+  PROFILE: {
+    PROFILE: 'profile',
+    PROFILE_ABSOLUTE: '/profile',
+    CHANGE_PASSWORD: 'change-password',
+    CHANGE_PASSWORD_ABSOLUTE: '/profile/change-password',
+  },
 };

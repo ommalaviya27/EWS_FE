@@ -1,0 +1,235 @@
+.profile-page {
+  padding: 40px 16px;
+  min-height: 100vh;
+  background: #f7f8fc;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* Loading */
+.loading-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  gap: 16px;
+  color: #888;
+}
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f0e6ff;
+  border-top-color: #8e00ed;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Centered Container */
+.profile-container-centered {
+  margin: auto;
+  width: 100%;
+  max-width: 580px;
+}
+
+/* Card */
+.profile-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+}
+
+/* Back button row */
+.card-header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+.back-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid #e8e8e8;
+  background: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  transition: all 0.2s;
+}
+.back-btn:hover {
+  background: #8e00ed;
+  color: #fff;
+  border-color: #8e00ed;
+}
+
+/* Change password link */
+.change-password-link-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  background: none;
+  border: none;
+  color: #8e00ed;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+.change-password-link-btn .material-icons {
+  font-size: 1.1rem;
+}
+
+/* Avatar section */
+.avatar-header-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+  text-align: center;
+}
+.avatar-circle {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #8e00ed, #b44fff);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+.page-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111;
+}
+
+/* Alerts */
+.alert {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  margin-bottom: 24px;
+}
+.alert-success {
+  background: #f0fff4;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+.alert-error {
+  background: #fff5f5;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+/* Form groups */
+.form-group {
+  margin-bottom: 20px;
+}
+
+/* Readonly Role field */
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.input-icon {
+  position: absolute;
+  left: 14px;
+  color: #aaa;
+  font-size: 1.1rem;
+}
+.lock-icon {
+  position: absolute;
+  right: 14px;
+  color: #ccc;
+  font-size: 1rem;
+}
+.form-input {
+  width: 100%;
+  padding: 12px 14px 12px 42px;
+  border: 1.5px solid #e8e8e8;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  color: #888;
+  background: #f9f9f9;
+  outline: none;
+  box-sizing: border-box;
+  cursor: not-allowed;
+}
+
+/* Button row */
+.form-actions-row {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 36px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.btn-primary,
+.btn-secondary {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.btn-primary {
+  background: #8e00ed;
+  color: #fff;
+  border: none;
+}
+.btn-primary:hover:not(:disabled) {
+  background: #7200c0;
+}
+.btn-primary:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+.btn-secondary {
+  background: #fff;
+  border: 1.5px solid #e0e0e0;
+  color: #555;
+}
+.btn-secondary:hover {
+  background: #f5f5f5;
+  border-color: #ccc;
+}
+
+@media (max-width: 600px) {
+  .profile-card {
+    padding: 24px 16px;
+  }
+  .form-actions-row {
+    flex-direction: column-reverse;
+  }
+}

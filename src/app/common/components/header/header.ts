@@ -1,5 +1,6 @@
-import { Component, inject, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, inject, Input, OnInit, Output, EventEmitter, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { HeaderConfig, DEFAULT_HEADER_CONFIG } from './header.config';
 import { SessionService } from '../../services';
 import { ROLE_NAMES } from 'src/app/modules/auth/models';
@@ -9,7 +10,7 @@ import { ConfirmationModel, ConfirmationModelConfig } from '@common';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, ConfirmationModel],
+  imports: [CommonModule, RouterModule, ConfirmationModel],
   templateUrl: './header.html',
   styleUrls: ['./header.css'],
 })
@@ -36,6 +37,13 @@ export class Header implements OnInit {
   ngOnInit(): void {
     this.setCurrentDate();
     this.loadUserFromSession();
+  }
+  
+  onDocumentClick(event: Event): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.user-profile')) {
+      this.isProfileOpen = false;
+    }
   }
 
   onMenuToggle(): void {

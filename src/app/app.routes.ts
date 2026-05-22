@@ -19,5 +19,10 @@ export const APP_ROUTES: Routes = [
     path: 'employee',
     loadChildren: () => import('./modules/employee/employee.routes').then((m) => m.EMPLOYEE_ROUTES),
   },
+  {
+    path: 'profile',
+    loadChildren: () =>
+      import('../app/common/components/profile/profile.routes').then((m) => m.PROFILE_ROUTES),
+  },
   { path: '**', redirectTo: 'auth/login' },
 ];

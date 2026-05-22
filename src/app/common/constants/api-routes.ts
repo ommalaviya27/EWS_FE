@@ -16,12 +16,12 @@ export const API_ROUTES = {
     DELETE: (id: string) => `/api/projects/${id}`,
   },
   EMPLOYEE: {
-    GET_ALL:   '/api/users',
+    GET_ALL: '/api/users',
     GET_BY_ID: (id: number) => `/api/users/${id}`,
     GET_ROLES: '/api/users/roles',
-    CREATE:    '/api/users',
-    UPDATE:    (id: number) => `/api/users/${id}`,
-    DELETE:    (id: number) => `/api/users/${id}`,
+    CREATE: '/api/users',
+    UPDATE: (id: number) => `/api/users/${id}`,
+    DELETE: (id: number) => `/api/users/${id}`,
   },
   TASK: {
     GET_ALL: '/api/tasks',
@@ -34,8 +34,17 @@ export const API_ROUTES = {
   },
   MY_TASKS: {
     GET_MY_TASKS: '/api/my-tasks/my-tasks',
-    GET_COMMENTS:     (id: number) => `/api/my-tasks/${id}/comments`,
-    ADD_COMMENT:      (id: number) => `/api/my-tasks/${id}/comments`,
-    ADD_ATTACHMENTS:  (id: number) => `/api/my-tasks/${id}/attachments`,
-  }
+    UPDATE_STATUS: (id: number) => `/api/my-tasks/${id}/status`,
+    GET_COMMENTS: (id: number) => `/api/my-tasks/${id}/comments`,
+    ADD_COMMENT: (id: number) => `/api/my-tasks/${id}/comments`,
+    UPDATE_COMMENT: (commentId: number) => `/api/my-tasks/${commentId}/comments`,
+    DELETE_COMMENT: (commentId: number) => `/api/my-tasks/${commentId}/comments`,
+    ADD_ATTACHMENTS: (id: number) => `/api/my-tasks/${id}/attachments`,
+    DELETE_ATTACHMENT: (attachmentId: number) => `/api/my-tasks/${attachmentId}/attachments`,
+  },
+  PROFILE: {
+    GET: '/api/profile',
+    UPDATE: '/api/profile',
+    CHANGE_PASSWORD: '/api/profile/change-password',
+  },
 };
