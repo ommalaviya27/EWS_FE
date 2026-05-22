@@ -6,13 +6,17 @@ import { environment } from '../../../../../environments/environment';
 import { ApiService } from '../../../../common/services/api.service';
 import { ApiResponse } from '../../../../common/models/api-response.model';
 import { API_ROUTES } from '../../../../common/constants/api-routes';
-import { MyTask, TaskComment, TaskAttachment, AddCommentRequest, UpdateCommentRequest, UpdateTaskStatusRequest } from '../models/my-task.model';
+import { MyTask, TaskComment, TaskAttachment, AddCommentRequest, UpdateCommentRequest, UpdateTaskStatusRequest, EmployeeDashboard } from '../models/my-task.model';
 
 @Injectable({ providedIn: 'root' })
 export class MyTaskService {
   private apiService = inject(ApiService);
   private http = inject(HttpClient);
   readonly baseUrl = environment.apiUrl;
+
+  getDashboard(): Observable<ApiResponse<EmployeeDashboard>> {
+    return this.apiService.get<EmployeeDashboard>(API_ROUTES.MY_TASKS.GET_DASHBOARD);
+  }
 
   getMyTasks(): Observable<ApiResponse<MyTask[]>> {
     return this.apiService.get<MyTask[]>(API_ROUTES.MY_TASKS.GET_MY_TASKS);
