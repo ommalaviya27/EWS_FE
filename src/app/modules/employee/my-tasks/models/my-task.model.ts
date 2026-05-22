@@ -73,3 +73,13 @@ export interface UpdateCommentRequest {
 export interface UpdateTaskStatusRequest {
   status: TaskStatuses;
 }
+
+export interface EmployeeDashboard {
+  assignedTaskCount: number;
+  completedTaskCount: number;
+  upcomingDeadlineCount: number;
+  assignedTasks: MyTask[];
+  upcomingDeadlines: MyTask[];
+  onHoldTasks: MyTask[];
+  completedTasks: MyTask[];
+}
