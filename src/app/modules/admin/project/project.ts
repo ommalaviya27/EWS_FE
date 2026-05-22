@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { ProjectService } from './services/project.service';
-import { DeleteModel, PaginationComponent } from '@common';
+import { DeleteModel, PaginationComponent, Button, ButtonInputConfig } from '@common'; // Adjust paths based on your architecture aliases
 import { ProjectAddeditModal } from './components/project-addedit-modal/project-addedit-modal';
 import { createDeleteConfig } from '../../../common/components/delete-model/delete-model.config';
 import { DEFAULT_PAGINATION } from '../../../common/constants/app.constants';
@@ -10,12 +10,9 @@ import { Project, TeamLeader, ProjectStatus, PROJECT_STATUS_LABELS, CreateProjec
 
 @Component({
   selector: 'app-project',
-  imports: [CommonModule, DeleteModel, ProjectAddeditModal, PaginationComponent],
+  imports: [CommonModule, DeleteModel, ProjectAddeditModal, PaginationComponent, Button],
   templateUrl: './project.html',
-  styleUrl: './project.css',
-  host: {
-    style: 'display: flex; flex-direction: column; flex: 1; min-height: 0; min-width: 0; overflow: hidden;'
-  }
+  styleUrl: './project.css'
 })
 export class ProjectModule implements OnInit {
   private projectService = inject(ProjectService);
@@ -42,6 +39,10 @@ export class ProjectModule implements OnInit {
   readonly statusLabels = PROJECT_STATUS_LABELS;
   readonly ProjectStatus = ProjectStatus;
 
+  activeDropdownId: string | null = null;
+
+  createProjectBtnConfig!: ButtonInputConfig;
+
   /* ===== Tooltip state ===== */
   tooltip = { visible: false, text: '', x: 0, y: 0 };
 
@@ -59,8 +60,20 @@ export class ProjectModule implements OnInit {
   }
 
   ngOnInit(): void {
+    this.initButtonConfigs();
     this.loadProjects();
     this.loadTeamLeaders();
+  }
+
+  private initButtonConfigs(): void {
+    this.createProjectBtnConfig = {
+      variant: 'add',
+      text: '+ Add',
+      onClick: (event: MouseEvent) => {
+        event?.stopPropagation();
+        this.openAddModal();
+      }
+    };
   }
 
   private loadProjects(): void {
@@ -86,14 +99,36 @@ export class ProjectModule implements OnInit {
   }
 
   onPageChange(page: number): void {
+    this.closeDropdown();
     this.currentPage = page;
     this.loadProjects();
   }
 
   onPageSizeChange(size: number): void {
+    this.closeDropdown();
     this.itemsPerPage = size;
     this.currentPage = 1;
     this.loadProjects();
+  }
+
+  toggleDropdown(event: MouseEvent, projectId: string): void {
+    event.stopPropagation();
+    this.activeDropdownId = this.activeDropdownId === projectId ? null : projectId;
+  }
+
+  closeDropdown(): void {
+    this.activeDropdownId = null;
+  }
+
+  onActionClick(event: MouseEvent, action: 'edit' | 'delete', project: Project): void {
+    event.stopPropagation();
+    this.closeDropdown();
+
+    if (action === 'edit') {
+      this.openEditModal(project);
+    } else if (action === 'delete') {
+      this.openDeleteModal(project);
+    }
   }
 
   openAddModal(): void {

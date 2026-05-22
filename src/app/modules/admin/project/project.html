@@ -1,24 +1,18 @@
-<div class="project-wrapper">
-  <!-- HEADER -->
+<div class="project-wrapper" (click)="closeDropdown()">
   <div class="header-bar">
     <div>
       <h3 class="page-title">Project Management</h3>
       <p class="page-subtitle">Create and manage projects, assign team leads.</p>
     </div>
-    <button class="btn-create" (click)="openAddModal()">
-      <span class="material-icons">add</span>
-      Create Project
-    </button>
+    <app-button [config]="createProjectBtnConfig"></app-button>
   </div>
 
-  <!-- LOADER -->
   @if (isLoading) {
   <div class="center-state">
     <div class="spinner-border text-primary"></div>
   </div>
   }
 
-  <!-- EMPTY -->
   @else if (projects.length === 0) {
   <div class="center-state empty-state">
     <span class="material-icons">inventory_2</span>
@@ -27,12 +21,10 @@
   </div>
   }
 
-  <!-- GRID TABLE -->
   @else {
   <div class="table-card">
     <div class="grid-scroll">
       <div class="grid-container">
-        <!-- HEADER ROW -->
         <div class="grid-row grid-header">
           <div class="grid-th">Project</div>
           <div class="grid-th">Description</div>
@@ -40,15 +32,13 @@
           <div class="grid-th">Start Date</div>
           <div class="grid-th">End Date</div>
           <div class="grid-th">Status</div>
-          <div class="grid-th text-center">Actions</div>
+          <div class="grid-th text-center action-cell">Actions</div>
         </div>
 
-        <!-- DATA ROWS -->
-        @for (project of projects; track project.id) {
+        @for (project of projects; track project.id; let i = $index) {
         <div class="grid-row">
           <div class="grid-td fw-semibold cell-truncate">{{ project.name }}</div>
 
-          <!-- Description cell — tooltip via mouse events -->
           <div
             class="grid-td cell-truncate desc-cell"
             (mouseenter)="showTooltip($event, project.description)"
@@ -70,20 +60,36 @@
             </span>
           </div>
 
-          <div class="grid-td text-center">
-            <div class="action-group">
-              <button class="icon-btn edit" (click)="openEditModal(project)">
-                <span class="material-icons">edit</span>
+          <div class="grid-td text-center action-cell">
+            <div class="action-container">
+              <button 
+                type="button"
+                class="btn-dots" 
+                [class.active]="activeDropdownId === project.id"
+                (click)="toggleDropdown($event, project.id)"
+              >
+                <span class="material-icons">more_vert</span>
               </button>
-              <button class="icon-btn delete" (click)="openDeleteModal(project)">
-                <span class="material-icons">delete</span>
-              </button>
+
+              @if (activeDropdownId === project.id) {
+                <div class="action-dropdown" [class.dropdown-up]="projects.length > 2 && i >= projects.length - 2" (click)="$event.stopPropagation()">
+                <button type="button" class="dropdown-item edit-item" (click)="onActionClick($event, 'edit', project)">
+                  <span class="material-icons">edit</span>
+                  <span>Edit</span>
+                </button>
+                <button type="button" class="dropdown-item delete-item" (click)="onActionClick($event, 'delete', project)">
+                  <span class="material-icons">delete</span>
+                  <span>Delete</span>
+                </button>
+              </div>
+              }
             </div>
           </div>
         </div>
         }
       </div>
       <app-pagination
+        (click)="$event.stopPropagation()"
         [currentPage]="currentPage"
         [totalItems]="totalItems"
         [itemsPerPage]="itemsPerPage"
@@ -96,14 +102,12 @@
   }
 </div>
 
-<!-- Floating tooltip rendered at root level -->
 @if (tooltip.visible) {
 <div class="desc-tooltip" [style.top.px]="tooltip.y" [style.left.px]="tooltip.x">
   {{ tooltip.text }}
 </div>
 }
 
-<!-- MODALS -->
 <app-project-addedit-modal
   [visible]="showModal"
   [isLoading]="isModalLoading"

@@ -2,13 +2,11 @@
   <div class="dm-overlay">
     <div class="dm-modal">
       <div class="dm-card">
-        <!-- Header -->
         <div class="dm-header">
           <h4 class="dm-title">{{ config.title }}</h4>
           <button type="button" class="dm-close" (click)="onCancel()" aria-label="Close">✕</button>
         </div>
   
-        <!-- Body -->
         <div class="dm-body">
           <div class="dm-icon-wrap">
             <span class="dm-danger-icon">⚠</span>
@@ -16,31 +14,11 @@
           <p class="dm-message">{{ config.message }}</p>
         </div>
   
-        <!-- Footer -->
         <div class="dm-footer">
-          <button
-            type="button"
-            class="dm-btn dm-btn-cancel"
-            (click)="onCancel()"
-          >
-            {{ config.cancelText }}
-          </button>
-  
-          <button
-            type="button"
-            class="dm-btn dm-btn-danger"
-            [disabled]="isLoading"
-            (click)="onDelete()"
-          >
-            @if (isLoading) {
-              <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-              Deleting...
-            } @else {
-              {{ config.deleteText }}
-            }
-          </button>
+          <app-button [config]="cancelBtnConfig"></app-button>
+          <app-button [config]="deleteBtnConfig"></app-button>
         </div>
       </div>
     </div>
   </div>
-  }
+}

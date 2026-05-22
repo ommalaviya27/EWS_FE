@@ -57,21 +57,14 @@
   margin-bottom: 18px;
 }
 
-.pm-label {
-  display: inline-block;
-  margin-bottom: 8px;
-  font-size: 15px;
-  font-weight: 600;
-  color: #111827;
-}
-
 .pm-input,
 .form-control,
 .form-select {
-  height: 48px;
+  height: 60px;
   width: 100%;
   border-radius: 12px;
-  border: 1px solid #d1d5db;
+  padding-left: 10px;
+  border: 1px solid #babbbd;
   font-size: 15px;
   box-shadow: none;
 }
@@ -82,53 +75,19 @@
   box-shadow: 0 0 0 0.15rem rgba(91, 61, 245, 0.15);
 }
 
-/* Two column row */
-
 .pm-two-col {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
 
-/* Buttons */
+/* Buttons Container layout */
 
 .pm-footer {
   margin-top: 28px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
-}
-
-.pm-btn {
-  height: 48px;
-  border: none;
-  border-radius: 12px;
-  font-size: 16px;
-  font-weight: 600;
-  transition: 0.2s ease;
-}
-
-.pm-btn-cancel {
-  background: #e5e7eb;
-  color: #374151;
-}
-
-.pm-btn-cancel:hover {
-  background: #d1d5db;
-}
-
-.pm-btn-primary {
-  background: #5b3df5;
-  color: #ffffff;
-}
-
-.pm-btn-primary:hover:not(:disabled) {
-  background: #4c30e0;
-}
-
-.pm-btn-primary:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
 }
 
 /* Validation */
@@ -155,6 +114,7 @@
     grid-template-columns: 1fr;
   }
 }
+
 /* Team Lead field extras */
 .pm-required {
   color: #dc3545;

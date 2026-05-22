@@ -22,33 +22,47 @@
         <div class="date-info">{{ currentDate }}</div>
       </div>
 
-      <div class="user-profile">
+      <div class="user-profile" (click)="$event.stopPropagation()">
+
         <div class="notification-wrapper">
           <span class="material-icons">notifications_none</span>
           <span class="notification-dot"></span>
         </div>
-        
+
         <div class="profile-trigger" (click)="toggleProfileDropdown()">
           <div class="user-info">
             <span class="user-name">{{ sessionService.name }}</span>
             <span class="user-role">{{ userRole }}</span>
           </div>
           <div class="avatar">{{ initials }}</div>
-          <span class="material-icons arrow-icon">expand_more</span>
+          <span class="material-icons arrow-icon"
+            [class.rotated]="isProfileOpen">expand_more</span>
         </div>
 
-        <div class="profile-dropdown" *ngIf="isProfileOpen">
-          <a class="dropdown-item" routerLink="/profile" (click)="isProfileOpen = false">
-            <span class="material-icons">person</span> My Profile
-          </a>
-          <button class="dropdown-item logout" (click)="logout()">
-            <span class="material-icons">logout</span> Logout
-          </button>
-        </div>
+        @if (isProfileOpen) {
+          <div class="profile-dropdown">
+            <button class="dropdown-item" (click)="openProfile()">
+              <span class="material-icons">person</span> My Profile
+            </button>
+            <button class="dropdown-item logout" (click)="logout()">
+              <span class="material-icons">logout</span> Logout
+            </button>
+          </div>
+        }
+
       </div>
     </div>
   </div>
+
+  @if (isProfileOpen) {
+    <div class="profile-overlay" (click)="isProfileOpen = false"></div>
+  }
 </header>
+
+<app-my-profile
+  [visible]="isProfileModalOpen"
+  (closed)="closeProfile()"
+></app-my-profile>
 
 <app-confirmation-model
   [visible]="showLogoutConfirmation"

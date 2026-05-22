@@ -1,24 +1,18 @@
-<div class="task-wrapper">
-  <!-- HEADER -->
+<div class="task-wrapper" (click)="closeDropdown()">
   <div class="header-bar">
     <div>
       <h3 class="page-title">Task Management</h3>
       <p class="page-subtitle">Create and assign tasks to your team members</p>
     </div>
-    <button class="btn-create" (click)="openAddModal()">
-      <span class="material-icons">add</span>
-      Create Task
-    </button>
+    <app-button [config]="createTaskBtnConfig"></app-button>
   </div>
 
-  <!-- LOADER -->
   @if (isLoading) {
   <div class="center-state">
     <div class="spinner-border text-primary"></div>
   </div>
   }
 
-  <!-- EMPTY -->
   @else if (tasks.length === 0) {
   <div class="center-state empty-state">
     <span class="material-icons">assignment</span>
@@ -27,12 +21,10 @@
   </div>
   }
 
-  <!-- GRID TABLE -->
   @else {
   <div class="table-card">
     <div class="grid-scroll">
       <div class="grid-container">
-        <!-- HEADER ROW -->
         <div class="grid-row grid-header">
           <div class="grid-th">Task</div>
           <div class="grid-th">Project</div>
@@ -40,13 +32,11 @@
           <div class="grid-th">Status</div>
           <div class="grid-th">Priority</div>
           <div class="grid-th">Due Date</div>
-          <div class="grid-th text-center">Actions</div>
+          <div class="grid-th text-center action-cell">Actions</div>
         </div>
 
-        <!-- DATA ROWS -->
-        @for (task of tasks; track task.id) {
+        @for (task of tasks; track task.id; let i = $index) {
         <div class="grid-row">
-          <!-- Task title + description -->
           <div class="grid-td">
             <div class="task-title">{{ task.title }}</div>
             <div
@@ -77,14 +67,29 @@
 
           <div class="grid-td">{{ formatDate(task.dueDate) }}</div>
 
-          <div class="grid-td text-center">
-            <div class="action-group">
-              <button class="icon-btn edit" (click)="openEditModal(task)">
-                <span class="material-icons">edit</span>
+          <div class="grid-td text-center action-cell">
+            <div class="action-container">
+              <button 
+                type="button"
+                class="btn-dots" 
+                [class.active]="activeDropdownId === task.id"
+                (click)="toggleDropdown($event, task.id)"
+              >
+                <span class="material-icons">more_vert</span>
               </button>
-              <button class="icon-btn delete" (click)="openDeleteModal(task)">
-                <span class="material-icons">delete</span>
-              </button>
+
+              @if (activeDropdownId === task.id) {
+                <div class="action-dropdown" [class.dropdown-up]="tasks.length > 2 && i >= tasks.length - 2" (click)="$event.stopPropagation()">
+                <button type="button" class="dropdown-item edit-item" (click)="onActionClick($event, 'edit', task)">
+                  <span class="material-icons">edit</span>
+                  <span>Edit</span>
+                </button>
+                <button type="button" class="dropdown-item delete-item" (click)="onActionClick($event, 'delete', task)">
+                  <span class="material-icons">delete</span>
+                  <span>Delete</span>
+                </button>
+              </div>
+              }
             </div>
           </div>
         </div>
@@ -92,6 +97,7 @@
       </div>
 
       <app-pagination
+        (click)="$event.stopPropagation()"
         [currentPage]="currentPage"
         [totalItems]="totalItems"
         [itemsPerPage]="itemsPerPage"
@@ -104,14 +110,12 @@
   }
 </div>
 
-<!-- Floating tooltip -->
 @if (tooltip.visible) {
 <div class="desc-tooltip" [style.top.px]="tooltip.y" [style.left.px]="tooltip.x">
   {{ tooltip.text }}
 </div>
 }
 
-<!-- MODALS -->
 <app-task-addedit-modal
   [visible]="showModal"
   [isLoading]="isModalLoading"

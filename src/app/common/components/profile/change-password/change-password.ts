@@ -1,47 +1,60 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProfileService } from '../../../services/profile.service';
 import { AppValidators } from '../../../validators/app.validators';
-import { Password, PasswordInputConfig } from '@common';
+import { Password, PasswordInputConfig, Button, ButtonInputConfig } from '@common';
 
 @Component({
   selector: 'app-change-password',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, Password],
+  imports: [CommonModule, ReactiveFormsModule, Password, Button],
   templateUrl: './change-password.html',
   styleUrls: ['./change-password.css'],
 })
-export class ChangePassword implements OnInit {
+export class ChangePassword implements OnInit, OnChanges {
+  @Input() visible = false;
+  @Output() closed = new EventEmitter<void>();
+
   private fb = inject(FormBuilder);
   private profileService = inject(ProfileService);
   private router = inject(Router);
 
   passwordForm!: FormGroup;
   isSaving = false;
-  successMessage = '';
-  errorMessage = '';
 
-  oldPasswordConfig: PasswordInputConfig = {
-    formControlName: 'oldPassword',
-    placeholder: 'Current Password',
-    floating: true,
-  };
+  cancelBtnConfig!: ButtonInputConfig;
+  submitBtnConfig!: ButtonInputConfig;
 
-  newPasswordConfig: PasswordInputConfig = {
-    formControlName: 'newPassword',
-    placeholder: 'New Password',
-    floating: true,
-  };
-
-  confirmPasswordConfig: PasswordInputConfig = {
-    formControlName: 'confirmNewPassword',
-    placeholder: 'Confirm New Password',
-    floating: true,
-  };
+  oldPasswordConfig: PasswordInputConfig = { formControlName: 'oldPassword', placeholder: 'Current Password', floating: true };
+  newPasswordConfig: PasswordInputConfig = { formControlName: 'newPassword', placeholder: 'New Password', floating: true };
+  confirmPasswordConfig: PasswordInputConfig = { formControlName: 'confirmNewPassword', placeholder: 'Confirm New Password', floating: true };
 
   ngOnInit(): void {
+    this.buildForm();
+    this.initButtonConfigs();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['visible'] && this.visible) {
+      this.buildForm();
+    }
+    this.initButtonConfigs();
+  }
+
+  private initButtonConfigs(): void {
+    this.cancelBtnConfig = {
+      type: 'button', variant: 'close', text: 'Cancel',
+      onClick: () => this.onCancel()
+    };
+    this.submitBtnConfig = {
+      type: 'submit', variant: 'save', text: 'Update Password',
+      isLoading: this.isSaving, disabled: this.isSaving
+    };
+  }
+
+  private buildForm(): void {
     this.passwordForm = this.fb.group(
       {
         oldPassword: ['', [Validators.required]],
@@ -52,14 +65,8 @@ export class ChangePassword implements OnInit {
     );
   }
 
-  get oldCtrl() {
-    return this.passwordForm.get('oldPassword');
-  }
-  get newCtrl() {
-    return this.passwordForm.get('newPassword');
-  }
-  get confirmCtrl() {
-    return this.passwordForm.get('confirmNewPassword');
+  onCancel(): void {
+    this.closed.emit();
   }
 
   onSubmit(): void {
@@ -68,30 +75,23 @@ export class ChangePassword implements OnInit {
       return;
     }
     this.isSaving = true;
-    this.successMessage = '';
-    this.errorMessage = '';
+    this.initButtonConfigs();
 
     this.profileService.changePassword(this.passwordForm.value).subscribe({
       next: (res) => {
         if (res.isSuccess) {
-          this.successMessage =
-            res.message || 'Password changed successfully. Please log in again.';
           this.passwordForm.reset();
-          setTimeout(() => this.router.navigate(['/auth/login']), 2500);
-        } else {
-          this.errorMessage = res.message || 'Failed to change password.';
+          this.onCancel();
+          setTimeout(() => this.router.navigate(['/auth/login']), 300);
         }
         this.isSaving = false;
+        this.initButtonConfigs();
       },
-      error: (err) => {
-        this.errorMessage = err?.error?.message || 'An error occurred. Please try again.';
+      error: () => {
         this.isSaving = false;
+        this.initButtonConfigs();
       },
     });
-  }
-
-  goBack(): void {
-    this.router.navigate(['/profile']);
   }
 
   navigateToForgotPassword(): void {

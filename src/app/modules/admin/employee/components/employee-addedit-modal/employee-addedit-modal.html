@@ -1,6 +1,6 @@
 @if (visible) {
-<div class="pm-overlay">
-  <div class="pm-modal">
+<div class="pm-overlay" (click)="onCancel()">
+  <div class="pm-modal" (click)="$event.stopPropagation()">
     <div class="pm-card">
       <div class="pm-header">
         <h4 class="pm-title">{{ isEditMode ? 'Edit Employee' : 'Add New Employee' }}</h4>
@@ -10,29 +10,24 @@
       <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
         <div class="pm-two-col">
           <div class="pm-field">
-            <label class="pm-label">Full Name <span class="pm-required">*</span></label>
             <app-name-field [config]="nameConfig"></app-name-field>
           </div>
           <div class="pm-field">
-            <label class="pm-label">Mobile Number</label>
             <app-mobile [config]="mobileConfig"></app-mobile>
           </div>
         </div>
 
         <div class="pm-field">
-          <label class="pm-label">Email <span class="pm-required">*</span></label>
           <app-email [config]="emailConfig"></app-email>
         </div>
 
         @if (!isEditMode) {
         <div class="pm-field">
-          <label class="pm-label">Password</label>
           <app-password [config]="passwordConfig"></app-password>
         </div>
         }
 
         <div class="pm-field">
-          <label class="pm-label">Role <span class="pm-required">*</span></label>
           <select
             class="form-select pm-input"
             formControlName="roleId"
@@ -50,11 +45,6 @@
         </div>
 
         <div class="pm-field" [class.pm-field-disabled]="!showTeamLeadField">
-          <label class="pm-label">
-            Assign to Team Lead @if (showTeamLeadField) {
-            <span class="pm-optional">(Optional)</span>
-            }
-          </label>
           <select
             class="form-select pm-input"
             formControlName="teamLeadId"
@@ -68,7 +58,7 @@
           @if (showTeamLeadField && teamLeads.length === 0) {
           <div class="pm-hint">No active team leads available.</div>
           } @if (!showTeamLeadField) {
-          <div class="pm-hint pm-hint-muted">Only available when role is Employee.</div>
+          <div class="pm-hint pm-hint-muted">Only assign when role is Employee.</div>
           }
         </div>
 
@@ -78,12 +68,8 @@
         </div>
 
         <div class="pm-footer">
-          <button type="button" class="pm-btn pm-btn-cancel" (click)="onCancel()">Cancel</button>
-          <button type="submit" class="pm-btn pm-btn-primary" [disabled]="isLoading">
-            @if (isLoading) {
-            <span class="spinner-border spinner-border-sm me-2"></span> Processing... } @else {
-            {{ isEditMode ? 'Update Employee' : 'Add Employee' }} }
-          </button>
+          <app-button [config]="cancelBtnConfig"></app-button>
+          <app-button [config]="submitBtnConfig"></app-button>
         </div>
       </form>
     </div>
