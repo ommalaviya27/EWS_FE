@@ -1,34 +1,31 @@
-/* ── Base Wrapper ── */
 .email-wrapper {
   position: relative;
 }
 
-/* ── Normal Input ── */
 .custom-input.form-control {
   height: 56px;
   width: 100%;
-  padding-right: 3rem;
+  padding: 16px 14px 4px 14px;
+  border: 1.5px solid #d0d0d0;
   border-radius: 8px;
   box-sizing: border-box;
-  font-size: 16px;
+  font-size: 15px;
+  color: #222;
+  background: #fff;
+  outline: none;
+  box-shadow: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.form-control.is-invalid {
-  background-image: none !important;
-  padding-right: 3rem;
-}
-
-/* ── Floating Input ── */
-.floating-input {
-  padding-top: 9px;
-  padding-bottom: 4px;
+.custom-input.form-control:focus {
+  border-color: #8e00ed;
+  box-shadow: 0 0 0 3px rgba(142, 0, 237, 0.08);
 }
 
 .floating-input::placeholder {
   color: transparent;
 }
 
-/* ── Floating Label ── */
 .floating-label {
   display: none;
 }
@@ -37,25 +34,29 @@
   display: block;
   position: absolute;
   pointer-events: none;
-  left: 10px;
-  top: 18px;
-  font-size: 17px;
-  transition: 0.2s ease all;
-  background-color: white;
-  padding: 0 5px;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: #888;
+  transition: all 0.18s ease;
+  background-color: #fff;
+  padding: 0 4px;
   margin: 0;
+  line-height: 1;
 }
 
-/* ── Floating Label Active State ── */
 .floating-input:focus ~ .floating-label,
 .floating-input:not(:placeholder-shown) ~ .floating-label {
-  top: -9px;
-  left: 8px;
-  font-size: 12px;
+  top: 0;
+  transform: translateY(-50%);
+  font-size: 11px;
+  color: #8e00ed;
+  font-weight: 600;
 }
 
 .invalid-feedback {
   color: #dc3545;
-  font-size: 0.85rem;
-  margin-top: 4px;
+  font-size: 0.78rem;
+  margin-top: 5px;
 }

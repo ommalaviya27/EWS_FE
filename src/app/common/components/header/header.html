@@ -38,7 +38,7 @@
         </div>
 
         <div class="profile-dropdown" *ngIf="isProfileOpen">
-          <a class="dropdown-item" routerLink="/profile">
+          <a class="dropdown-item" routerLink="/profile" (click)="isProfileOpen = false">
             <span class="material-icons">person</span> My Profile
           </a>
           <button class="dropdown-item logout" (click)="logout()">
