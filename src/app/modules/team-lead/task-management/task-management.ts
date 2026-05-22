@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { TaskManagementService } from './services/task-management.service';
-import { DeleteModel, PaginationComponent } from '@common';
+import { DeleteModel, PaginationComponent, Button, ButtonInputConfig } from '@common'; // Adjust paths based on your architecture aliases
 import { TaskAddeditModal } from './components/task-addedit-modal/task-addedit-modal';
 import { createDeleteConfig } from '../../../common/components/delete-model/delete-model.config';
 import { DEFAULT_PAGINATION } from '../../../common/constants/app.constants';
@@ -10,7 +10,7 @@ import { Task, TeamMember, ProjectOption, TaskStatuses, TaskPriority, TASK_STATU
 
 @Component({
   selector: 'app-task-management',
-  imports: [CommonModule, DeleteModel, TaskAddeditModal, PaginationComponent],
+  imports: [CommonModule, DeleteModel, TaskAddeditModal, PaginationComponent, Button],
   templateUrl: './task-management.html',
   styleUrl: './task-management.css',
 })
@@ -42,6 +42,11 @@ export class TaskManagement implements OnInit {
   readonly TaskStatuses = TaskStatuses;
   readonly TaskPriority = TaskPriority;
 
+  activeDropdownId: number | null = null;
+
+  /* ===== Button Configs ===== */
+  createTaskBtnConfig!: ButtonInputConfig;
+
   tooltip = { visible: false, text: '', x: 0, y: 0 };
 
   showTooltip(event: MouseEvent, text: string): void {
@@ -56,8 +61,20 @@ export class TaskManagement implements OnInit {
   }
 
   ngOnInit(): void {
+    this.initButtonConfigs();
     this.loadTasks();
     this.loadTeamMembers();
+  }
+
+  private initButtonConfigs(): void {
+    this.createTaskBtnConfig = {
+      variant: 'add',
+      text: '+ Add',
+      onClick: (event: MouseEvent) => {
+        event?.stopPropagation();
+        this.openAddModal();
+      }
+    };
   }
 
   private loadTasks(): void {
@@ -92,25 +109,48 @@ export class TaskManagement implements OnInit {
   }
 
   onPageChange(page: number): void {
+    this.closeDropdown();
     this.currentPage = page;
     this.loadTasks();
   }
 
   onPageSizeChange(size: number): void {
+    this.closeDropdown();
     this.itemsPerPage = size;
     this.currentPage = 1;
     this.loadTasks();
   }
 
+  toggleDropdown(event: MouseEvent, taskId: number): void {
+    event.stopPropagation();
+    this.activeDropdownId = this.activeDropdownId === taskId ? null : taskId;
+  }
+
+  closeDropdown(): void {
+    this.activeDropdownId = null;
+  }
+
+  onActionClick(event: MouseEvent, action: 'edit' | 'delete', task: Task): void {
+    event.stopPropagation();
+    this.hideTooltip();
+    this.closeDropdown();
+
+    if (action === 'edit') {
+      this.openEditModal(task);
+    } else if (action === 'delete') {
+      this.openDeleteModal(task);
+    }
+  }
+
   openAddModal(): void {
     this.selectedTask = null;
-    if (this.projects.length === 0) this.loadMyProjects(); // lazy: only on first open
+    if (this.projects.length === 0) this.loadMyProjects();
     this.showModal = true;
   }
 
   openEditModal(task: Task): void {
     this.selectedTask = task;
-    if (this.projects.length === 0) this.loadMyProjects(); // lazy: only on first open
+    if (this.projects.length === 0) this.loadMyProjects();
     this.showModal = true;
   }
 

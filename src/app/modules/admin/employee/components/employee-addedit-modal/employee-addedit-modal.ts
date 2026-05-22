@@ -2,12 +2,12 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Employee, TeamLead, EMPLOYEE_ROLE_LIST, EmployeeRole, CreateEmployeeRequest, UpdateEmployeeRequest } from '../../models/employee.model';
-import { NameFieldConfig, Name, EmailInputConfig, Email, MobileNumberConfig, MobileNumber, PasswordInputConfig, Password } from '@common';
+import { NameFieldConfig, Name, EmailInputConfig, Email, MobileNumberConfig, MobileNumber, PasswordInputConfig, Password, Button, ButtonInputConfig } from '@common';
 import { EmployeeService } from '../../services/employee.service';
 
 @Component({
   selector: 'app-employee-addedit-modal',
-  imports: [CommonModule, ReactiveFormsModule, Name, Email, MobileNumber, Password],
+  imports: [CommonModule, ReactiveFormsModule, Name, Email, MobileNumber, Password, Button],
   templateUrl: './employee-addedit-modal.html',
   styleUrl: './employee-addedit-modal.css',
 })
@@ -25,6 +25,9 @@ export class EmployeeAddeditModal implements OnInit, OnChanges {
   emailConfig!: EmailInputConfig;
   mobileConfig!: MobileNumberConfig;
   passwordConfig!: PasswordInputConfig;
+
+  cancelBtnConfig!: ButtonInputConfig;
+  submitBtnConfig!: ButtonInputConfig;
 
   form!: FormGroup;
   roleList = EMPLOYEE_ROLE_LIST;
@@ -47,6 +50,7 @@ export class EmployeeAddeditModal implements OnInit, OnChanges {
     this.buildForm();
     this.initConfigs();
     this.loadTeamLeads();
+    this.initButtonConfigs();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -54,6 +58,8 @@ export class EmployeeAddeditModal implements OnInit, OnChanges {
       this.buildForm();
       this.loadTeamLeads();
     }
+    
+    this.initButtonConfigs();
   }
 
   private loadTeamLeads(): void {
@@ -68,10 +74,27 @@ export class EmployeeAddeditModal implements OnInit, OnChanges {
   }
 
   private initConfigs(): void {
-    this.nameConfig = { formControlName: 'name', placeholder: 'Enter first name' };
-    this.emailConfig = { formControlName: 'email', placeholder: 'Enter email address' };
-    this.mobileConfig = { formControlName: 'mobileNumber', placeholder: 'Enter last name' };
-    this.passwordConfig = { formControlName: 'password', placeholder: 'Enter password' };
+    this.nameConfig = { formControlName: 'name', placeholder: 'Full Name', floating: true};
+    this.emailConfig = { formControlName: 'email', placeholder: 'Email Address', floating: true };
+    this.mobileConfig = { formControlName: 'mobileNumber', placeholder: 'Mobile Number', floating: true };
+    this.passwordConfig = { formControlName: 'password', placeholder: 'Password', floating: true };
+  }
+
+  private initButtonConfigs(): void {
+    this.cancelBtnConfig = {
+      type: 'button',
+      variant: 'close',
+      text: 'Cancel',
+      onClick: () => this.onCancel()
+    };
+
+    this.submitBtnConfig = {
+      type: 'submit',
+      variant: 'save',
+      text: this.isEditMode ? 'Update Employee' : 'Add Employee',
+      isLoading: this.isLoading,
+      disabled: this.isLoading
+    };
   }
 
   private buildForm(): void {

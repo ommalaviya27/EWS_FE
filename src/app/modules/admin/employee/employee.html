@@ -1,17 +1,13 @@
-<div class="project-wrapper">
+<div class="project-wrapper" (click)="closeDropdown()">
   <div class="header-bar">
     <div>
       <h3 class="page-title">Employee Management</h3>
       <p class="page-subtitle">Manage employees and assign them to team leads</p>
     </div>
-    <button class="btn-create" (click)="openAddModal()">
-      <span class="material-icons">person_add</span>
-      Add Employee
-    </button>
+    <app-button [config]="addEmployeeBtnConfig"></app-button>
   </div>
 
-  <!-- Tabs -->
-  <div class="tab-bar">
+  <div class="tab-bar" (click)="$event.stopPropagation()">
     <button class="tab-btn" [class.active]="activeTab === 'all'" (click)="setTab('all')">
       <span class="material-icons tab-icon">groups</span>
       <span class="tab-label">All Employees</span>
@@ -56,12 +52,10 @@
           <div class="grid-th text-center">Actions</div>
         </div>
 
-        @for (employee of employees; track employee.userId) {
+        @for (employee of employees; track employee.userId; let i = $index) {
         <div class="grid-row">
           <div class="grid-td fw-semibold cell-truncate">{{ employee.name }}</div>
-
           <div class="grid-td">{{ employee.email }}</div>
-
           <div class="grid-td">{{ employee.mobileNumber }}</div>
 
           <div class="grid-td">
@@ -90,13 +84,28 @@
           </div>
 
           <div class="grid-td text-center">
-            <div class="action-group">
-              <button class="icon-btn edit" (click)="openEditModal(employee)">
-                <span class="material-icons">edit</span>
+            <div class="action-container">
+              <button 
+                type="button"
+                class="btn-dots" 
+                [class.active]="activeDropdownId === employee.userId"
+                (click)="toggleDropdown($event, employee.userId)"
+              >
+                <span class="material-icons">more_vert</span>
               </button>
-              <button class="icon-btn delete" (click)="openDeleteModal(employee)">
-                <span class="material-icons">delete</span>
-              </button>
+
+              @if (activeDropdownId === employee.userId) {
+                <div class="action-dropdown" [class.dropdown-up]="employees.length > 2 && i >= employees.length - 2" (click)="$event.stopPropagation()">
+                <button type="button" class="dropdown-item" (click)="onActionClick($event, 'edit', employee)">
+                  <span class="material-icons">edit</span>
+                  <span>Edit</span>
+                </button>
+                <button type="button" class="dropdown-item" (click)="onActionClick($event, 'delete', employee)">
+                  <span class="material-icons">delete</span>
+                  <span>Delete</span>
+                </button>
+              </div>
+              }
             </div>
           </div>
         </div>
@@ -105,6 +114,7 @@
     </div>
 
     <app-pagination
+      (click)="$event.stopPropagation()"
       [currentPage]="currentPage"
       [totalItems]="totalItems"
       [itemsPerPage]="itemsPerPage"

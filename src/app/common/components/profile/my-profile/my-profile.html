@@ -1,72 +1,68 @@
-<div class="profile-page">
-  <div class="loading-wrapper" *ngIf="isLoading">
-    <div class="spinner"></div>
-    <p>Loading profile...</p>
-  </div>
-
-  <ng-container *ngIf="!isLoading">
-    <div class="profile-container-centered">
-      <div class="profile-card">
-        <div class="card-header-actions">
-          <button type="button" class="back-btn" (click)="goBack()" title="Go Back">
-            <span class="material-icons">arrow_back</span>
-          </button>
+@if (visible) {
+  <div class="pm-overlay" (click)="onCancel()">
+    <div class="pm-modal" (click)="$event.stopPropagation()">
+      <div class="pm-card">
+  
+        <div class="pm-header">
+          <h4 class="pm-title">My Profile</h4>
+          <button type="button" class="pm-close" (click)="onCancel()" aria-label="Close">✕</button>
         </div>
-
-        <div class="avatar-header-section">
-          <div class="avatar-circle">{{ initials }}</div>
-          <h1 class="page-title">{{ profile?.name }}</h1>
+  
+        <div *ngIf="isLoading" class="loading-wrapper">
+          <div class="spinner"></div>
+          <p>Loading profile...</p>
         </div>
-
-        <div class="alert alert-success" *ngIf="successMessage">
-          <span class="material-icons">check_circle</span>
-          {{ successMessage }}
-        </div>
-        <div class="alert alert-error" *ngIf="errorMessage">
-          <span class="material-icons">error</span>
-          {{ errorMessage }}
-        </div>
-
-        <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
-          <div class="form-group">
-            <app-name-field [config]="nameConfig" />
+  
+        <ng-container *ngIf="!isLoading">
+          <div class="avatar-header-section">
+            <div class="avatar-circle">{{ initials }}</div>
+            <h2 class="profile-name">{{ profile?.name }}</h2>
           </div>
-
-          <div class="form-group">
-            <app-email [config]="emailConfig" />
+  
+          <div class="alert alert-success" *ngIf="successMessage">
+            <span class="material-icons">check_circle</span>{{ successMessage }}
           </div>
-
-          <div class="form-group">
-            <app-mobile [config]="mobileConfig" />
+          <div class="alert alert-error" *ngIf="errorMessage">
+            <span class="material-icons">error</span>{{ errorMessage }}
           </div>
-
-          <div class="form-group">
-            <div class="input-wrapper readonly">
-              <span class="material-icons input-icon">shield</span>
-              <input class="form-input" type="text" [value]="roleName" readonly />
-              <span class="lock-icon material-icons">lock</span>
+  
+          <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" novalidate>
+            <div class="pm-field">
+              <app-name-field [config]="nameConfig" />
             </div>
-          </div>
-
-          <button
-            type="button"
-            class="change-password-link-btn"
-            (click)="navigateToChangePassword()"
-          >
-            <span class="material-icons">lock</span>
-            Change Password
-          </button>
-
-          <div class="form-actions-row">
-            <button type="button" class="btn-secondary" (click)="goBack()">Cancel</button>
-            <button type="submit" class="btn-primary" [disabled]="isSaving">
-              <span class="material-icons" *ngIf="isSaving">hourglass_empty</span>
-              <span class="material-icons" *ngIf="!isSaving">save</span>
-              {{ isSaving ? 'Saving...' : 'Save Changes' }}
+            <div class="pm-field">
+              <app-email [config]="emailConfig" />
+            </div>
+            <div class="pm-field">
+              <app-mobile [config]="mobileConfig" />
+            </div>
+  
+            <div class="pm-field">
+              <div class="input-wrapper">
+                <span class="material-icons input-icon">shield</span>
+                <input class="form-input" type="text" [value]="roleName" readonly />
+                <span class="lock-icon material-icons">lock</span>
+              </div>
+            </div>
+  
+            <button type="button" class="change-password-link-btn" (click)="openChangePassword()">
+              <span class="material-icons">lock</span> Change Password
             </button>
-          </div>
-        </form>
+  
+            <div class="pm-footer">
+              <app-button [config]="cancelBtnConfig"></app-button>
+              <app-button [config]="submitBtnConfig"></app-button>
+            </div>
+          </form>
+        </ng-container>
+  
       </div>
     </div>
-  </ng-container>
-</div>
+  </div>
+  }
+  
+  <!-- Change Password Modal -->
+  <app-change-password
+    [visible]="isChangePasswordOpen"
+    (closed)="isChangePasswordOpen = false"
+  ></app-change-password>

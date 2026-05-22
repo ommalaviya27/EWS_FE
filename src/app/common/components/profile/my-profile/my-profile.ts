@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -9,20 +9,24 @@ import { AppValidators } from '../../../validators/app.validators';
 import { ROLE_NAMES, UserRole } from '../../../../modules/auth/models/auth.model';
 import { ROUTES } from '../../../constants/route-paths';
 import { APP_CONSTANTS } from '../../../constants/app.constants';
-import { Name, NameFieldConfig, Email, EmailInputConfig, MobileNumber, MobileNumberConfig } from '@common';
+import { Name, NameFieldConfig, Email, EmailInputConfig, MobileNumber, MobileNumberConfig, Button, ButtonInputConfig } from '@common';
+import { ChangePassword } from '../change-password/change-password';
 
 @Component({
   selector: 'app-my-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, Name, Email, MobileNumber],
+  imports: [CommonModule, ReactiveFormsModule, Name, Email, MobileNumber, Button, ChangePassword],
   templateUrl: './my-profile.html',
   styleUrls: ['./my-profile.css'],
 })
-export class MyProfile implements OnInit {
+export class MyProfile implements OnInit, OnChanges {
+  @Input() visible = false;
+  @Output() closed = new EventEmitter<void>();
+
   private fb = inject(FormBuilder);
   private profileService = inject(ProfileService);
-  private sessionService = inject(SessionService);
   private router = inject(Router);
+  sessionService = inject(SessionService);
 
   profileForm!: FormGroup;
   profile: GetProfileResponse | null = null;
@@ -31,28 +35,36 @@ export class MyProfile implements OnInit {
   successMessage = '';
   errorMessage = '';
   initials = '';
+  isChangePasswordOpen = false;
 
-  nameConfig: NameFieldConfig = {
-    formControlName: 'name',
-    placeholder: 'Full Name',
-    floating: true,
-  };
+  cancelBtnConfig!: ButtonInputConfig;
+  submitBtnConfig!: ButtonInputConfig;
 
-  emailConfig: EmailInputConfig = {
-    formControlName: 'email',
-    placeholder: 'Email Address',
-    floating: true,
-  };
-
-  mobileConfig: MobileNumberConfig = {
-    formControlName: 'mobileNumber',
-    placeholder: 'Mobile Number',
-    floating: true,
-  };
+  nameConfig: NameFieldConfig = { formControlName: 'name', placeholder: 'Full Name', floating: true };
+  emailConfig: EmailInputConfig = { formControlName: 'email', placeholder: 'Email Address', floating: true };
+  mobileConfig: MobileNumberConfig = { formControlName: 'mobileNumber', placeholder: 'Mobile Number', floating: true };
 
   ngOnInit(): void {
     this.initForm();
-    this.loadProfile();
+    this.initButtonConfigs();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['visible'] && this.visible) {
+      this.loadProfile();
+    }
+    this.initButtonConfigs();
+  }
+
+  private initButtonConfigs(): void {
+    this.cancelBtnConfig = {
+      type: 'button', variant: 'close', text: 'Cancel',
+      onClick: () => this.onCancel()
+    };
+    this.submitBtnConfig = {
+      type: 'submit', variant: 'save', text: 'Save Changes',
+      isLoading: this.isSaving, disabled: this.isSaving
+    };
   }
 
   private initForm(): void {
@@ -86,17 +98,21 @@ export class MyProfile implements OnInit {
   }
 
   private updateInitials(name: string): void {
-    this.initials = name
-      .split(' ')
-      .map((n) => n[0])
-      .join('')
-      .toUpperCase();
+    this.initials = name.split(' ').map((n) => n[0]).join('').toUpperCase();
   }
 
   get roleName(): string {
     if (this.profile) return this.profile.roleName;
     const roleId = this.sessionService.roleId;
     return roleId !== null ? ROLE_NAMES[roleId] ?? '' : '';
+  }
+
+  onCancel(): void {
+    this.closed.emit();
+  }
+
+  openChangePassword(): void {
+    this.isChangePasswordOpen = true;
   }
 
   onSubmit(): void {
@@ -107,13 +123,13 @@ export class MyProfile implements OnInit {
     this.isSaving = true;
     this.successMessage = '';
     this.errorMessage = '';
+    this.initButtonConfigs();
 
     this.profileService.updateProfile(this.profileForm.value).subscribe({
       next: (res) => {
         if (res.isSuccess && res.data) {
           this.profile = res.data;
           this.updateInitials(res.data.name);
-
           const userRaw = localStorage.getItem(APP_CONSTANTS.USER_KEY);
           if (userRaw) {
             try {
@@ -121,36 +137,20 @@ export class MyProfile implements OnInit {
               stored.name = res.data.name;
               stored.email = res.data.email;
               localStorage.setItem(APP_CONSTANTS.USER_KEY, JSON.stringify(stored));
-            } catch {
-              /* ignore */
-            }
+            } catch { }
           }
-
           this.successMessage = res.message || 'Profile updated successfully.';
         } else {
           this.errorMessage = res.message || 'Failed to update profile.';
         }
         this.isSaving = false;
+        this.initButtonConfigs();
       },
       error: (err) => {
         this.errorMessage = err?.error?.message || 'An error occurred. Please try again.';
         this.isSaving = false;
+        this.initButtonConfigs();
       },
     });
-  }
-
-  goBack(): void {
-    const roleId = this.sessionService.roleId;
-    if (roleId === UserRole.Admin) {
-      this.router.navigate([ROUTES.ADMIN.DASHBOARD_ABSOLUTE]);
-    } else if (roleId === UserRole.TeamLead) {
-      this.router.navigate([ROUTES.TEAM_LEAD.DASHBOARD_ABSOLUTE]);
-    } else {
-      this.router.navigate([ROUTES.EMPLOYEE.DASHBOARD_ABSOLUTE]);
-    }
-  }
-
-  navigateToChangePassword(): void {
-    this.router.navigate(['/profile/change-password']);
   }
 }

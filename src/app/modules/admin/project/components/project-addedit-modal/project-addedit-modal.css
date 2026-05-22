@@ -3,11 +3,9 @@
   inset: 0;
   background: rgba(0, 0, 0, 0.7);
   z-index: 1060;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   padding: 20px;
 }
 
@@ -24,7 +22,6 @@
 }
 
 /* Header */
-
 .pm-header {
   display: flex;
   align-items: center;
@@ -54,29 +51,87 @@
 }
 
 /* Fields */
-
 .pm-field {
   margin-bottom: 18px;
 }
 
-.pm-label {
-  display: inline-block;
-  margin-bottom: 8px;
+/* Shared fieldset wrapper — used for date, select, team lead */
+.pm-fieldset {
+  position: relative;
+  border: 1.5px solid #d1d5db;
+  border-radius: 12px;
+  height: 52px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  transition: border-color 0.15s ease;
+}
 
-  font-size: 15px;
+.pm-fieldset:focus-within {
+  border-color: #5b3df5;
+  box-shadow: 0 0 0 0.15rem rgba(91, 61, 245, 0.15);
+}
+
+.pm-fieldset.is-invalid-wrap {
+  border-color: #dc2626;
+}
+
+/* Legend — sits on the border */
+.pm-legend {
+  position: absolute;
+  top: -10px;
+  left: 12px;
+  background: #fff;
+  padding: 0 4px;
+  font-size: 12px;
   font-weight: 600;
+  color: #9ca3af;
+  line-height: 1;
+  pointer-events: none;
+  transition: color 0.15s ease;
+}
+
+/* Blue legend when value present or focused */
+.pm-fieldset.has-value .pm-legend,
+.pm-fieldset:focus-within .pm-legend {
+  color: #8e00ed;
+}
+
+/* Red legend when invalid */
+.pm-fieldset.is-invalid-wrap .pm-legend {
+  color: #dc2626;
+}
+
+/* Shared input style for date and select inside fieldset */
+.pm-date-input,
+.pm-select-input {
+  border: none;
+  outline: none;
+  width: 100%;
+  height: 100%;
+  font-size: 15px;
   color: #111827;
+  background: transparent;
+  box-shadow: none;
+  appearance: auto;
 }
 
-.pm-label span {
-  color: #ef4444;
+.pm-date-input:focus,
+.pm-select-input:focus {
+  border: none;
+  outline: none;
+  box-shadow: none;
 }
 
+/* Bootstrap overrides for name/description common fields */
 .pm-input,
 .form-control,
 .form-select {
   height: 48px;
   width: 100%;
+  padding-left: 10px;
+  color: #888;
   border-radius: 12px;
   border: 1px solid #d1d5db;
   font-size: 15px;
@@ -96,59 +151,22 @@ textarea.form-control {
 }
 
 /* Date Row */
-
 .pm-date-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
+  padding-top: 10px;
 }
 
-/* Buttons */
-
+/* Footer */
 .pm-footer {
   margin-top: 28px;
-
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
 
-.pm-btn {
-  height: 48px;
-  border: none;
-  border-radius: 12px;
-
-  font-size: 16px;
-  font-weight: 600;
-
-  transition: 0.2s ease;
-}
-
-.pm-btn-cancel {
-  background: #e5e7eb;
-  color: #374151;
-}
-
-.pm-btn-cancel:hover {
-  background: #d1d5db;
-}
-
-.pm-btn-primary {
-  background: #5b3df5;
-  color: #ffffff;
-}
-
-.pm-btn-primary:hover:not(:disabled) {
-  background: #4c30e0;
-}
-
-.pm-btn-primary:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
 /* Validation */
-
 .pm-error {
   margin-top: 6px;
   font-size: 13px;
@@ -156,7 +174,6 @@ textarea.form-control {
 }
 
 /* Responsive */
-
 @media (max-width: 576px) {
   .pm-card {
     padding: 20px;

@@ -2,11 +2,11 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Project, TeamLeader, ProjectStatus, PROJECT_STATUS_LIST, CreateProjectRequest, UpdateProjectRequest } from '../../models/project.model';
-import { NameFieldConfig, Name, Description, DescriptionFieldConfig } from '@common';
+import { NameFieldConfig, Name, Description, DescriptionFieldConfig, Button, ButtonInputConfig } from '@common';
 
 @Component({
   selector: 'app-project-addedit-modal',
-  imports: [CommonModule, ReactiveFormsModule, Name, Description],
+  imports: [CommonModule, ReactiveFormsModule, Name, Description, Button],
   templateUrl: './project-addedit-modal.html',
   styleUrl: './project-addedit-modal.css',
 })
@@ -26,6 +26,9 @@ export class ProjectAddeditModal implements OnInit, OnChanges {
   form!: FormGroup;
   statusList = PROJECT_STATUS_LIST;
 
+  cancelBtnConfig!: ButtonInputConfig;
+  submitBtnConfig!: ButtonInputConfig;
+
   get isEditMode(): boolean {
     return this.project !== null;
   }
@@ -33,21 +36,42 @@ export class ProjectAddeditModal implements OnInit, OnChanges {
   ngOnInit(): void {
     this.buildForm();
     this.initConfigs();
+    this.initButtonConfigs();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['visible'] && this.visible) {
       this.buildForm();
     }
+    this.initButtonConfigs();
   }
 
   private initConfigs(): void {
     this.nameConfig = {
       formControlName: 'name',
+      placeholder: 'Project name',
     };
     this.descriptionConfig = {
       formControlName: 'description',
-      rows: 3,
+      placeholder: 'Description',
+      rows: 1,
+    };
+  }
+
+  private initButtonConfigs(): void {
+    this.cancelBtnConfig = {
+      type: 'button',
+      variant: 'close',
+      text: 'Cancel',
+      onClick: () => this.onCancel()
+    };
+
+    this.submitBtnConfig = {
+      type: 'submit',
+      variant: 'save',
+      text: this.isEditMode ? 'Update Project' : 'Create Project',
+      isLoading: this.isLoading,
+      disabled: this.isLoading
     };
   }
 

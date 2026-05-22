@@ -2,11 +2,11 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Task, TeamMember, ProjectOption, TaskStatuses, TaskPriority, TASK_STATUS_LIST, TASK_PRIORITY_LIST, CreateTaskRequest, UpdateTaskRequest } from '../../models/task-management.model';
-import { Name, NameFieldConfig, Description, DescriptionFieldConfig } from '@common';
+import { Name, NameFieldConfig, Description, DescriptionFieldConfig, Button, ButtonInputConfig } from '@common';
 
 @Component({
   selector: 'app-task-addedit-modal',
-  imports: [CommonModule, ReactiveFormsModule, Name, Description],
+  imports: [CommonModule, ReactiveFormsModule, Name, Description, Button],
   templateUrl: './task-addedit-modal.html',
   styleUrl: './task-addedit-modal.css',
 })
@@ -29,6 +29,9 @@ export class TaskAddeditModal implements OnInit, OnChanges {
   statusList = TASK_STATUS_LIST;
   priorityList = TASK_PRIORITY_LIST;
 
+  cancelBtnConfig!: ButtonInputConfig;
+  submitBtnConfig!: ButtonInputConfig;
+
   get isEditMode(): boolean {
     return this.task !== null;
   }
@@ -36,17 +39,36 @@ export class TaskAddeditModal implements OnInit, OnChanges {
   ngOnInit(): void {
     this.buildForm();
     this.initConfigs();
+    this.initButtonConfigs();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['visible'] && this.visible) {
       this.buildForm();
     }
+    this.initButtonConfigs();
   }
 
   private initConfigs(): void {
-    this.nameConfig = { formControlName: 'title' };
-    this.descriptionConfig = { formControlName: 'description', rows: 3 };
+    this.nameConfig = { formControlName: 'title', placeholder: 'Task Title' };
+    this.descriptionConfig = { formControlName: 'description', placeholder: 'Description', rows: 1 };
+  }
+
+  private initButtonConfigs(): void {
+    this.cancelBtnConfig = {
+      type: 'button',
+      variant: 'close',
+      text: 'Cancel',
+      onClick: () => this.onCancel()
+    };
+
+    this.submitBtnConfig = {
+      type: 'submit',
+      variant: 'save',
+      text: this.isEditMode ? 'Update Task' : 'Create Task',
+      isLoading: this.isLoading,
+      disabled: this.isLoading
+    };
   }
 
   private buildForm(): void {

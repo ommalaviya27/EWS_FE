@@ -13,3 +13,5 @@ export * from './text-fields/description/description.config';
 export * from './pagination/pagination';
 export * from './confirmation-model/confirmation-model';
 export * from './confirmation-model/confirmation-model.config';
+export * from './button/button';
+export * from './button/button.config';

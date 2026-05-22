@@ -1,16 +1,17 @@
-import { Component, inject, Input, OnInit, Output, EventEmitter, HostListener } from '@angular/core';
+import { Component, inject, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HeaderConfig, DEFAULT_HEADER_CONFIG } from './header.config';
 import { SessionService } from '../../services';
 import { ROLE_NAMES } from 'src/app/modules/auth/models';
-import { AuthService } from '../../../modules/auth/services/auth.service'; 
+import { AuthService } from '../../../modules/auth/services/auth.service';
 import { ConfirmationModel, ConfirmationModelConfig } from '@common';
+import { MyProfile } from '../profile/my-profile/my-profile';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, ConfirmationModel],
+  imports: [CommonModule, RouterModule, ConfirmationModel, MyProfile],
   templateUrl: './header.html',
   styleUrls: ['./header.css'],
 })
@@ -21,12 +22,14 @@ export class Header implements OnInit {
   sessionService = inject(SessionService);
   private authService = inject(AuthService);
 
-  userRole: string = '';
-  initials: string = '';
-  currentDate: string = '';
+  userRole = '';
+  initials = '';
+  currentDate = '';
 
   isProfileOpen = false;
+  isProfileModalOpen = false;
   showLogoutConfirmation = false;
+
   logoutConfig: ConfirmationModelConfig = {
     title: 'Confirm Logout',
     message: 'Are you sure you want to log out?',
@@ -38,13 +41,6 @@ export class Header implements OnInit {
     this.setCurrentDate();
     this.loadUserFromSession();
   }
-  
-  onDocumentClick(event: Event): void {
-    const target = event.target as HTMLElement;
-    if (!target.closest('.user-profile')) {
-      this.isProfileOpen = false;
-    }
-  }
 
   onMenuToggle(): void {
     this.menuToggle.emit();
@@ -52,6 +48,15 @@ export class Header implements OnInit {
 
   toggleProfileDropdown(): void {
     this.isProfileOpen = !this.isProfileOpen;
+  }
+
+  openProfile(): void {
+    this.isProfileOpen = false;
+    this.isProfileModalOpen = true;
+  }
+
+  closeProfile(): void {
+    this.isProfileModalOpen = false;
   }
 
   logout(): void {
@@ -81,11 +86,9 @@ export class Header implements OnInit {
   private loadUserFromSession(): void {
     const name = this.sessionService.name ?? '';
     const roleId = this.sessionService.roleId;
-
     if (name) {
       this.initials = name.split(' ').map((n) => n[0]).join('').toUpperCase();
     }
-
     if (roleId !== null) {
       this.userRole = ROLE_NAMES[roleId] ?? '';
     }

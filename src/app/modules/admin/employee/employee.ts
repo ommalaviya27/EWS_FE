@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { EmployeeService } from './services/employee.service';
-import { DeleteModel, PaginationComponent } from '@common';
+import { DeleteModel, PaginationComponent, Button, ButtonInputConfig } from '@common';
 import { EmployeeAddeditModal } from './components/employee-addedit-modal/employee-addedit-modal';
 import { createDeleteConfig } from '../../../common/components/delete-model/delete-model.config';
 import { DEFAULT_PAGINATION } from '../../../common/constants/app.constants';
@@ -12,7 +12,7 @@ type TabType = 'all' | 'assigned' | 'unassigned';
 
 @Component({
   selector: 'app-employee',
-  imports: [CommonModule, DeleteModel, EmployeeAddeditModal, PaginationComponent],
+  imports: [CommonModule, DeleteModel, EmployeeAddeditModal, PaginationComponent, Button],
   templateUrl: './employee.html',
   styleUrl: './employee.css',
 })
@@ -42,14 +42,31 @@ export class EmployeeModule implements OnInit {
 
   readonly roleLabels = EMPLOYEE_ROLE_LABELS;
 
-  setTab(tab: TabType): void {
-    if (this.activeTab === tab) return;
-    this.activeTab = tab;
-    this.currentPage = 1;
+  activeDropdownId: number | null = null;
+
+  addEmployeeBtnConfig!: ButtonInputConfig;
+
+  ngOnInit(): void {
+    this.initButtonConfigs();
     this.loadEmployees();
   }
 
-  ngOnInit(): void {
+  private initButtonConfigs(): void {
+    this.addEmployeeBtnConfig = {
+      variant: 'add',
+      text: '+ Add',
+      onClick: (event: MouseEvent) => {
+        event?.stopPropagation();
+        this.openAddModal();
+      }
+    };
+  }
+
+  setTab(tab: TabType): void {
+    if (this.activeTab === tab) return;
+    this.closeDropdown();
+    this.activeTab = tab;
+    this.currentPage = 1;
     this.loadEmployees();
   }
 
@@ -78,23 +95,48 @@ export class EmployeeModule implements OnInit {
   }
 
   onPageChange(page: number): void {
+    this.closeDropdown();
     this.currentPage = page;
     this.loadEmployees();
   }
+
   onPageSizeChange(size: number): void {
+    this.closeDropdown();
     this.itemsPerPage = size;
     this.currentPage = 1;
     this.loadEmployees();
+  }
+
+  toggleDropdown(event: MouseEvent, userId: number): void {
+    event.stopPropagation();
+    this.activeDropdownId = this.activeDropdownId === userId ? null : userId;
+  }
+
+  closeDropdown(): void {
+    this.activeDropdownId = null;
+  }
+
+  onActionClick(event: MouseEvent, action: 'edit' | 'delete', employee: Employee): void {
+    event.stopPropagation();
+    this.closeDropdown();
+
+    if (action === 'edit') {
+      this.openEditModal(employee);
+    } else if (action === 'delete') {
+      this.openDeleteModal(employee);
+    }
   }
 
   openAddModal(): void {
     this.selectedEmployee = null;
     this.showModal = true;
   }
+
   openEditModal(employee: Employee): void {
     this.selectedEmployee = employee;
     this.showModal = true;
   }
+
   closeModal(): void {
     this.showModal = false;
     this.selectedEmployee = null;
@@ -125,6 +167,7 @@ export class EmployeeModule implements OnInit {
     this.deleteConfig = createDeleteConfig(employee.name);
     this.showDeleteModal = true;
   }
+
   closeDeleteModal(): void {
     this.showDeleteModal = false;
     this.employeeToDeleteId = null;
