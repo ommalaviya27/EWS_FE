@@ -14,9 +14,15 @@ export class EmployeeService {
       PageNumber: pagination.pageNumber.toString(),
       PageSize: pagination.pageSize.toString(),
     };
+
     if (pagination.filter !== 'all') {
       params['Filter'] = pagination.filter;
     }
+
+    if (pagination.search?.trim()) {
+      params['Search'] = pagination.search.trim();
+    }
+
     return this.apiService.get<UserPagedResponse>(API_ROUTES.EMPLOYEE.GET_ALL, params);
   }
 

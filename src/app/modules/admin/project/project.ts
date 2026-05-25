@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { ProjectService } from './services/project.service';
-import { DeleteModel, PaginationComponent, Button, ButtonInputConfig } from '@common'; // Adjust paths based on your architecture aliases
+import { DeleteModel, PaginationComponent, Button, ButtonInputConfig, SearchBarComponent } from '@common'; // Added SearchBarComponent import
 import { ProjectAddeditModal } from './components/project-addedit-modal/project-addedit-modal';
 import { createDeleteConfig } from '../../../common/components/delete-model/delete-model.config';
 import { DEFAULT_PAGINATION } from '../../../common/constants/app.constants';
@@ -10,7 +10,7 @@ import { Project, TeamLeader, ProjectStatus, PROJECT_STATUS_LABELS, CreateProjec
 
 @Component({
   selector: 'app-project',
-  imports: [CommonModule, DeleteModel, ProjectAddeditModal, PaginationComponent, Button],
+  imports: [CommonModule, DeleteModel, ProjectAddeditModal, PaginationComponent, Button, SearchBarComponent], // Added SearchBarComponent here
   templateUrl: './project.html',
   styleUrl: './project.css'
 })
@@ -28,6 +28,8 @@ export class ProjectModule implements OnInit {
   currentPage = DEFAULT_PAGINATION.currentPage;
   itemsPerPage = DEFAULT_PAGINATION.itemsPerPage;
   totalItems = DEFAULT_PAGINATION.totalItems;
+
+  searchTerm = ''; // Added tracking variable for search text input
 
   showModal = false;
   selectedProject: Project | null = null;
@@ -76,19 +78,31 @@ export class ProjectModule implements OnInit {
     };
   }
 
+  onSearchChange(term: string): void {
+    this.searchTerm = term;
+    this.currentPage = 1;
+    this.loadProjects();
+  }
+
   private loadProjects(): void {
     this.isLoading = true;
-    this.projectService.getAll({ pageNumber: this.currentPage, pageSize: this.itemsPerPage }).subscribe({
-      next: (res) => {
-        this.projects = res.data?.items ?? [];
-        this.totalItems = res.data?.totalCount ?? 0;
-        this.isLoading = false;
-      },
-      error: (err) => {
-        this.toastr.error(this.getErrorMessage(err));
-        this.isLoading = false;
-      },
-    });
+    this.projectService
+      .getAll({ 
+        pageNumber: this.currentPage, 
+        pageSize: this.itemsPerPage,
+        search: this.searchTerm || undefined 
+      } as any)
+      .subscribe({
+        next: (res) => {
+          this.projects = res.data?.items ?? [];
+          this.totalItems = res.data?.totalCount ?? 0;
+          this.isLoading = false;
+        },
+        error: (err) => {
+          this.toastr.error(this.getErrorMessage(err));
+          this.isLoading = false;
+        },
+      });
   }
 
   private loadTeamLeaders(): void {

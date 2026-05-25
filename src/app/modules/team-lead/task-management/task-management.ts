@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { TaskManagementService } from './services/task-management.service';
-import { DeleteModel, PaginationComponent, Button, ButtonInputConfig } from '@common'; // Adjust paths based on your architecture aliases
+import { DeleteModel, PaginationComponent, Button, ButtonInputConfig, SearchBarComponent } from '@common'; // Imported SearchBarComponent
 import { TaskAddeditModal } from './components/task-addedit-modal/task-addedit-modal';
 import { createDeleteConfig } from '../../../common/components/delete-model/delete-model.config';
 import { DEFAULT_PAGINATION } from '../../../common/constants/app.constants';
@@ -10,7 +10,7 @@ import { Task, TeamMember, ProjectOption, TaskStatuses, TaskPriority, TASK_STATU
 
 @Component({
   selector: 'app-task-management',
-  imports: [CommonModule, DeleteModel, TaskAddeditModal, PaginationComponent, Button],
+  imports: [CommonModule, DeleteModel, TaskAddeditModal, PaginationComponent, Button, SearchBarComponent], // Added SearchBarComponent here
   templateUrl: './task-management.html',
   styleUrl: './task-management.css',
 })
@@ -29,6 +29,8 @@ export class TaskManagement implements OnInit {
   currentPage = DEFAULT_PAGINATION.currentPage;
   itemsPerPage = DEFAULT_PAGINATION.itemsPerPage;
   totalItems = DEFAULT_PAGINATION.totalItems;
+
+  searchTerm = ''; // Field variable capturing input text stream changes
 
   showModal = false;
   selectedTask: Task | null = null;
@@ -77,10 +79,20 @@ export class TaskManagement implements OnInit {
     };
   }
 
+  onSearchChange(term: string): void {
+    this.searchTerm = term;
+    this.currentPage = 1;
+    this.loadTasks();
+  }
+
   private loadTasks(): void {
     this.isLoading = true;
     this.taskService
-      .getAll({ pageNumber: this.currentPage, pageSize: this.itemsPerPage })
+      .getAll({ 
+        pageNumber: this.currentPage, 
+        pageSize: this.itemsPerPage,
+        search: this.searchTerm || undefined
+      })
       .subscribe({
         next: (res) => {
           this.tasks = res.data?.items ?? [];

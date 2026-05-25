@@ -10,11 +10,16 @@ import { Project, TeamLeader, CreateProjectRequest, UpdateProjectRequest } from 
 export class ProjectService {
   private apiService = inject(ApiService);
 
-  getAll(pagination: PaginationRequest): Observable<ApiResponse<PaginationResponse<Project>>> {
-    const params = {
+  getAll(pagination: PaginationRequest & { search?: string }): Observable<ApiResponse<PaginationResponse<Project>>> {
+    const params: Record<string, string> = {
       PageNumber: pagination.pageNumber.toString(),
       PageSize: pagination.pageSize.toString(),
     };
+
+    if (pagination.search?.trim()) {
+      params['Search'] = pagination.search.trim();
+    }
+
     return this.apiService.get<PaginationResponse<Project>>(API_ROUTES.PROJECT.GET_ALL, params);
   }
 

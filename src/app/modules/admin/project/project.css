@@ -220,3 +220,10 @@
   margin-bottom: 4px;
   box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.12);
 }
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}

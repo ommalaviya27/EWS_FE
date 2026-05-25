@@ -52,3 +52,7 @@ export interface UpdateProjectRequest {
   endDate: string;
   projectStatus: ProjectStatus;
 }
+
+export interface ProjectSearchRequest {
+
+}

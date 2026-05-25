@@ -15,3 +15,4 @@ export * from './confirmation-model/confirmation-model';
 export * from './confirmation-model/confirmation-model.config';
 export * from './button/button';
 export * from './button/button.config';
+export * from './search-bar/search-bar';
