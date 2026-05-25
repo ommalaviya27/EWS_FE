@@ -4,7 +4,15 @@
       <h3 class="page-title">Task Management</h3>
       <p class="page-subtitle">Create and assign tasks to your team members</p>
     </div>
-    <app-button [config]="createTaskBtnConfig"></app-button>
+    
+    <div class="header-actions" (click)="$event.stopPropagation()">
+      <app-search-bar
+        placeholder="Search by title…"
+        [value]="searchTerm"
+        (searchChange)="onSearchChange($event)"
+      ></app-search-bar>
+      <app-button [config]="createTaskBtnConfig"></app-button>
+    </div>
   </div>
 
   @if (isLoading) {
@@ -15,9 +23,13 @@
 
   @else if (tasks.length === 0) {
   <div class="center-state empty-state">
-    <span class="material-icons">assignment</span>
-    <h4>No Tasks Found</h4>
-    <p>No tasks have been created yet.</p>
+    <span class="material-icons">{{ searchTerm ? 'search_off' : 'assignment' }}</span>
+    <h4>{{ searchTerm ? 'No results for "' + searchTerm + '"' : 'No Tasks Found' }}</h4>
+    @if (searchTerm) {
+      <p class="empty-hint">Try a different title or clear the search.</p>
+    } @else {
+      <p>No tasks have been created yet.</p>
+    }
   </div>
   }
 

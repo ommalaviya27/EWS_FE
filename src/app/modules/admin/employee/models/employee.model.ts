@@ -77,4 +77,5 @@ export interface UserPaginationRequest {
   pageNumber: number;
   pageSize: number;
   filter: 'all' | 'assigned' | 'unassigned';
+  search?: string;
 }

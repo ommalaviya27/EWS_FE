@@ -4,14 +4,21 @@
       <h3 class="page-title">Employee Management</h3>
       <p class="page-subtitle">Manage employees and assign them to team leads</p>
     </div>
-    <app-button [config]="addEmployeeBtnConfig"></app-button>
+
+    <div class="header-actions" (click)="$event.stopPropagation()">
+      <app-search-bar
+        placeholder="Search by name…"
+        [value]="searchTerm"
+        (searchChange)="onSearchChange($event)"
+      ></app-search-bar>
+      <app-button [config]="addEmployeeBtnConfig"></app-button>
+    </div>
   </div>
 
   <div class="tab-bar" (click)="$event.stopPropagation()">
     <button class="tab-btn" [class.active]="activeTab === 'all'" (click)="setTab('all')">
       <span class="material-icons tab-icon">groups</span>
-      <span class="tab-label">All Employees</span>
-      <span class="tab-count">{{ summary.totalEmployees }}</span>
+      <span class="tab-label">Organisation Members</span>
     </button>
     <button class="tab-btn" [class.active]="activeTab === 'assigned'" (click)="setTab('assigned')">
       <span class="material-icons tab-icon">supervisor_account</span>
@@ -35,8 +42,11 @@
   </div>
   } @else if (employees.length === 0) {
   <div class="center-state empty-state">
-    <span class="material-icons">group</span>
-    <h4>No Employees Found</h4>
+    <span class="material-icons">{{ searchTerm ? 'search_off' : 'group' }}</span>
+    <h4>{{ searchTerm ? 'No results for "' + searchTerm + '"' : 'No Employees Found' }}</h4>
+    @if (searchTerm) {
+      <p class="empty-hint">Try a different name or clear the search.</p>
+    }
   </div>
   } @else {
   <div class="table-card">

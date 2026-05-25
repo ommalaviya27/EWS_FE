@@ -282,3 +282,16 @@
 .dropdown-item .material-icons {
   font-size: 16px;
 }
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.empty-hint {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #94a3b8;
+}

@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { EmployeeService } from './services/employee.service';
-import { DeleteModel, PaginationComponent, Button, ButtonInputConfig } from '@common';
+import { DeleteModel, PaginationComponent, Button, ButtonInputConfig, SearchBarComponent } from '@common';
 import { EmployeeAddeditModal } from './components/employee-addedit-modal/employee-addedit-modal';
 import { createDeleteConfig } from '../../../common/components/delete-model/delete-model.config';
 import { DEFAULT_PAGINATION } from '../../../common/constants/app.constants';
@@ -12,7 +12,7 @@ type TabType = 'all' | 'assigned' | 'unassigned';
 
 @Component({
   selector: 'app-employee',
-  imports: [CommonModule, DeleteModel, EmployeeAddeditModal, PaginationComponent, Button],
+  imports: [CommonModule, DeleteModel, EmployeeAddeditModal, PaginationComponent, Button, SearchBarComponent],
   templateUrl: './employee.html',
   styleUrl: './employee.css',
 })
@@ -32,6 +32,8 @@ export class EmployeeModule implements OnInit {
   currentPage = DEFAULT_PAGINATION.currentPage;
   itemsPerPage = DEFAULT_PAGINATION.itemsPerPage;
   totalItems = DEFAULT_PAGINATION.totalItems;
+
+  searchTerm = '';
 
   showModal = false;
   selectedEmployee: Employee | null = null;
@@ -66,6 +68,13 @@ export class EmployeeModule implements OnInit {
     if (this.activeTab === tab) return;
     this.closeDropdown();
     this.activeTab = tab;
+    this.searchTerm = '';
+    this.currentPage = 1;
+    this.loadEmployees();
+  }
+
+  onSearchChange(term: string): void {
+    this.searchTerm = term;
     this.currentPage = 1;
     this.loadEmployees();
   }
@@ -77,6 +86,7 @@ export class EmployeeModule implements OnInit {
         pageNumber: this.currentPage,
         pageSize: this.itemsPerPage,
         filter: this.activeTab,
+        search: this.searchTerm || undefined,
       })
       .subscribe({
         next: (res) => {

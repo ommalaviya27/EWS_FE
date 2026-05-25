@@ -1,0 +1,17 @@
+<div class="search-bar-wrapper">
+  <span class="search-icon material-icons">search</span>
+  <input
+    class="search-input"
+    type="text"
+    [placeholder]="placeholder"
+    [value]="inputValue"
+    (input)="onInput($any($event.target).value)"
+    autocomplete="off"
+    spellcheck="false"
+  />
+  @if (inputValue) {
+  <button type="button" class="clear-btn" title="Clear search" (click)="clearSearch()">
+    <span class="material-icons">close</span>
+  </button>
+  }
+</div>
