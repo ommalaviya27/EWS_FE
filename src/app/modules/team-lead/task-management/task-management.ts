@@ -1,26 +1,38 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { TaskManagementService } from './services/task-management.service';
-import { DeleteModel, PaginationComponent, Button, ButtonInputConfig, SearchBarComponent } from '@common'; // Imported SearchBarComponent
+import { DeleteModel, PaginationComponent, Button, ButtonInputConfig, SearchBarComponent } from '@common';
 import { TaskAddeditModal } from './components/task-addedit-modal/task-addedit-modal';
+import { ProjectList, ProjectCard } from './components/project-list/project-list';
 import { createDeleteConfig } from '../../../common/components/delete-model/delete-model.config';
 import { DEFAULT_PAGINATION } from '../../../common/constants/app.constants';
-import { Task, TeamMember, ProjectOption, TaskStatuses, TaskPriority, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS, CreateTaskRequest, UpdateTaskRequest } from './models/task-management.model';
+import { Task, TeamMember, TaskStatuses, TaskPriority, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS, CreateTaskRequest, UpdateTaskRequest, ProjectCardData } from './models/task-management.model';
+import { TaskDetailModel } from '../../employee/my-tasks/components/task-detail-model/task-detail-model';
 
 @Component({
   selector: 'app-task-management',
-  imports: [CommonModule, DeleteModel, TaskAddeditModal, PaginationComponent, Button, SearchBarComponent], // Added SearchBarComponent here
+  imports: [CommonModule, DeleteModel, TaskAddeditModal, PaginationComponent, Button, SearchBarComponent, ProjectList, TaskDetailModel],
   templateUrl: './task-management.html',
   styleUrl: './task-management.css',
 })
 export class TaskManagement implements OnInit {
   private taskService = inject(TaskManagementService);
   private toastr = inject(ToastrService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+
+
+  view: 'projects' | 'tasks' = 'projects';
+  selectedProjectId: string | null = null;
+  selectedProjectName: string = '';
+
+  projectCards: ProjectCard[] = [];
+  isProjectsLoading = false;
 
   tasks: Task[] = [];
   teamMembers: TeamMember[] = [];
-  projects: ProjectOption[] = [];
 
   isLoading = false;
   isModalLoading = false;
@@ -30,10 +42,13 @@ export class TaskManagement implements OnInit {
   itemsPerPage = DEFAULT_PAGINATION.itemsPerPage;
   totalItems = DEFAULT_PAGINATION.totalItems;
 
-  searchTerm = ''; // Field variable capturing input text stream changes
+  searchTerm = '';
 
   showModal = false;
   selectedTask: Task | null = null;
+
+  showViewModal = false;
+  viewTask: Task | null = null;
 
   showDeleteModal = false;
   deleteConfig = createDeleteConfig('');
@@ -46,26 +61,27 @@ export class TaskManagement implements OnInit {
 
   activeDropdownId: number | null = null;
 
-  /* ===== Button Configs ===== */
   createTaskBtnConfig!: ButtonInputConfig;
 
   tooltip = { visible: false, text: '', x: 0, y: 0 };
 
-  showTooltip(event: MouseEvent, text: string): void {
-    this.tooltip = { visible: true, text, x: event.clientX, y: event.clientY };
-  }
-  moveTooltip(event: MouseEvent): void {
-    this.tooltip.x = event.clientX;
-    this.tooltip.y = event.clientY;
-  }
-  hideTooltip(): void {
-    this.tooltip.visible = false;
-  }
-
   ngOnInit(): void {
     this.initButtonConfigs();
-    this.loadTasks();
-    this.loadTeamMembers();
+
+    this.route.queryParams.subscribe(params => {
+      const pid = params['projectId'];
+      const pname = params['projectName'];
+      if (pid) {
+        this.selectedProjectId = pid;
+        this.selectedProjectName = pname ?? '';
+        this.view = 'tasks';
+        this.loadTasks();
+        this.loadTeamMembers();
+      } else {
+        this.view = 'projects';
+        this.loadProjectCards();
+      }
+    });
   }
 
   private initButtonConfigs(): void {
@@ -79,6 +95,44 @@ export class TaskManagement implements OnInit {
     };
   }
 
+  private loadProjectCards(): void {
+    this.isProjectsLoading = true;
+    this.taskService.getMyProjectsFull().subscribe({
+      next: (res) => {
+        const raw: ProjectCardData[] = res.data ?? [];
+        this.projectCards = raw.map(p => ({
+          id: p.id,
+          name: p.name,
+          description: p.description,
+          projectStatus: p.projectStatus as any,
+          startDate: p.startDate,
+          endDate: p.endDate,
+        }));
+        this.isProjectsLoading = false;
+      },
+      error: (err) => {
+        this.toastr.error(this.getErrorMessage(err));
+        this.isProjectsLoading = false;
+      },
+    });
+  }
+
+  onProjectSelected(project: ProjectCard): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { projectId: project.id, projectName: project.name },
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  goBackToProjects(): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { projectId: null, projectName: null },
+      queryParamsHandling: 'merge',
+    });
+  }
+
   onSearchChange(term: string): void {
     this.searchTerm = term;
     this.currentPage = 1;
@@ -88,11 +142,10 @@ export class TaskManagement implements OnInit {
   private loadTasks(): void {
     this.isLoading = true;
     this.taskService
-      .getAll({ 
-        pageNumber: this.currentPage, 
-        pageSize: this.itemsPerPage,
-        search: this.searchTerm || undefined
-      })
+      .getAll(
+        { pageNumber: this.currentPage, pageSize: this.itemsPerPage, search: this.searchTerm || undefined },
+        this.selectedProjectId ?? undefined
+      )
       .subscribe({
         next: (res) => {
           this.tasks = res.data?.items ?? [];
@@ -109,13 +162,6 @@ export class TaskManagement implements OnInit {
   private loadTeamMembers(): void {
     this.taskService.getTeamMembers().subscribe({
       next: (res) => (this.teamMembers = res.data ?? []),
-      error: (err) => this.toastr.error(this.getErrorMessage(err)),
-    });
-  }
-
-  private loadMyProjects(): void {
-    this.taskService.getMyProjects().subscribe({
-      next: (res) => (this.projects = res.data ?? []),
       error: (err) => this.toastr.error(this.getErrorMessage(err)),
     });
   }
@@ -142,27 +188,22 @@ export class TaskManagement implements OnInit {
     this.activeDropdownId = null;
   }
 
-  onActionClick(event: MouseEvent, action: 'edit' | 'delete', task: Task): void {
+  onActionClick(event: MouseEvent, action: 'view' | 'edit' | 'delete', task: Task): void {
     event.stopPropagation();
     this.hideTooltip();
     this.closeDropdown();
-
-    if (action === 'edit') {
-      this.openEditModal(task);
-    } else if (action === 'delete') {
-      this.openDeleteModal(task);
-    }
+    if (action === 'view') this.openViewModal(task);
+    if (action === 'edit') this.openEditModal(task);
+    else if (action === 'delete') this.openDeleteModal(task);
   }
 
   openAddModal(): void {
     this.selectedTask = null;
-    if (this.projects.length === 0) this.loadMyProjects();
     this.showModal = true;
   }
 
   openEditModal(task: Task): void {
     this.selectedTask = task;
-    if (this.projects.length === 0) this.loadMyProjects();
     this.showModal = true;
   }
 
@@ -221,20 +262,33 @@ export class TaskManagement implements OnInit {
     });
   }
 
-  getStatusLabel(status: TaskStatuses): string {
-    return this.statusLabels[status] ?? '—';
+  openViewModal(task: Task): void {
+    this.viewTask = task;
+    this.showViewModal = true;
   }
-  getPriorityLabel(priority: TaskPriority): string {
-    return this.priorityLabels[priority] ?? '—';
+
+  closeViewModal(): void {
+    this.showViewModal = false;
+    this.viewTask = null;
   }
+
+  showTooltip(event: MouseEvent, text: string): void {
+    this.tooltip = { visible: true, text, x: event.clientX, y: event.clientY };
+  }
+  moveTooltip(event: MouseEvent): void {
+    this.tooltip.x = event.clientX;
+    this.tooltip.y = event.clientY;
+  }
+  hideTooltip(): void {
+    this.tooltip.visible = false;
+  }
+
+  getStatusLabel(status: TaskStatuses): string { return this.statusLabels[status] ?? '—'; }
+  getPriorityLabel(priority: TaskPriority): string { return this.priorityLabels[priority] ?? '—'; }
 
   formatDate(dateStr: string): string {
     if (!dateStr) return '—';
-    return new Date(dateStr).toLocaleDateString('en-IN', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-    });
+    return new Date(dateStr).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
   }
 
   private getErrorMessage(err: any): string {

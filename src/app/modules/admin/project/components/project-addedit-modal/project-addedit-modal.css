@@ -55,7 +55,6 @@
   margin-bottom: 18px;
 }
 
-/* Shared fieldset wrapper — used for date, select, team lead */
 .pm-fieldset {
   position: relative;
   border: 1.5px solid #d1d5db;

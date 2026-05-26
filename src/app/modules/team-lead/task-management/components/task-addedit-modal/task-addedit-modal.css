@@ -188,3 +188,15 @@ textarea.form-control {
     grid-template-columns: 1fr;
   }
 }
+/* Locked project field */
+.pm-locked-value {
+  flex: 1;
+  font-size: 15px;
+  color: #374151;
+  font-weight: 500;
+}
+
+.pm-lock-icon {
+  font-size: 16px;
+  color: #9ca3af;
+}

@@ -1,0 +1,32 @@
+<div class="pl-wrapper">
+  <div class="pl-cards-grid">
+    @for (project of projects; track project.id) {
+    <div class="pl-card" (click)="onProjectClick(project)">
+      <div class="pl-card-body">
+        <div class="pl-card-header">
+          <h4 class="pl-card-title">{{ project.name }}</h4>
+          <div class="pl-card-badges">
+            <span class="project-status-badge" [attr.data-status]="project.projectStatus">
+              {{ getStatusLabel(project.projectStatus) }}
+            </span>
+          </div>
+        </div>       
+        
+        <p class="pl-card-desc">{{ project.description }}</p>
+
+        <div class="pl-card-footer-group">
+          <div class="pl-card-meta">
+            <span class="pl-card-date">
+              {{ formatDate(project.startDate) }} - {{ formatDate(project.endDate) }}
+            </span>
+            <button class="pl-view-btn" (click)="onProjectClick(project); $event.stopPropagation()">
+              View Tasks
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    }
+  </div>
+</div>

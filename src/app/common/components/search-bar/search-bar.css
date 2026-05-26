@@ -64,3 +64,36 @@
 .clear-btn .material-icons {
   font-size: 16px;
 }
+
+@media (max-width: 730px) {
+  .search-bar-wrapper {
+    min-width: 40px;
+    width: 40px;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .search-bar-wrapper.expanded {
+    width: 50%;
+    min-width: 150px;
+    justify-content: flex-start;
+    margin-left: auto;
+  }
+
+  .search-input {
+    display: block;
+  }
+
+  .search-bar-wrapper:not(.expanded) .search-input {
+    display: none;
+  }
+}
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

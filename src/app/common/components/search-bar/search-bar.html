@@ -1,5 +1,9 @@
-<div class="search-bar-wrapper">
-  <span class="search-icon material-icons">search</span>
+<div class="search-bar-wrapper" [class.expanded]="isExpanded">
+  <button type="button" class="icon-btn" (click)="toggleSearch()">
+    <span class="search-icon material-icons">search</span>
+  </button>
+
+  @if (isExpanded) {
   <input
     class="search-input"
     type="text"
@@ -9,8 +13,8 @@
     autocomplete="off"
     spellcheck="false"
   />
-  @if (inputValue) {
-  <button type="button" class="clear-btn" title="Clear search" (click)="clearSearch()">
+  } @if (isExpanded && inputValue) {
+  <button type="button" class="clear-btn" (click)="clearSearch()">
     <span class="material-icons">close</span>
   </button>
   }

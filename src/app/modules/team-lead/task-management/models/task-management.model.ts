@@ -1,3 +1,5 @@
+import { TaskAttachment, TaskComment } from "../../../employee/my-tasks/models/my-task.model";
+
 export enum TaskStatuses {
   Pending = 1,
   InProgress = 2,
@@ -50,6 +52,8 @@ export interface Task {
   taskStatus: TaskStatuses;
   priority: TaskPriority;
   dueDate: string;
+  comments: TaskComment[];
+  attachments: TaskAttachment[];
 }
 
 export interface TeamMember {
@@ -81,4 +85,13 @@ export interface UpdateTaskRequest {
   dueDate: string;
   status: TaskStatuses;
   priority: TaskPriority;
+}
+
+export interface ProjectCardData {
+  id: string;
+  name: string;
+  description: string;
+  projectStatus: number;
+  startDate: string;
+  endDate: string;
 }

@@ -1,103 +1,97 @@
 @if (visible) {
-<div class="pm-overlay" (click)="onCancel()">
-  <div class="pm-modal" (click)="$event.stopPropagation()">
-    <div class="pm-card">
-      <div class="pm-header">
-        <h4 class="pm-title">
-          {{ isEditMode ? 'Edit Task' : 'Create New Task' }}
-        </h4>
-        <button type="button" class="pm-close" (click)="onCancel()" aria-label="Close">✕</button>
-      </div>
-
-      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
-
-        <div class="pm-field">
-          <app-name-field [config]="nameConfig"></app-name-field>
+  <div class="pm-overlay" (click)="onCancel()">
+    <div class="pm-modal" (click)="$event.stopPropagation()">
+      <div class="pm-card">
+        <div class="pm-header">
+          <h4 class="pm-title">
+            {{ isEditMode ? 'Edit Task' : 'Create New Task' }}
+          </h4>
+          <button type="button" class="pm-close" (click)="onCancel()" aria-label="Close">✕</button>
         </div>
-
-        <div class="pm-field">
-          <app-description-field [config]="descriptionConfig"></app-description-field>
-        </div>
-
-        <!-- Project -->
-        <div class="pm-field">
-          <div class="pm-fieldset"
-            [class.is-invalid-wrap]="isInvalid('projectId')"
-            [class.has-value]="form.get('projectId')?.value">
-            <span class="pm-legend">Project</span>
-            <select class="pm-select-input" formControlName="projectId">
-              @for (p of projects; track p.id) {
-                <option [value]="p.id">{{ p.name }}</option>
-              }
-            </select>
-          </div>
-          @if (isInvalid('projectId')) {
-            <div class="pm-error">Project is required.</div>
-          }
-        </div>
-
-        <!-- Assign To -->
-        <div class="pm-field">
-          <div class="pm-fieldset"
-            [class.is-invalid-wrap]="isInvalid('assignedToUserId')"
-            [class.has-value]="form.get('assignedToUserId')?.value">
-            <span class="pm-legend">Assign To</span>
-            <select class="pm-select-input" formControlName="assignedToUserId">
-              @for (m of teamMembers; track m.userId) {
-                <option [value]="m.userId">{{ m.name }}</option>
-              }
-            </select>
-          </div>
-          @if (isInvalid('assignedToUserId')) {
-            <div class="pm-error">Assignee is required.</div>
-          }
-        </div>
-
-        <!-- Due Date + Priority -->
-        <div class="pm-date-row">
+  
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+  
           <div class="pm-field">
-            <div class="pm-fieldset"
-              [class.is-invalid-wrap]="isInvalid('dueDate')"
-              [class.has-value]="form.get('dueDate')?.value">
-              <span class="pm-legend">Due Date</span>
-              <input type="date" class="pm-date-input" formControlName="dueDate" />
-            </div>
-            @if (isInvalid('dueDate')) {
-              <div class="pm-error">Due date is required.</div>
-            }
+            <app-name-field [config]="nameConfig"></app-name-field>
           </div>
-
+  
+          <div class="pm-field">
+            <app-description-field [config]="descriptionConfig"></app-description-field>
+          </div>
+  
+          <!-- Project — always locked, comes from parent context -->
           <div class="pm-field">
             <div class="pm-fieldset has-value">
-              <span class="pm-legend">Priority</span>
-              <select class="pm-select-input" formControlName="priority">
-                @for (p of priorityList; track p.value) {
-                  <option [value]="p.value">{{ p.label }}</option>
+              <span class="pm-legend">Project</span>
+              <span class="pm-locked-value">{{ lockedProjectName }}</span>
+              <span class="material-icons pm-lock-icon">lock</span>
+            </div>
+          </div>
+  
+          <!-- Assign To -->
+          <div class="pm-field">
+            <div class="pm-fieldset"
+              [class.is-invalid-wrap]="isInvalid('assignedToUserId')"
+              [class.has-value]="form.get('assignedToUserId')?.value">
+              <span class="pm-legend">Assign To</span>
+              <select class="pm-select-input" formControlName="assignedToUserId">
+                <option [value]="null" disabled>Select member</option>
+                @for (m of teamMembers; track m.userId) {
+                  <option [value]="m.userId">{{ m.name }}</option>
+                }
+              </select>
+            </div>
+            @if (isInvalid('assignedToUserId')) {
+              <div class="pm-error">Assignee is required.</div>
+            }
+          </div>
+  
+          <!-- Due Date + Priority -->
+          <div class="pm-date-row">
+            <div class="pm-field">
+              <div class="pm-fieldset"
+                [class.is-invalid-wrap]="isInvalid('dueDate')"
+                [class.has-value]="form.get('dueDate')?.value">
+                <span class="pm-legend">Due Date</span>
+                <input type="date" class="pm-date-input" formControlName="dueDate" />
+              </div>
+              @if (isInvalid('dueDate')) {
+                <div class="pm-error">Due date is required.</div>
+              }
+            </div>
+  
+            <div class="pm-field">
+              <div class="pm-fieldset has-value">
+                <span class="pm-legend">Priority</span>
+                <select class="pm-select-input" formControlName="priority">
+                  @for (p of priorityList; track p.value) {
+                    <option [value]="p.value">{{ p.label }}</option>
+                  }
+                </select>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Status -->
+          <div class="pm-field">
+            <div class="pm-fieldset has-value">
+              <span class="pm-legend">Status</span>
+              <select class="pm-select-input" formControlName="status">
+                @for (s of statusList; track s.value) {
+                  <option [value]="s.value">{{ s.label }}</option>
                 }
               </select>
             </div>
           </div>
-        </div>
-
-        <!-- Status -->
-        <div class="pm-field">
-          <div class="pm-fieldset has-value">
-            <span class="pm-legend">Status</span>
-            <select class="pm-select-input" formControlName="status">
-              @for (s of statusList; track s.value) {
-                <option [value]="s.value">{{ s.label }}</option>
-              }
-            </select>
+  
+          <div class="pm-footer">
+            <app-button [config]="cancelBtnConfig"></app-button>
+            <app-button [config]="submitBtnConfig"></app-button>
           </div>
-        </div>
-
-        <div class="pm-footer">
-          <app-button [config]="cancelBtnConfig"></app-button>
-          <app-button [config]="submitBtnConfig"></app-button>
-        </div>
-
-      </form>
+  
+        </form>
+      </div>
     </div>
   </div>
-</div>
-}
+  }
+  

@@ -13,13 +13,14 @@ import {
   ProjectOption,
   CreateTaskRequest,
   UpdateTaskRequest,
+  ProjectCardData,
 } from '../models/task-management.model';
 
 @Injectable({ providedIn: 'root' })
 export class TaskManagementService {
   private apiService = inject(ApiService);
 
-  getAll( pagination: PaginationRequest & { search?: string }, projectId?: string): Observable<ApiResponse<PaginationResponse<Task>>> {
+  getAll(pagination: PaginationRequest & { search?: string }, projectId?: string): Observable<ApiResponse<PaginationResponse<Task>>> {
     const params: Record<string, string> = {
       PageNumber: pagination.pageNumber.toString(),
       PageSize: pagination.pageSize.toString(),
@@ -39,6 +40,10 @@ export class TaskManagementService {
 
   getMyProjects(): Observable<ApiResponse<ProjectOption[]>> {
     return this.apiService.get<ProjectOption[]>(API_ROUTES.TASK.GET_MY_PROJECTS);
+  }
+
+  getMyProjectsFull(): Observable<ApiResponse<ProjectCardData[]>> {
+    return this.apiService.get<ProjectCardData[]>(API_ROUTES.TASK.GET_MY_PROJECTS);
   }
 
   getTeamMembers(): Observable<ApiResponse<TeamMember[]>> {
