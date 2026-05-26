@@ -1,10 +1,44 @@
 <div class="task-wrapper" (click)="closeDropdown()">
+  <!-- ===== PROJECTS VIEW ===== -->
+  @if (view === 'projects') {
+
   <div class="header-bar">
     <div>
-      <h3 class="page-title">Task Management</h3>
-      <p class="page-subtitle">Create and assign tasks to your team members</p>
+      <h3 class="page-title">Projects</h3>
     </div>
-    
+  </div>
+
+  @if (isProjectsLoading) {
+  <div class="center-state">
+    <div class="spinner-border text-primary"></div>
+  </div>
+  } @else if (projectCards.length === 0) {
+  <div class="center-state empty-state">
+    <h4>No Projects Found</h4>
+    <p>You have no projects assigned to you yet.</p>
+  </div>
+  } @else {
+  <div class="projects-scroll">
+    <app-project-list
+      [projects]="projectCards"
+      (projectSelected)="onProjectSelected($event)"
+    ></app-project-list>
+  </div>
+  } } @else {
+  <div>
+    <button type="button" class="btn-back" (click)="goBackToProjects()">
+      <span class="material-icons" style="font-size: 16px">arrow_back</span>
+      Change Project
+    </button>
+  </div>
+
+  <div class="header-bar">
+    <div class="d-flex align-items-center gap-3">
+      <div>
+        <h3 class="page-title">{{ selectedProjectName || 'Tasks' }}</h3>
+      </div>
+    </div>
+
     <div class="header-actions" (click)="$event.stopPropagation()">
       <app-search-bar
         placeholder="Search by title…"
@@ -19,27 +53,22 @@
   <div class="center-state">
     <div class="spinner-border text-primary"></div>
   </div>
-  }
-
-  @else if (tasks.length === 0) {
+  } @else if (tasks.length === 0) {
   <div class="center-state empty-state">
     <span class="material-icons">{{ searchTerm ? 'search_off' : 'assignment' }}</span>
     <h4>{{ searchTerm ? 'No results for "' + searchTerm + '"' : 'No Tasks Found' }}</h4>
     @if (searchTerm) {
-      <p class="empty-hint">Try a different title or clear the search.</p>
+    <p class="empty-hint">Try a different title or clear the search.</p>
     } @else {
-      <p>No tasks have been created yet.</p>
+    <p>No tasks have been created for this project yet.</p>
     }
   </div>
-  }
-
-  @else {
+  } @else {
   <div class="table-card">
     <div class="grid-scroll">
       <div class="grid-container">
         <div class="grid-row grid-header">
           <div class="grid-th">Task</div>
-          <div class="grid-th">Project</div>
           <div class="grid-th">Assigned To</div>
           <div class="grid-th">Status</div>
           <div class="grid-th">Priority</div>
@@ -61,8 +90,6 @@
             </div>
           </div>
 
-          <div class="grid-td cell-truncate">{{ task.projectName }}</div>
-
           <div class="grid-td cell-truncate">{{ task.assignedToUserName }}</div>
 
           <div class="grid-td">
@@ -81,9 +108,9 @@
 
           <div class="grid-td text-center action-cell">
             <div class="action-container">
-              <button 
+              <button
                 type="button"
-                class="btn-dots" 
+                class="btn-dots"
                 [class.active]="activeDropdownId === task.id"
                 (click)="toggleDropdown($event, task.id)"
               >
@@ -91,12 +118,32 @@
               </button>
 
               @if (activeDropdownId === task.id) {
-                <div class="action-dropdown" [class.dropdown-up]="tasks.length > 2 && i >= tasks.length - 2" (click)="$event.stopPropagation()">
-                <button type="button" class="dropdown-item edit-item" (click)="onActionClick($event, 'edit', task)">
+              <div
+                class="action-dropdown"
+                [class.dropdown-up]="tasks.length > 2 && i >= tasks.length - 2"
+                (click)="$event.stopPropagation()"
+              >
+                <button
+                  type="button"
+                  class="dropdown-item"
+                  (click)="onActionClick($event, 'view', task)"
+                >
+                  <span class="material-icons">visibility</span>
+                  <span>View</span>
+                </button>
+                <button
+                  type="button"
+                  class="dropdown-item"
+                  (click)="onActionClick($event, 'edit', task)"
+                >
                   <span class="material-icons">edit</span>
                   <span>Edit</span>
                 </button>
-                <button type="button" class="dropdown-item delete-item" (click)="onActionClick($event, 'delete', task)">
+                <button
+                  type="button"
+                  class="dropdown-item"
+                  (click)="onActionClick($event, 'delete', task)"
+                >
                   <span class="material-icons">delete</span>
                   <span>Delete</span>
                 </button>
@@ -107,19 +154,17 @@
         </div>
         }
       </div>
-
-      <app-pagination
-        (click)="$event.stopPropagation()"
-        [currentPage]="currentPage"
-        [totalItems]="totalItems"
-        [itemsPerPage]="itemsPerPage"
-        (pageChange)="onPageChange($event)"
-        (pageSizeChange)="onPageSizeChange($event)"
-      >
-      </app-pagination>
     </div>
+    <app-pagination
+      (click)="$event.stopPropagation()"
+      [currentPage]="currentPage"
+      [totalItems]="totalItems"
+      [itemsPerPage]="itemsPerPage"
+      (pageChange)="onPageChange($event)"
+      (pageSizeChange)="onPageSizeChange($event)"
+    ></app-pagination>
   </div>
-  }
+  } }
 </div>
 
 @if (tooltip.visible) {
@@ -133,7 +178,8 @@
   [isLoading]="isModalLoading"
   [task]="selectedTask"
   [teamMembers]="teamMembers"
-  [projects]="projects"
+  [projectId]="selectedProjectId!"
+  [projectName]="selectedProjectName"
   (save)="onSave($event)"
   (closed)="closeModal()"
 ></app-task-addedit-modal>
@@ -145,3 +191,9 @@
   (confirm)="onConfirmDelete()"
   (closed)="closeDeleteModal()"
 ></app-delete-model>
+
+<app-task-detail-model
+  [visible]="showViewModal"
+  [task]="viewTask"
+  (closed)="closeViewModal()"
+></app-task-detail-model>

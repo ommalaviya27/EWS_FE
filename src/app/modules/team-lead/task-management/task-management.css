@@ -26,19 +26,33 @@
 }
 
 .page-title {
-  margin: 0 0 4px;
+  margin: 0 0 2px;
   font-size: 20px;
   font-weight: 700;
   color: #1a1a2e;
 }
 
-.page-subtitle {
-  margin: 0;
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  background: none;
+  border: 1px solid #8e00ed;
+  border-radius: 8px;
   font-size: 13px;
-  color: #6c757d;
+  font-weight: 600;
+  color: #8e00ed;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  width: 150px;
+  justify-content: center;
+  gap: 6px;
+}
+.btn-back:hover {
+  background: #8e00ed;
+  color: #fff;
 }
 
-/* ===== Card ===== */
 .table-card {
   background: #fff;
   border-radius: 12px;
@@ -53,7 +67,6 @@
 
 /* ===== Scroll area ===== */
 .grid-scroll {
-  flex: 1;
   overflow: auto;
   min-height: 0;
   scrollbar-width: none;
@@ -70,7 +83,7 @@
 
 .grid-row {
   display: grid;
-  grid-template-columns: 2fr 1.2fr 1.1fr 1fr 0.85fr 0.9fr 0.75fr;
+  grid-template-columns: 2.2fr 1fr 1fr 1fr 1fr 0.75fr;
   align-items: center;
   border-bottom: 1px solid #f1f3f5;
 }
@@ -108,6 +121,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-bottom: 6px;
 }
 
 .task-desc {
@@ -241,8 +255,7 @@
 .action-dropdown {
   position: absolute;
   right: 0;
-  top: 100%;
-  margin-top: 4px;
+  top: 75%;
   background: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
@@ -253,12 +266,12 @@
   display: flex;
   flex-direction: column;
   padding: 4px 0;
+  transform: translateX(-20px);
 }
 
 .action-dropdown.dropdown-up {
   top: auto;
-  bottom: 100%;
-  margin-top: 0;
+  bottom: 75%;
   margin-bottom: 4px;
   box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.12);
 }
@@ -269,13 +282,11 @@
   gap: 8px;
   width: 100%;
   padding: 8px 14px;
-  font-size: 13.5px;
+  font-size: 14px;
   font-weight: 500;
   border: none;
   background: transparent;
-  text-align: left;
   cursor: pointer;
-  color: #374151;
   transition: background-color 0.1s ease;
 }
 
@@ -294,4 +305,17 @@
   margin: 4px 0 0;
   font-size: 13px;
   color: #94a3b8;
+}
+
+.projects-scroll {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+  scrollbar-width: thin;
+  scrollbar-color: #e5e7eb transparent;
+  padding: 4px 2px 8px;
+}
+
+.view-item:hover {
+  background: #eef2ff;
 }

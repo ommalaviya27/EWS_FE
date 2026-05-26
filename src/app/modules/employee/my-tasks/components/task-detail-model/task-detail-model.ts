@@ -1,17 +1,19 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { MyTask, TaskComment, TaskAttachment, TaskStatuses, TaskPriority, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS } from '../../models/my-task.model';
 import { MyTaskService } from '../../services/my-task.service';
 import { ConfirmationModel } from '../../../../../common/components/confirmation-model/confirmation-model';
 import { ConfirmationModelConfig } from '../../../../../common/components/confirmation-model/confirmation-model.config';
+import { Description, DescriptionFieldConfig, Button, ButtonInputConfig } from '@common';
+import { SessionService } from 'src/app/common/services';
 
 const PAGE_SIZE = 5;
 
 @Component({
   selector: 'app-task-detail-model',
-  imports: [CommonModule, FormsModule, ConfirmationModel],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, ConfirmationModel, Description, Button],
   templateUrl: './task-detail-model.html',
   styleUrl: './task-detail-model.css',
 })
@@ -22,7 +24,9 @@ export class TaskDetailModel implements OnChanges {
   @Output() refreshTasks = new EventEmitter<void>();
 
   private myTaskService = inject(MyTaskService);
+  private sessionService = inject(SessionService);
   private toastr = inject(ToastrService);
+  private fb = inject(FormBuilder);
 
   activeTab: 'details' | 'comments' | 'attachments' = 'details';
 
@@ -44,14 +48,59 @@ export class TaskDetailModel implements OnChanges {
     confirmText: 'Update',
   };
 
-  commentText = '';
+  commentForm!: FormGroup;
+  editCommentForm!: FormGroup;
+
+  readonly addCommentConfig: DescriptionFieldConfig = {
+    formControlName: 'comment',
+    placeholder: 'Write a comment...',
+    rows: 1,
+  };
+
+  readonly editCommentConfig: DescriptionFieldConfig = {
+    formControlName: 'editComment',
+    placeholder: 'Edit comment...',
+    rows: 1,
+  };
+
+  postCommentConfig: ButtonInputConfig = {
+    variant: 'save',
+    text: 'Post',
+    isLoading: false,
+    disabled: false,
+    onClick: () => this.submitComment(),
+  };
+  
+  uploadFilesConfig: ButtonInputConfig = {
+    variant: 'save',
+    text: 'Upload',
+    isLoading: false,
+    disabled: false,
+    onClick: () => this.uploadFiles(),
+  };
+
+  getSaveEditConfig(comment: TaskComment): ButtonInputConfig {
+    return {
+      variant: 'save',
+      text: 'Save',
+      isLoading: this.isSavingEdit,
+      disabled: this.editCommentForm.invalid || this.isSavingEdit,
+      onClick: () => this.saveEdit(comment),
+    };
+  }
+  
+  cancelEditConfig: ButtonInputConfig = {
+    variant: 'close',
+    text: 'Cancel',
+    onClick: () => this.cancelEdit(),
+  };
+
   isSubmittingComment = false;
   isLoadingComments = false;
   commentPage = 1;
   readonly commentPageSize = PAGE_SIZE;
 
   editingCommentId: number | null = null;
-  editCommentText = '';
   isSavingEdit = false;
   deletingCommentId: number | null = null;
   openMenuCommentId: number | null = null;
@@ -66,7 +115,7 @@ export class TaskDetailModel implements OnChanges {
   readonly TaskPriority = TaskPriority;
 
   get currentUserId(): number {
-    return this.task?.assignedToUserId ?? 0;
+    return this.sessionService.userId ?? 0;
   }
 
   get totalCommentPages(): number {
@@ -83,13 +132,18 @@ export class TaskDetailModel implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['visible'] && this.visible && this.task) {
       this.activeTab = 'details';
-      this.commentText = '';
       this.selectedFiles = [];
       this.commentPage = 1;
       this.cancelEdit();
       this.currentStatus = this.task.taskStatus;
       this.loadComments();
       this.attachments = this.task.attachments ?? [];
+      this.commentForm = this.fb.group({
+        comment: ['', [Validators.required, Validators.maxLength(1000)]],
+      });
+      this.editCommentForm = this.fb.group({
+        editComment: ['', [Validators.required, Validators.maxLength(1000)]],
+      });
     }
   }
 
@@ -157,20 +211,28 @@ export class TaskDetailModel implements OnChanges {
   }
 
   submitComment(): void {
-    const text = this.commentText.trim();
-    if (!text || !this.task) return;
+    if (this.commentForm.invalid || !this.task) return;
+    const text = this.commentForm.value.comment.trim();
+    if (!text) return;
     this.isSubmittingComment = true;
+    this.postCommentConfig = { ...this.postCommentConfig, isLoading: true, disabled: true };
     this.myTaskService.addComment(this.task.id, { comment: text }).subscribe({
       next: (res) => {
-        this.comments = [...this.comments, res.data!];
-        this.commentText = '';
+        const newComment: TaskComment = {
+          ...res.data!,
+          userId: res.data?.userId || this.currentUserId,
+        };
+        this.comments = [...this.comments, newComment];
+        this.commentForm.reset();
         this.isSubmittingComment = false;
+        this.postCommentConfig = { ...this.postCommentConfig, isLoading: false, disabled: false };
         this.commentPage = this.totalCommentPages;
         this.toastr.success('Comment added.');
       },
       error: (err) => {
         this.toastr.error(this.getError(err));
         this.isSubmittingComment = false;
+        this.postCommentConfig = { ...this.postCommentConfig, isLoading: false, disabled: false };
       },
     });
   }
@@ -185,17 +247,19 @@ export class TaskDetailModel implements OnChanges {
 
   startEdit(comment: TaskComment): void {
     this.editingCommentId = comment.id;
-    this.editCommentText = comment.comment;
+    this.editCommentForm.patchValue({ editComment: comment.comment });
   }
 
   cancelEdit(): void {
     this.editingCommentId = null;
-    this.editCommentText = '';
+    this.editCommentForm?.reset();
     this.isSavingEdit = false;
+    this.cancelEditConfig = { ...this.cancelEditConfig, disabled: false };
   }
 
   saveEdit(comment: TaskComment): void {
-    const text = this.editCommentText.trim();
+    if (this.editCommentForm.invalid) return;
+    const text = this.editCommentForm.value.editComment.trim();
     if (!text) return;
     this.isSavingEdit = true;
     this.myTaskService
@@ -254,17 +318,20 @@ export class TaskDetailModel implements OnChanges {
   uploadFiles(): void {
     if (!this.selectedFiles.length || !this.task) return;
     this.isUploadingFiles = true;
+    this.uploadFilesConfig = { ...this.uploadFilesConfig, isLoading: true, disabled: true };
     this.myTaskService.addAttachments(this.task.id, this.selectedFiles).subscribe({
       next: (res) => {
         this.attachments = [...this.attachments, ...(res.data ?? [])];
         this.selectedFiles = [];
         this.isUploadingFiles = false;
+        this.uploadFilesConfig = { ...this.uploadFilesConfig, isLoading: false, disabled: false };
         this.toastr.success('Files uploaded.');
         this.refreshTasks.emit();
       },
       error: (err) => {
         this.toastr.error(this.getError(err));
         this.isUploadingFiles = false;
+        this.uploadFilesConfig = { ...this.uploadFilesConfig, isLoading: false, disabled: false };
       },
     });
   }

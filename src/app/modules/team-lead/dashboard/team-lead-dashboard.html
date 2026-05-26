@@ -1,10 +1,217 @@
-<div class="dashboard-page">
-  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#0d9488" stroke-width="1.5">
-    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-    <circle cx="9" cy="7" r="4" />
-    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-  </svg>
-  <h3>Team Lead Dashboard</h3>
-  <p>Here there will be <b>my team task, overdue task, active and completed task, my projects</b>.</p>
+<div class="tld-wrapper">
+  @if (isLoading) {
+  <div class="tld-center"><div class="spinner-border text-primary"></div></div>
+  } @else if (dashboard) {
+
+  <!-- HEADER -->
+  <div class="tld-header">
+    <div>
+      <h3 class="tld-title">Team Lead Dashboard</h3>
+      <p class="tld-subtitle">Overview of your team's tasks, projects and upcoming deadlines</p>
+    </div>
+    <a [routerLink]="taskManagementRoute" class="tld-link-btn">
+      <span class="material-icons">open_in_new</span>Manage Tasks
+    </a>
+  </div>
+
+  <div class="tld-stats">
+    <div class="tld-stat tld-stat--purple">
+      <span class="tld-stat__icon material-icons">groups</span>
+      <div class="tld-col">
+        <span class="tld-stat__num">{{ dashboard.myTeamTaskCount }}</span>
+        <span class="tld-stat__lbl">My Team Tasks</span>
+      </div>
+    </div>
+    <div class="tld-stat tld-stat--red">
+      <span class="tld-stat__icon material-icons">warning_amber</span>
+      <div class="tld-col">
+        <span class="tld-stat__num">{{ dashboard.overdueTaskCount }}</span>
+        <span class="tld-stat__lbl">Overdue Tasks</span>
+      </div>
+    </div>
+    <div class="tld-stat tld-stat--green">
+      <span class="tld-stat__icon material-icons">folder_open</span>
+      <div class="tld-col">
+        <span class="tld-stat__num">{{ dashboard.activeProjectCount }}</span>
+        <span class="tld-stat__lbl">Active Projects</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="tld-grid">
+    <!-- Active Projects -->
+    <div class="tld-panel">
+      <div class="tld-panel__head">
+        <h4 class="tld-panel__title">Active Projects</h4>
+        <span>{{ dashboard.activeProjects.length }}</span>
+      </div>
+      @if (dashboard.activeProjects.length === 0) {
+      <div class="tld-empty">
+        <span>No active projects right now.</span>
+      </div>
+      } @else {
+      <div class="tld-scroll">
+        @for (project of dashboard.activeProjects; track project.id) {
+        <div class="tld-item">
+          <div class="tld-item__info">
+            <label>{{ project.name }}</label>
+            <p>{{ project.description }}</p>
+          </div>
+          <div class="tld-item__end">
+            <span class="tld-status-badge" [ngClass]="getProjectStatusBadge(project.projectStatus)">
+              {{ getProjectStatusLabel(project.projectStatus) }}
+            </span>
+            <span class="mp_date"
+              >{{ formatDate(project.startDate) }} – {{ formatDate(project.endDate) }}</span
+            >
+          </div>
+        </div>
+        }
+      </div>
+      }
+    </div>
+
+    <!-- Overdue Tasks -->
+    <div class="tld-panel">
+      <div class="tld-panel__head">
+        <h4 class="tld-panel__title">Overdue Tasks</h4>
+        <span>{{ dashboard.overdueTasks.length }}</span>
+      </div>
+      @if (dashboard.overdueTasks.length === 0) {
+      <div class="tld-empty">
+        <span class="material-icons">check_circle_outline</span> No overdue tasks. Great job!
+      </div>
+      } @else {
+      <div class="tld-scroll">
+        @for (task of dashboard.overdueTasks; track task.id) {
+        <div class="tld-item">
+          <div class="tld-item__info">
+            <label>{{ task.title }}</label>
+            <span class="over_pro_name">{{ task.projectName }}</span>
+          </div>
+          <div class="tld-item__end">
+            <span class="tld-assignee">{{ task.assignedToUserName }}</span>
+            <span class="tld-pri-badge" [attr.data-p]="task.priority">{{
+              getPriorityLabel(task.priority)
+            }}</span>
+            <span class="tld-date">{{ formatDate(task.dueDate) }}</span>
+          </div>
+        </div>
+        }
+      </div>
+      }
+    </div>
+
+    <!-- My Projects -->
+    <div class="tld-panel">
+      <div class="tld-panel__head">
+        <h4 class="tld-panel__title">My Projects</h4>
+        <span>{{ dashboard.myProjects.length }}</span>
+      </div>
+      @if (dashboard.myProjects.length === 0) {
+      <div class="tld-empty">
+        <span class="material-icons">folder_special</span> No projects assigned to you yet.
+      </div>
+      } @else {
+      <div class="tld-scroll">
+        @for (project of dashboard.myProjects; track project.id) {
+        <div class="tld-item">
+          <div class="tld-item__info">
+            <label>{{ project.name }}</label>
+            <p>{{ project.description }}</p>
+          </div>
+          <div class="tld-item__end">
+            <span class="tld-status-badge" [ngClass]="getProjectStatusBadge(project.projectStatus)">
+              {{ getProjectStatusLabel(project.projectStatus) }}
+            </span>
+            <span class="mp_date"
+              >{{ formatDate(project.startDate) }} – {{ formatDate(project.endDate) }}</span
+            >
+          </div>
+        </div>
+        }
+      </div>
+      }
+    </div>
+
+    <!-- Recent Team Tasks -->
+    <div class="tld-panel">
+      <div class="tld-panel__head">
+        <h4 class="tld-panel__title">Recent Team Tasks</h4>
+        <span>{{ dashboard.recentTeamTasksTotalCount }}</span>
+      </div>
+      @if (dashboard.recentTeamTasks.length === 0) {
+      <div class="tld-empty"><span class="material-icons">task_alt</span> No team tasks found.</div>
+      } @else {
+      <div class="tld-table-wrap">
+        <div class="tld-table">
+          <div class="tld-tr tld-tr--head">
+            <div class="tld-th">Task Name</div>
+            <div class="tld-th">Assigned To</div>
+            <div class="tld-th">Priority</div>
+            <div class="tld-th">Due Date</div>
+          </div>
+          @for (task of dashboard.recentTeamTasks; track task.id) {
+          <div class="tld-tr">
+            <div class="tld-td">
+              <span class="tld-task-name">{{ task.title }}</span>
+              <b>{{ task.projectName }}</b>
+            </div>
+            <div class="tld-td">
+              <span class="tld-assignee">{{ task.assignedToUserName }}</span>
+            </div>
+            <div class="tld-td">
+              <span class="tld-pri-badge" [attr.data-p]="task.priority">{{
+                getPriorityLabel(task.priority)
+              }}</span>
+            </div>
+            <div class="tld-td">
+              <span [class.tld-date--overdue]="isOverdue(task.dueDate)">
+                {{ formatDate(task.dueDate) }}
+              </span>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+
+      @if (totalPages > 1) {
+      <div class="tld-pagination">
+        <button
+          class="tld-page-btn"
+          [disabled]="currentPage === 1"
+          (click)="goToPage(currentPage - 1)"
+        >
+          <span class="material-icons">chevron_left</span>
+        </button>
+
+        @for (page of visiblePages; track page) {
+        <button
+          class="tld-page-btn"
+          [class.tld-page-btn--active]="page === currentPage"
+          (click)="goToPage(page)"
+        >
+          {{ page }}
+        </button>
+        }
+
+        <button
+          class="tld-page-btn"
+          [disabled]="currentPage === totalPages"
+          (click)="goToPage(currentPage + 1)"
+        >
+          <span class="material-icons">chevron_right</span>
+        </button>
+      </div>
+      } }
+    </div>
+  </div>
+
+  } @else if (!isLoading) {
+  <div class="tld-center tld-center--col">
+    <span class="material-icons" style="font-size: 40px; color: #d1d5db">cloud_off</span>
+    <h4 style="margin: 0; font-size: 16px">Could not load dashboard</h4>
+    <p style="margin: 0; font-size: 13px">Please try refreshing the page.</p>
+  </div>
+  }
 </div>

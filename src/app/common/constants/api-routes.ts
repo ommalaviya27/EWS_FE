@@ -31,6 +31,7 @@ export const API_ROUTES = {
     CREATE: '/api/tasks',
     UPDATE: (id: number) => `/api/tasks/${id}`,
     DELETE: (id: number) => `/api/tasks/${id}`,
+    GET_TEAM_LEAD_DASHBOARD: '/api/tasks/team-lead-dashboard',
   },
   MY_TASKS: {
     GET_DASHBOARD: '/api/my-tasks/dashboard',

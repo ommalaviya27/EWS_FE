@@ -5,7 +5,7 @@
 
 .custom-textarea.form-control {
   width: 100%;
-  min-height: 120px;
+  min-height: 60px;
   padding: 20px 14px 10px 14px;
   border: 1.5px solid #d0d0d0;
   border-radius: 8px;

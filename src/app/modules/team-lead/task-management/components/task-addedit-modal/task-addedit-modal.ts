@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Task, TeamMember, ProjectOption, TaskStatuses, TaskPriority, TASK_STATUS_LIST, TASK_PRIORITY_LIST, CreateTaskRequest, UpdateTaskRequest } from '../../models/task-management.model';
+import { Task, TeamMember, TaskStatuses, TaskPriority, TASK_STATUS_LIST, TASK_PRIORITY_LIST, CreateTaskRequest, UpdateTaskRequest } from '../../models/task-management.model';
 import { Name, NameFieldConfig, Description, DescriptionFieldConfig, Button, ButtonInputConfig } from '@common';
 
 @Component({
@@ -15,7 +15,8 @@ export class TaskAddeditModal implements OnInit, OnChanges {
   @Input() isLoading = false;
   @Input() task: Task | null = null;
   @Input() teamMembers: TeamMember[] = [];
-  @Input() projects: ProjectOption[] = [];
+  @Input() projectId!: string;
+  @Input() projectName!: string;
 
   @Output() save = new EventEmitter<CreateTaskRequest | UpdateTaskRequest>();
   @Output() closed = new EventEmitter<void>();
@@ -32,8 +33,10 @@ export class TaskAddeditModal implements OnInit, OnChanges {
   cancelBtnConfig!: ButtonInputConfig;
   submitBtnConfig!: ButtonInputConfig;
 
-  get isEditMode(): boolean {
-    return this.task !== null;
+  get isEditMode(): boolean { return this.task !== null; }
+
+  get lockedProjectName(): string {
+    return this.projectName || this.task?.projectName || this.task?.projectId || '';
   }
 
   ngOnInit(): void {
@@ -73,6 +76,7 @@ export class TaskAddeditModal implements OnInit, OnChanges {
 
   private buildForm(): void {
     const t = this.task;
+
     this.form = this.fb.group({
       title: [
         t?.title ?? '',
@@ -82,7 +86,6 @@ export class TaskAddeditModal implements OnInit, OnChanges {
         t?.description ?? '',
         [Validators.required, Validators.minLength(5), Validators.maxLength(1000)],
       ],
-      projectId: [t?.projectId ?? null, [Validators.required]],
       assignedToUserId: [t?.assignedToUserId ?? null, [Validators.required]],
       dueDate: [t ? this.toDateInput(t.dueDate) : '', [Validators.required]],
       status: [t?.taskStatus ?? TaskStatuses.Pending, [Validators.required]],
@@ -105,7 +108,7 @@ export class TaskAddeditModal implements OnInit, OnChanges {
       ...(this.isEditMode ? { id: this.task!.id } : {}),
       title: v.title,
       description: v.description,
-      projectId: v.projectId,
+      projectId: this.isEditMode ? this.task!.projectId : this.projectId,
       assignedToUserId: Number(v.assignedToUserId),
       dueDate: new Date(v.dueDate).toISOString(),
       status: Number(v.status),
@@ -127,10 +130,8 @@ export class TaskAddeditModal implements OnInit, OnChanges {
     const ctrl = this.form.get(field);
     if (!ctrl || !ctrl.errors || !ctrl.touched) return '';
     if (ctrl.errors['required']) return 'This field is required.';
-    if (ctrl.errors['minlength'])
-      return `Minimum ${ctrl.errors['minlength'].requiredLength} characters required.`;
-    if (ctrl.errors['maxlength'])
-      return `Maximum ${ctrl.errors['maxlength'].requiredLength} characters allowed.`;
+    if (ctrl.errors['minlength']) return `Minimum ${ctrl.errors['minlength'].requiredLength} characters required.`;
+    if (ctrl.errors['maxlength']) return `Maximum ${ctrl.errors['maxlength'].requiredLength} characters allowed.`;
     return 'Invalid value.';
   }
 }

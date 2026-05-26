@@ -17,6 +17,7 @@ export class SearchBarComponent implements OnInit, OnDestroy, OnChanges {
   @Output() searchChange = new EventEmitter<string>();
 
   inputValue = '';
+  isExpanded = false;
 
   private inputSubject = new Subject<string>();
   private destroy$ = new Subject<void>();
@@ -46,5 +47,16 @@ export class SearchBarComponent implements OnInit, OnDestroy, OnChanges {
   clearSearch(): void {
     this.inputValue = '';
     this.inputSubject.next('');
+  }
+
+  toggleSearch(): void {
+    this.isExpanded = !this.isExpanded;
+    if (!this.isExpanded) {
+      this.clearSearch();
+    }
+  }
+
+  closeSearch(): void {
+    this.isExpanded = false;
   }
 }

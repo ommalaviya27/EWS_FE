@@ -43,12 +43,12 @@
       <!-- DETAILS TAB -->
       @if (activeTab === 'details') {
       <div class="td-details-grid">
-        <div class="td-status-priority-row">
-          <div>
-            <label class="td-label">Status</label>
-            <div class="td-field-wrap">
+        <div class="td-meta-row">
+          <div class="td-field">
+            <div class="td-fieldset has-value">
+              <span class="td-legend">Status</span>
               <select
-                class="td-status-select"
+                class="td-select-input"
                 [attr.data-status]="currentStatus"
                 [ngModel]="currentStatus"
                 [disabled]="isUpdatingStatus"
@@ -64,31 +64,41 @@
             </div>
           </div>
 
-          <div>
-            <label class="td-label">Priority</label>
-            <div class="td-field-wrap">
-              <span class=" td-status-select td-priority-badge" [attr.data-priority]="task.priority">
+          <div class="td-field">
+            <div class="td-fieldset has-value">
+              <span class="td-legend">Priority</span>
+              <span class="td-select-input td-priority-badge" [attr.data-priority]="task.priority">
                 {{ getPriorityLabel(task.priority) }}
               </span>
             </div>
           </div>
         </div>
 
-        <div>
-          <label class="td-label">Description</label>
-          <p class="td-description">{{ task.description }}</p>
+        <div class="td-field">
+          <div class="td-fieldset td-fieldset-text has-value">
+            <span class="td-legend">Description</span>
+            <p class="td-description">
+              {{ task.description }}
+            </p>
+          </div>
         </div>
 
         <div class="td-meta-row">
-          <div>
-            <label class="td-label">Due Date</label>
-            <p class="td-meta-text">
-              {{ formatDate(task.dueDate) }}
-            </p>
+          <div class="td-field">
+            <div class="td-fieldset has-value">
+              <span class="td-legend">Due Date</span>
+              <p class="td-meta-text">
+                {{ formatDate(task.dueDate) }}
+              </p>
+            </div>
           </div>
-          <div>
-            <label class="td-label">Assigned By</label>
-            <p class="td-meta-text">{{ task.assignedByUserName }}</p>
+          <div class="td-field">
+            <div class="td-fieldset has-value">
+              <span class="td-legend">Assigned By</span>
+              <p class="td-meta-text">
+                {{ task.assignedByUserName }}
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -103,29 +113,20 @@
             <span class="td-spinner"></span>
           </div>
           } @else if (comments.length === 0) {
-          <div class="td-center-state td-empty-state">
-            <span class="material-icons">chat_bubble_outline</span>
-            <p>No comments yet. Be the first!</p>
+          <div class="td-center-state">
+            <p>No comments yet.</p>
           </div>
           } @else { @for (c of pagedComments; track c.id) { @if (editingCommentId === c.id) {
-          <div class="td-comment-item">
-            <textarea
-              class="td-textarea"
-              rows="3"
-              [(ngModel)]="editCommentText"
-              [disabled]="isSavingEdit"
-            ></textarea>
+          <div class="td-comment-item td-comment-edit-item">
+            <div class="td-edit-field-wrap">
+              <app-description-field
+                [formGroup]="editCommentForm"
+                [config]="editCommentConfig"
+              ></app-description-field>
+            </div>
             <div class="td-edit-actions">
-              <button
-                class="td-btn td-btn-primary"
-                [disabled]="!editCommentText.trim() || isSavingEdit"
-                (click)="saveEdit(c)"
-              >
-                @if(isSavingEdit){<span class="td-spinner td-spinner-sm"></span>} Save
-              </button>
-              <button class="td-btn td-btn-ghost" [disabled]="isSavingEdit" (click)="cancelEdit()">
-                Cancel
-              </button>
+              <app-button [config]="getSaveEditConfig(c)"></app-button>
+              <app-button [config]="cancelEditConfig"></app-button>
             </div>
           </div>
           } @else {
@@ -146,14 +147,14 @@
                   <span class="material-icons">edit</span> Edit
                 </button>
                 <button
-                  class="td-drop-item td-drop-danger"
+                  class="td-drop-item "
                   (click)="deleteComment(c); closeMenu()"
                   [disabled]="deletingCommentId === c.id"
                 >
                   @if(deletingCommentId === c.id){
-                  <span class="td-spinner td-spinner-sm"></span>
+                  <span class="td-spinner"></span>
                   } @else {
-                  <span class="material-icons">delete_outline</span>
+                  <span class="material-icons">delete</span>
                   } Delete
                 </button>
               </div>
@@ -161,9 +162,7 @@
             </div>
             }
           </div>
-          } }
-
-          @if (totalCommentPages > 1) {
+          } } @if (totalCommentPages > 1) {
           <div class="td-pagination">
             <button
               class="td-page-btn"
@@ -194,46 +193,31 @@
 
         <!-- COMPOSE -->
         <div class="td-compose">
-          <textarea
-            class="td-textarea"
-            rows="2"
-            placeholder="Write a comment..."
-            [(ngModel)]="commentText"
-          ></textarea>
-          <button
-            class="td-btn td-btn-primary"
-            [disabled]="!commentText.trim() || isSubmittingComment"
-            (click)="submitComment()"
-          >
-            @if(isSubmittingComment){
-            <span class="td-spinner td-spinner-sm"></span>
-            } @else {
-            <span class="material-icons">send</span>
-            } Post
-          </button>
+          <div class="td-compose-field">
+            <app-description-field
+              [formGroup]="commentForm"
+              [config]="addCommentConfig"
+            ></app-description-field>
+          </div>
+          <app-button [config]="postCommentConfig"></app-button>
         </div>
       </div>
-      }
-
+      } 
+      
       @if (activeTab === 'attachments') {
       <div class="td-tab-content">
         <div class="td-attach-grid">
           @if (attachments.length === 0 && selectedFiles.length === 0) {
-          <div class="td-center-state td-empty-state td-attach-empty">
-            <span class="material-icons">folder_open</span>
+          <div class="td-center-state td-attach-empty">
             <p>No attachments yet.</p>
           </div>
           } @else { @for (a of attachments; track a.id) {
           <div class="td-attach-card" [class.td-faded]="deletingAttachmentId === a.id">
-            <div class="td-attach-icon-wrap" [ngClass]="getFileColorClass(a.fileName)">
-              <span class="material-icons">{{ getFileIcon(a.fileName) }}</span>
-            </div>
             <span class="td-attach-name">{{ a.fileName }}</span>
-            <span class="td-attach-meta">{{ formatFileSize(a.fileSize) }}</span>
             <span class="td-attach-meta">{{ a.userName }}</span>
             <div class="td-attach-overlay">
               @if(deletingAttachmentId === a.id){
-              <span class="td-spinner td-spinner-white"></span>
+              <span class="td-spinner"></span>
               } @else {
               <button class="td-attach-del-btn" (click)="deleteAttachment(a)" title="Delete">
                 <span class="material-icons">delete_outline</span>
@@ -246,20 +230,19 @@
 
         @if (selectedFiles.length > 0) {
         <div class="td-pending-files">
-          <small class="td-label">READY TO UPLOAD ({{ selectedFiles.length }})</small>
+          <label class="td-label">Upload files: - </label>
           @for (f of selectedFiles; track f.name; let i = $index) {
           <div class="td-pending-item">
-            <span class="material-icons td-pending-icon">{{ getFileIcon(f.name) }}</span>
             <span class="td-pending-name">{{ f.name }}</span>
             <span class="td-pending-size">{{ formatFileSize(f.size) }}</span>
-            <button class="td-remove-btn" (click)="removeSelectedFile(i)">✕</button>
+            <button class="td-close" (click)="removeSelectedFile(i)">✕</button>
           </div>
           }
         </div>
         }
 
         <div class="td-upload-bar">
-          <label class="td-btn td-btn-outline">
+          <label class="td-btn-outline">
             <span class="material-icons">upload_file</span>
             Choose Files
             <input
@@ -271,17 +254,7 @@
             />
           </label>
           @if (selectedFiles.length > 0) {
-          <button
-            class="td-btn td-btn-primary"
-            [disabled]="isUploadingFiles"
-            (click)="uploadFiles()"
-          >
-            @if(isUploadingFiles){
-            <span class="td-spinner td-spinner-sm"></span> Uploading... } @else {
-            <span class="material-icons">cloud_upload</span>
-            Upload {{ selectedFiles.length }} file{{ selectedFiles.length > 1 ? 's' : '' }}
-            }
-          </button>
+            <app-button [config]="uploadFilesConfig"></app-button>
           }
         </div>
       </div>
