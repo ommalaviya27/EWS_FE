@@ -109,7 +109,7 @@ export class EmployeeAddeditModal implements OnInit, OnChanges {
       password: ['', this.isEditMode ? [] : [Validators.required, Validators.minLength(8)]],
       roleId: [e?.roleId ?? null, [Validators.required]],
       teamLeadId: [e?.teamLeadId ?? null],
-      status: [e?.status ?? true],
+      status: [true, Validators.required],
     });
 
     this.updateTeamLeadControlState();

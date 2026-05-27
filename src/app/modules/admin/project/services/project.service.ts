@@ -5,6 +5,7 @@ import { API_ROUTES } from '../../../../common/constants/api-routes';
 import { ApiResponse } from '../../../../common/models/api-response.model';
 import { PaginationRequest, PaginationResponse } from '../../../../common/components/pagination/pagination.model';
 import { Project, TeamLeader, CreateProjectRequest, UpdateProjectRequest } from '../models/project.model';
+import { Task } from '../../../team-lead/task-management/models/task-management.model';
 
 @Injectable({ providedIn: 'root' })
 export class ProjectService {
@@ -29,6 +30,23 @@ export class ProjectService {
 
   getTeamLeaders(): Observable<ApiResponse<TeamLeader[]>> {
     return this.apiService.get<TeamLeader[]>(API_ROUTES.PROJECT.GET_TEAM_LEADERS);
+  }
+
+  getProjectTasks( projectId: string, pagination: PaginationRequest & { search?: string }
+  ): Observable<ApiResponse<PaginationResponse<Task>>> {
+    const params: Record<string, string> = {
+      PageNumber: pagination.pageNumber.toString(),
+      PageSize: pagination.pageSize.toString(),
+    };
+
+    if (pagination.search?.trim()) {
+      params['Search'] = pagination.search.trim();
+    }
+
+    return this.apiService.get<PaginationResponse<Task>>(
+      API_ROUTES.PROJECT.GET_TASKS(projectId),
+      params
+    );
   }
 
   create(payload: CreateProjectRequest): Observable<ApiResponse<Project>> {

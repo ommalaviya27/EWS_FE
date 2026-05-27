@@ -40,8 +40,8 @@
 }
 
 .logo-box img {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   object-fit: contain;
 }
 
@@ -54,18 +54,10 @@
 
 .brand-text p {
   margin: 0;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   opacity: 0.8;
   white-space: nowrap;
-}
-
-.portal-badge {
-  background: rgba(255, 255, 255, 0.2);
-  padding: 3px 10px;
-  border-radius: 15px;
-  font-size: 0.65rem;
-  font-weight: 700;
-  width: fit-content;
+  margin-top: 2px;
 }
 
 /* Header Main */
@@ -94,11 +86,10 @@
 
 .date-info {
   font-size: 0.8rem;
-  color: #888;
+  color: #6c757d;
   margin-top: 8px;
 }
 
-/* User Profile */
 .user-profile {
   position: relative;
   display: flex;
@@ -108,25 +99,6 @@
   z-index: 1001;
 }
 
-/* Notification */
-.notification-wrapper {
-  position: relative;
-  cursor: pointer;
-  color: #666;
-}
-
-.notification-dot {
-  position: absolute;
-  top: 2px;
-  right: 2px;
-  width: 7px;
-  height: 7px;
-  background: #ff4d4d;
-  border-radius: 50%;
-  border: 1.5px solid #fff;
-}
-
-/* Profile Trigger */
 .profile-trigger {
   display: flex;
   align-items: center;
@@ -147,16 +119,16 @@
 }
 
 .user-name {
-  display: block;
-  font-weight: 600;
-  font-size: 0.95rem;
+  font-weight: 550;
+  font-size: 1rem;
   white-space: nowrap;
 }
 
 .user-role {
   display: block;
-  font-size: 0.75rem;
-  color: #999;
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin-top: 3px;
 }
 
 .avatar {
@@ -173,7 +145,7 @@
 }
 
 .arrow-icon {
-  color: #999;
+  color: #6c757d;
   font-size: 1.2rem;
   transition: transform 0.2s ease;
 }
@@ -191,7 +163,7 @@
   border: 1px solid #f0f0f0;
   border-radius: 12px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  min-width: 180px;
+  min-width: 160px;
   z-index: 1002;
   overflow: hidden;
   display: flex;
@@ -204,7 +176,6 @@
   gap: 10px;
   padding: 12px 20px;
   font-size: 0.9rem;
-  color: #444;
   border: none;
   background: none;
   width: 100%;
@@ -213,21 +184,10 @@
   transition: background 0.2s;
 }
 
-.dropdown-item:hover {
-  background: #f8f6ff;
-  color: #8e00ed;
-}
-
-.dropdown-item.logout:hover {
-  background: #fff5f5;
-  color: #ff4d4d;
-}
-
 .dropdown-item .material-icons {
   font-size: 1.1rem;
 }
 
-/* Outside click overlay */
 .profile-overlay {
   position: fixed;
   inset: 0;
@@ -242,7 +202,7 @@
   }
 
   .sidebar-brand {
-    width: auto;
+    width: 170px;
     padding: 12px 14px;
     flex-direction: row;
     align-items: center;
@@ -254,17 +214,16 @@
     align-items: center;
   }
 
-  .brand-text,
-  .portal-badge {
-    display: none;
-  }
-
   .header-main {
     padding: 10px 14px;
   }
 
   .title-section h2 {
     font-size: 1.05rem;
+  }
+
+  .brand-text p {
+    display: none;
   }
 
   .user-info {

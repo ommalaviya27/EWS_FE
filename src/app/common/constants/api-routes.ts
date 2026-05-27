@@ -11,6 +11,7 @@ export const API_ROUTES = {
     GET_ALL: '/api/projects',
     GET_BY_ID: (id: string) => `/api/projects/${id}`,
     GET_TEAM_LEADERS: '/api/projects/team-leaders',
+    GET_TASKS: (id: string) => `/api/projects/${id}/tasks`,
     CREATE: '/api/projects',
     UPDATE: (id: string) => `/api/projects/${id}`,
     DELETE: (id: string) => `/api/projects/${id}`,
@@ -41,12 +42,17 @@ export const API_ROUTES = {
     ADD_COMMENT: (id: number) => `/api/my-tasks/${id}/comments`,
     UPDATE_COMMENT: (commentId: number) => `/api/my-tasks/${commentId}/comments`,
     DELETE_COMMENT: (commentId: number) => `/api/my-tasks/${commentId}/comments`,
+    GET_ATTACHMENTS: (id: number) => `/api/my-tasks/${id}/attachments`,
     ADD_ATTACHMENTS: (id: number) => `/api/my-tasks/${id}/attachments`,
     DELETE_ATTACHMENT: (attachmentId: number) => `/api/my-tasks/${attachmentId}/attachments`,
+    DOWNLOAD_ATTACHMENT: (attachmentId: number) => `/api/my-tasks/attachments/${attachmentId}/download`,
   },
   PROFILE: {
     GET: '/api/profile',
     UPDATE: '/api/profile',
     CHANGE_PASSWORD: '/api/profile/change-password',
   },
+  ADMIN: {
+    GET_DASHBOARD: '/api/admin/dashboard',
+  }
 };

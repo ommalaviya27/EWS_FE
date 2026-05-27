@@ -3,18 +3,18 @@
     <span class="search-icon material-icons">search</span>
   </button>
 
-  @if (isExpanded) {
   <input
     class="search-input"
     type="text"
     [placeholder]="placeholder"
     [value]="inputValue"
-    (input)="onInput($any($event.target).value)"
+    (input)="$event && onInput($any($event.target).value)"
     autocomplete="off"
     spellcheck="false"
   />
-  } @if (isExpanded && inputValue) {
-  <button type="button" class="clear-btn" (click)="clearSearch()">
+
+  @if (inputValue) {
+  <button type="button" class="clear-btn" (click)="clearSearch()" aria-label="Clear search">
     <span class="material-icons">close</span>
   </button>
   }

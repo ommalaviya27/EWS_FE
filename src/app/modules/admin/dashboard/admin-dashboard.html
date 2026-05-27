@@ -1,9 +1,157 @@
-<div class="admin-content-area">
-  <div class="table-container">
-    <div class="placeholder-notice">
-      <span class="material-icons">group</span>
-      <h3>Build your Dashboard here</h3>
-      <p>There will be total employee, total project, complted and pending task & details of recent projects.</p>
+<div class="tld-wrapper">
+  @if (isLoading) {
+  <div class="tld-center"><div class="spinner-border text-primary"></div></div>
+  } @else if (dashboard) {
+
+  <div class="tld-stats">
+    <div class="tld-stat tld-stat--purple">
+      <span class="tld-stat__icon material-icons">people</span>
+      <div class="tld-col">
+        <span class="tld-stat__num">{{ dashboard.totalEmployees }}</span>
+        <span class="tld-stat__lbl">Total Employees</span>
+      </div>
+    </div>
+    <div class="tld-stat tld-stat--blue">
+      <span class="tld-stat__icon material-icons">folder_open</span>
+      <div class="tld-col">
+        <span class="tld-stat__num">{{ dashboard.totalProjects }}</span>
+        <span class="tld-stat__lbl">Total Projects</span>
+      </div>
+    </div>
+    <div class="tld-stat tld-stat--green">
+      <span class="tld-stat__icon material-icons">task_alt</span>
+      <div class="tld-col">
+        <span class="tld-stat__num">{{ dashboard.completedTasks }}</span>
+        <span class="tld-stat__lbl">Completed Tasks</span>
+      </div>
+    </div>
+    <div class="tld-stat tld-stat--red">
+      <span class="tld-stat__icon material-icons">pending_actions</span>
+      <div class="tld-col">
+        <span class="tld-stat__num">{{ dashboard.pendingTasks }}</span>
+        <span class="tld-stat__lbl">Pending Tasks</span>
+      </div>
     </div>
   </div>
+
+  <div class="tld-grid">
+    <!-- Overdue Projects -->
+    <div class="tld-panel">
+      <div class="tld-panel__head">
+        <h4 class="tld-panel__title">Overdue Projects</h4>
+        <span>{{ dashboard.overdueProjects.length }}</span>
+      </div>
+      @if (dashboard.overdueProjects.length === 0) {
+      <div class="tld-empty">
+        <span>No overdue projects</span> 
+      </div>
+      } @else {
+      <div class="tld-scroll">
+        @for (project of dashboard.overdueProjects; track project.id) {
+        <div class="tld-item">
+          <div class="tld-item__info">
+            <label>{{ project.name }}</label>
+            <p>{{ project.description }}</p>
+          </div>
+          <div class="tld-item__end">
+            <span class="tld-status-badge" [ngClass]="getProjectStatusBadge(project.projectStatus)">
+              {{ getProjectStatusLabel(project.projectStatus) }}
+            </span>
+            <span class="mp_date tld-date">
+              Due: {{ formatDate(project.endDate) }}
+            </span>
+            <span class="tld-overdue-badge">
+              {{ getDaysOverdue(project.endDate) }}d overdue
+            </span>
+          </div>
+        </div>
+        }
+      </div>
+      }
+    </div>
+
+    <!-- Recently Completed Projects -->
+    <div class="tld-panel">
+      <div class="tld-panel__head">
+        <h4 class="tld-panel__title">Recently Completed Projects</h4>
+        <span>{{ dashboard.recentCompletedProjects.length }}</span>
+      </div>
+      @if (dashboard.recentCompletedProjects.length === 0) {
+      <div class="tld-empty">
+        <span> No completed projects yet.</span>
+      </div>
+      } @else {
+      <div class="tld-scroll">
+        @for (project of dashboard.recentCompletedProjects; track project.id) {
+        <div class="tld-item">
+          <div class="tld-item__info">
+            <label>{{ project.name }}</label>
+            <p>{{ project.description }}</p>
+          </div>
+          <div class="tld-item__end">
+            <span class="tld-status-badge badge--completed">Completed</span>
+            <span class="mp_date">
+              {{ formatDate(project.startDate) }} – {{ formatDate(project.endDate) }}
+            </span>
+          </div>
+        </div>
+        }
+      </div>
+      }
+    </div>
+
+    <!-- In-Progress Tasks -->
+    <div class="tld-panel tld-panel--wide">
+      <div class="tld-panel__head">
+        <h4 class="tld-panel__title">In-Progress Tasks</h4>
+        <span>{{ dashboard.inProgressTasks.length }}</span>
+      </div>
+      @if (dashboard.inProgressTasks.length === 0) {
+      <div class="tld-empty">
+        <span>No in-progress tasks found.</span> 
+      </div>
+      } @else {
+      <div class="tld-table-wrap">
+        <div class="tld-table">
+          <div class="tld-tr tld-tr--head">
+            <div class="tld-th">Task Name</div>
+            <div class="tld-th">Project</div>
+            <div class="tld-th">Assigned To</div>
+            <div class="tld-th">Priority</div>
+            <div class="tld-th">Due Date</div>
+          </div>
+          @for (task of dashboard.inProgressTasks; track task.id) {
+          <div class="tld-tr">
+            <div class="tld-td">
+              <span class="tld-task-name">{{ task.title }}</span>
+            </div>
+            <div class="tld-td">
+              <b>{{ task.projectName }}</b>
+            </div>
+            <div class="tld-td">
+              <span class="tld-assignee">{{ task.assignedToUserName }}</span>
+            </div>
+            <div class="tld-td">
+              <span class="tld-pri-badge" [attr.data-p]="task.priority">{{
+                getPriorityLabel(task.priority)
+              }}</span>
+            </div>
+            <div class="tld-td">
+              <span class="tld-date">{{ formatDate(task.dueDate) }}</span>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+
+  } @else if (!isLoading) {
+  <div class="tld-center tld-center--col">
+    <span class="material-icons" style="font-size: 40px; color: #d1d5db">cloud_off</span>
+    <h4 style="margin: 0; font-size: 16px">Could not load dashboard</h4>
+    <p style="margin: 0; font-size: 13px">Please try refreshing the page.</p>
+  </div>
+  }
 </div>

@@ -7,13 +7,14 @@ import { MyTaskService } from '../../services/my-task.service';
 import { ConfirmationModel } from '../../../../../common/components/confirmation-model/confirmation-model';
 import { ConfirmationModelConfig } from '../../../../../common/components/confirmation-model/confirmation-model.config';
 import { Description, DescriptionFieldConfig, Button, ButtonInputConfig } from '@common';
+import { PaginationComponent } from '../../../../../common/components/pagination/pagination';
 import { SessionService } from 'src/app/common/services';
 
-const PAGE_SIZE = 5;
+const MODAL_PAGE_SIZE = 5;
 
 @Component({
   selector: 'app-task-detail-model',
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, ConfirmationModel, Description, Button],
+  imports: [ CommonModule, FormsModule, ReactiveFormsModule, ConfirmationModel, Description, Button, PaginationComponent ],
   templateUrl: './task-detail-model.html',
   styleUrl: './task-detail-model.css',
 })
@@ -31,7 +32,16 @@ export class TaskDetailModel implements OnChanges {
   activeTab: 'details' | 'comments' | 'attachments' = 'details';
 
   comments: TaskComment[] = [];
+  commentPage = 1;
+  commentTotalItems = 0;
+  readonly commentPageSize = MODAL_PAGE_SIZE;
+  isLoadingComments = false;
+
   attachments: TaskAttachment[] = [];
+  attachmentPage = 1;
+  attachmentTotalItems = 0;
+  readonly attachmentPageSize = MODAL_PAGE_SIZE;
+  isLoadingAttachments = false;
 
   currentStatus: TaskStatuses = TaskStatuses.Pending;
   isUpdatingStatus = false;
@@ -70,7 +80,7 @@ export class TaskDetailModel implements OnChanges {
     disabled: false,
     onClick: () => this.submitComment(),
   };
-  
+
   uploadFilesConfig: ButtonInputConfig = {
     variant: 'save',
     text: 'Upload',
@@ -88,7 +98,7 @@ export class TaskDetailModel implements OnChanges {
       onClick: () => this.saveEdit(comment),
     };
   }
-  
+
   cancelEditConfig: ButtonInputConfig = {
     variant: 'close',
     text: 'Cancel',
@@ -96,10 +106,6 @@ export class TaskDetailModel implements OnChanges {
   };
 
   isSubmittingComment = false;
-  isLoadingComments = false;
-  commentPage = 1;
-  readonly commentPageSize = PAGE_SIZE;
-
   editingCommentId: number | null = null;
   isSavingEdit = false;
   deletingCommentId: number | null = null;
@@ -118,26 +124,16 @@ export class TaskDetailModel implements OnChanges {
     return this.sessionService.userId ?? 0;
   }
 
-  get totalCommentPages(): number {
-    return Math.max(1, Math.ceil(this.comments.length / this.commentPageSize));
-  }
-  get pagedComments(): TaskComment[] {
-    const start = (this.commentPage - 1) * this.commentPageSize;
-    return this.comments.slice(start, start + this.commentPageSize);
-  }
-  get commentPageNumbers(): number[] {
-    return Array.from({ length: this.totalCommentPages }, (_, i) => i + 1);
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['visible'] && this.visible && this.task) {
       this.activeTab = 'details';
       this.selectedFiles = [];
       this.commentPage = 1;
+      this.attachmentPage = 1;
       this.cancelEdit();
       this.currentStatus = this.task.taskStatus;
       this.loadComments();
-      this.attachments = this.task.attachments ?? [];
+      this.loadAttachments();
       this.commentForm = this.fb.group({
         comment: ['', [Validators.required, Validators.maxLength(1000)]],
       });
@@ -198,9 +194,10 @@ export class TaskDetailModel implements OnChanges {
   private loadComments(): void {
     if (!this.task) return;
     this.isLoadingComments = true;
-    this.myTaskService.getComments(this.task.id).subscribe({
+    this.myTaskService.getComments(this.task.id, this.commentPage, this.commentPageSize).subscribe({
       next: (res) => {
-        this.comments = res.data ?? [];
+        this.comments = res.data?.items ?? [];
+        this.commentTotalItems = res.data?.totalCount ?? 0;
         this.isLoadingComments = false;
       },
       error: (err) => {
@@ -210,6 +207,12 @@ export class TaskDetailModel implements OnChanges {
     });
   }
 
+  onCommentPageChange(page: number): void {
+    this.commentPage = page;
+    this.cancelEdit();
+    this.loadComments();
+  }
+
   submitComment(): void {
     if (this.commentForm.invalid || !this.task) return;
     const text = this.commentForm.value.comment.trim();
@@ -217,16 +220,13 @@ export class TaskDetailModel implements OnChanges {
     this.isSubmittingComment = true;
     this.postCommentConfig = { ...this.postCommentConfig, isLoading: true, disabled: true };
     this.myTaskService.addComment(this.task.id, { comment: text }).subscribe({
-      next: (res) => {
-        const newComment: TaskComment = {
-          ...res.data!,
-          userId: res.data?.userId || this.currentUserId,
-        };
-        this.comments = [...this.comments, newComment];
+      next: () => {
         this.commentForm.reset();
         this.isSubmittingComment = false;
         this.postCommentConfig = { ...this.postCommentConfig, isLoading: false, disabled: false };
-        this.commentPage = this.totalCommentPages;
+        const newTotal = this.commentTotalItems + 1;
+        this.commentPage = Math.ceil(newTotal / this.commentPageSize);
+        this.loadComments();
         this.toastr.success('Comment added.');
       },
       error: (err) => {
@@ -265,9 +265,9 @@ export class TaskDetailModel implements OnChanges {
     this.myTaskService
       .updateComment(comment.id, { taskId: comment.taskId, comment: text })
       .subscribe({
-        next: (res) => {
-          this.comments = this.comments.map((c) => (c.id === comment.id ? res.data! : c));
+        next: () => {
           this.cancelEdit();
+          this.loadComments();
           this.toastr.success('Comment updated.');
         },
         error: (err) => {
@@ -281,10 +281,12 @@ export class TaskDetailModel implements OnChanges {
     this.deletingCommentId = comment.id;
     this.myTaskService.deleteComment(comment.id).subscribe({
       next: () => {
-        this.comments = this.comments.filter((c) => c.id !== comment.id);
-        if (this.commentPage > this.totalCommentPages) this.commentPage = this.totalCommentPages;
         this.deletingCommentId = null;
         this.toastr.success('Comment deleted.');
+        const remaining = this.commentTotalItems - 1;
+        const maxPage = Math.max(1, Math.ceil(remaining / this.commentPageSize));
+        if (this.commentPage > maxPage) this.commentPage = maxPage;
+        this.loadComments();
       },
       error: (err) => {
         this.toastr.error(this.getError(err));
@@ -293,15 +295,31 @@ export class TaskDetailModel implements OnChanges {
     });
   }
 
-  goToCommentPage(page: number): void {
-    if (page >= 1 && page <= this.totalCommentPages) {
-      this.commentPage = page;
-      this.cancelEdit();
-    }
-  }
-
   isOwnComment(c: TaskComment): boolean {
     return c.userId === this.currentUserId;
+  }
+
+  private loadAttachments(): void {
+    if (!this.task) return;
+    this.isLoadingAttachments = true;
+    this.myTaskService
+      .getAttachments(this.task.id, this.attachmentPage, this.attachmentPageSize)
+      .subscribe({
+        next: (res) => {
+          this.attachments = res.data?.items ?? [];
+          this.attachmentTotalItems = res.data?.totalCount ?? 0;
+          this.isLoadingAttachments = false;
+        },
+        error: (err) => {
+          this.toastr.error(this.getError(err));
+          this.isLoadingAttachments = false;
+        },
+      });
+  }
+
+  onAttachmentPageChange(page: number): void {
+    this.attachmentPage = page;
+    this.loadAttachments();
   }
 
   onFilesSelected(event: Event): void {
@@ -320,13 +338,15 @@ export class TaskDetailModel implements OnChanges {
     this.isUploadingFiles = true;
     this.uploadFilesConfig = { ...this.uploadFilesConfig, isLoading: true, disabled: true };
     this.myTaskService.addAttachments(this.task.id, this.selectedFiles).subscribe({
-      next: (res) => {
-        this.attachments = [...this.attachments, ...(res.data ?? [])];
+      next: () => {
         this.selectedFiles = [];
         this.isUploadingFiles = false;
         this.uploadFilesConfig = { ...this.uploadFilesConfig, isLoading: false, disabled: false };
         this.toastr.success('Files uploaded.');
         this.refreshTasks.emit();
+        const newTotal = this.attachmentTotalItems + 1;
+        this.attachmentPage = Math.ceil(newTotal / this.attachmentPageSize);
+        this.loadAttachments();
       },
       error: (err) => {
         this.toastr.error(this.getError(err));
@@ -340,10 +360,13 @@ export class TaskDetailModel implements OnChanges {
     this.deletingAttachmentId = a.id;
     this.myTaskService.deleteAttachment(a.id).subscribe({
       next: () => {
-        this.attachments = this.attachments.filter((x) => x.id !== a.id);
         this.deletingAttachmentId = null;
         this.toastr.success('Attachment deleted.');
         this.refreshTasks.emit();
+        const remaining = this.attachmentTotalItems - 1;
+        const maxPage = Math.max(1, Math.ceil(remaining / this.attachmentPageSize));
+        if (this.attachmentPage > maxPage) this.attachmentPage = maxPage;
+        this.loadAttachments();
       },
       error: (err) => {
         this.toastr.error(this.getError(err));

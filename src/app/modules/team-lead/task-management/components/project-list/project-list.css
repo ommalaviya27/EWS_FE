@@ -138,7 +138,7 @@
   color: #8e00ed;
   cursor: pointer;
   transition: background 0.18s, color 0.18s;
-  width: 100px;
+  width: 110px;
   justify-content: center;
 }
 .pl-view-btn:hover {

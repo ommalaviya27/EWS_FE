@@ -1,0 +1,113 @@
+@if (visible && project) {
+<div class="ptm-overlay" (click)="onClose()">
+  <div class="ptm-modal" (click)="$event.stopPropagation()">
+    <!-- HEADER -->
+    <div class="ptm-header">
+      <h4 class="ptm-title">{{ project.name }}</h4>
+      <button class="ptm-close" (click)="onClose()">✕</button>
+    </div>
+
+    <div class="ptm-toolbar">
+      <app-search-bar
+        placeholder="Search tasks..."
+        [value]="searchTerm"
+        (searchChange)="onSearchChange($event)"
+      ></app-search-bar>
+      <span class="ptm-count"> {{ totalItems }} task{{ totalItems !== 1 ? 's' : '' }} </span>
+    </div>
+
+    <div class="ptm-body">
+      @if (isLoading) {
+      <div class="ptm-center-state">
+        <div class="spinner-border text-primary"></div>
+      </div>
+      } @else if (tasks.length === 0) {
+      <div class="ptm-center-state ptm-empty">
+        <h5>{{ searchTerm ? 'No results for "' + searchTerm + '"' : 'No Tasks Found' }}</h5>
+      </div>
+      } @else {
+      <div class="ptm-table-wrap">
+        <div class="ptm-grid">
+          <!-- HEADER ROW -->
+          <div class="ptm-grid-row ptm-grid-header">
+            <div class="ptm-th">Title</div>
+            <div class="ptm-th">Assigned To</div>
+            <div class="ptm-th">Assigned By</div>
+            <div class="ptm-th">Priority</div>
+            <div class="ptm-th">Status</div>
+            <div class="ptm-th">Due Date</div>
+            <div class="ptm-th text-center">Details</div>
+          </div>
+
+          <!-- DATA ROWS -->
+          @for (task of tasks; track task.id; let i = $index) {
+          <div class="ptm-grid-row" [class.ptm-row-overdue]="isOverdue(task)">
+            <div class="ptm-td ptm-task-title">
+              <div class="ptm-title-row">
+                <span class="ptm-title-text">{{ task.title }}</span>
+                @if (isOverdue(task)) {
+                <span class="ptm-overdue-chip">Overdue</span>
+                }
+              </div>
+              @if (task.description) {
+              <span
+                class="ptm-desc-text"
+                (mouseenter)="showTooltip($event, task.description)"
+                (mousemove)="moveTooltip($event)"
+                (mouseleave)="hideTooltip()"
+                >{{ task.description }}</span
+              >
+              }
+            </div>
+
+            <div class="ptm-td ptm-truncate">{{ task.assignedToUserName }}</div>
+            <div class="ptm-td ptm-truncate">{{ task.assignedByUserName }}</div>
+
+            <div class="ptm-td">
+              <span class="ptm-priority-badge" [attr.data-priority]="task.priority">
+                {{ priorityLabels[task.priority] }}
+              </span>
+            </div>
+
+            <div class="ptm-td">
+              <span class="ptm-status-badge" [attr.data-status]="task.taskStatus">
+                {{ statusLabels[task.taskStatus] }}
+              </span>
+            </div>
+
+            <div class="ptm-td ptm-due-date" [class.ptm-overdue-text]="isOverdue(task)">
+              {{ formatDate(task.dueDate) }}
+            </div>
+
+            <div class="ptm-td text-center">
+              <button class="ptm-view-btn" (click)="openTaskView(task)">
+                <span class="material-icons">visibility</span>
+              </button>
+            </div>
+          </div>
+          }
+        </div>
+
+        <app-pagination
+          [currentPage]="currentPage"
+          [totalItems]="totalItems"
+          [itemsPerPage]="itemsPerPage"
+          (pageChange)="onPageChange($event)"
+          (pageSizeChange)="onPageSizeChange($event)"
+        ></app-pagination>
+      </div>
+      }
+    </div>
+  </div>
+</div>
+} @if (tooltip.visible) {
+<div class="ptm-desc-tooltip" [style.top.px]="tooltip.y" [style.left.px]="tooltip.x">
+  {{ tooltip.text }}
+</div>
+}
+
+<app-task-view-modal
+  [visible]="showTaskViewModal"
+  [task]="selectedTask"
+  (closed)="closeTaskView()"
+></app-task-view-modal>

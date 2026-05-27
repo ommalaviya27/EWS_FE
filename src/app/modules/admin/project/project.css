@@ -227,3 +227,7 @@
   gap: 10px;
   flex-wrap: wrap;
 }
+.dropdown-item.view-item:hover {
+  background-color: #eff6ff;
+  color: #1d4ed8;
+}

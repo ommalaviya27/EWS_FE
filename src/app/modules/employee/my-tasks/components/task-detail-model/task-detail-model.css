@@ -81,6 +81,16 @@
   font-weight: 700;
 }
 
+.td-tab-badge {
+  background: #ede9fe;
+  color: #7c3aed;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 10px;
+  margin-left: 2px;
+}
+
 .td-body {
   flex: 1;
   min-height: 0;
@@ -212,6 +222,43 @@
   align-items: stretch;
 }
 
+.td-comment-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #ede9fe;
+  color: #7c3aed;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.td-comment-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.td-comment-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.td-comment-author {
+  font-size: 13px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.td-comment-time {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
 .td-edit-field-wrap {
   width: 100%;
 }
@@ -220,9 +267,8 @@
   margin: 0;
   font-size: 14px;
   line-height: 1.75;
-  color: #111827;
+  color: #374151;
   word-break: break-word;
-  flex: 1;
 }
 
 .td-edit-actions {
@@ -279,47 +325,9 @@
   font-size: 16px;
 }
 
-.td-pagination {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  padding: 12px 0 4px;
-}
-
-.td-page-btn {
-  min-width: 34px;
-  height: 34px;
-  padding: 0 6px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1.5px solid #e5e7eb;
-  border-radius: 8px;
-  background: #fff;
-  font-size: 13px;
-  font-weight: 500;
-  color: #374151;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.td-page-btn .material-icons {
-  font-size: 16px;
-}
-.td-page-btn:hover:not(:disabled) {
-  border-color: #8e00ed;
-  color: #8e00ed;
-  background: #eef2ff;
-}
-.td-page-btn.active {
-  background: #8e00ed;
-  border-color: #8e00ed;
-  color: #fff;
-  font-weight: 700;
-}
-.td-page-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
+.td-pagination-wrap {
+  padding: 8px 0 4px;
+  flex-shrink: 0;
 }
 
 .td-compose {
@@ -373,8 +381,16 @@
 
 .td-center-state {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
   padding: 32px 0;
+  color: #9ca3af;
+  text-align: center;
+}
+
+.td-empty-icon {
+  font-size: 38px;
 }
 
 .td-attach-grid {
@@ -422,7 +438,12 @@
 
 .td-attach-meta {
   font-size: 11px;
-  color: #9ca3af;
+  color: #6c757d;
+}
+
+.td-attach-size {
+  font-size: 11px;
+  color: #6c757d;
 }
 
 .td-attach-overlay {
@@ -475,10 +496,6 @@
   font-size: 13px;
 }
 
-.td-pending-icon {
-  font-size: 16px;
-  color: #4f46e5;
-}
 .td-pending-name {
   flex: 1;
   overflow: hidden;
@@ -517,7 +534,6 @@
     padding: 12px 8px;
     font-size: 12px;
   }
-  .td-status-priority-row,
   .td-meta-row {
     grid-template-columns: 1fr;
   }

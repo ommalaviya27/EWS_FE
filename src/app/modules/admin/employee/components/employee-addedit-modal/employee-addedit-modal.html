@@ -62,9 +62,14 @@
           }
         </div>
 
-        <div class="pm-field pm-checkbox-row">
-          <input type="checkbox" id="statusCheck" formControlName="status" class="pm-checkbox" />
-          <label for="statusCheck" class="pm-checkbox-label">Set as active user</label>
+        <div class="pm-field">
+          <div class="pm-fieldset has-value">
+            <span class="pm-legend">Status</span>
+            <select class="pm-select-input" formControlName="status">
+              <option [ngValue]="true">Active</option>
+              <option [ngValue]="false">Inactive</option>
+            </select>
+          </div>
         </div>
 
         <div class="pm-footer">
