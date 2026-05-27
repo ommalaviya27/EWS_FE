@@ -7,6 +7,7 @@ import { ApiService } from '../../../../common/services/api.service';
 import { ApiResponse } from '../../../../common/models/api-response.model';
 import { API_ROUTES } from '../../../../common/constants/api-routes';
 import { MyTask, TaskComment, TaskAttachment, AddCommentRequest, UpdateCommentRequest, UpdateTaskStatusRequest, EmployeeDashboard } from '../models/my-task.model';
+import { PaginationResponse } from '../../../../common/components/pagination/pagination.model';
 
 @Injectable({ providedIn: 'root' })
 export class MyTaskService {
@@ -26,8 +27,14 @@ export class MyTaskService {
     return this.apiService.patch<MyTask>(API_ROUTES.MY_TASKS.UPDATE_STATUS(taskId), payload);
   }
 
-  getComments(taskId: number): Observable<ApiResponse<TaskComment[]>> {
-    return this.apiService.get<TaskComment[]>(API_ROUTES.MY_TASKS.GET_COMMENTS(taskId));
+  getComments( taskId: number, pageNumber: number = 1, pageSize: number = 5): Observable<ApiResponse<PaginationResponse<TaskComment>>> {
+    return this.apiService.get<PaginationResponse<TaskComment>>(
+      API_ROUTES.MY_TASKS.GET_COMMENTS(taskId),
+      {
+        PageNumber: pageNumber.toString(),
+        PageSize: pageSize.toString(),
+      }
+    );
   }
 
   addComment(taskId: number, payload: AddCommentRequest): Observable<ApiResponse<TaskComment>> {
@@ -40,6 +47,16 @@ export class MyTaskService {
 
   deleteComment(commentId: number): Observable<ApiResponse<void>> {
     return this.apiService.delete<void>(API_ROUTES.MY_TASKS.DELETE_COMMENT(commentId));
+  }
+
+  getAttachments( taskId: number, pageNumber: number = 1, pageSize: number = 5): Observable<ApiResponse<PaginationResponse<TaskAttachment>>> {
+    return this.apiService.get<PaginationResponse<TaskAttachment>>(
+      API_ROUTES.MY_TASKS.GET_ATTACHMENTS(taskId),
+      {
+        PageNumber: pageNumber.toString(),
+        PageSize: pageSize.toString(),
+      }
+    );
   }
 
   addAttachments(taskId: number, files: File[]): Observable<ApiResponse<TaskAttachment[]>> {

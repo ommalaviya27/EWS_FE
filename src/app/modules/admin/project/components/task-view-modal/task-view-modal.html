@@ -36,8 +36,8 @@
         (click)="setTab('comments')"
       >
         <span class="material-icons">chat_bubble_outline</span>
-        Comments @if (comments.length > 0) {
-        <span class="tvm-tab-count">{{ comments.length }}</span>
+        Comments @if (commentTotalItems > 0) {
+        <span class="tvm-tab-count">{{ commentTotalItems }}</span>
         }
       </button>
       <button
@@ -46,8 +46,8 @@
         (click)="setTab('attachments')"
       >
         <span class="material-icons">attach_file</span>
-        Attachments @if (attachments.length > 0) {
-        <span class="tvm-tab-count">{{ attachments.length }}</span>
+        Attachments @if (attachmentTotalItems > 0) {
+        <span class="tvm-tab-count">{{ attachmentTotalItems }}</span>
         }
       </button>
     </div>
@@ -55,7 +55,12 @@
     <!-- BODY -->
     <div class="tvm-body">
       <!-- COMMENTS TAB -->
-      @if (activeTab === 'comments') { @if (comments.length === 0) {
+      @if (activeTab === 'comments') { @if (isLoadingComments) {
+      <div class="tvm-loading-state">
+        <span class="tvm-spinner"></span>
+        <p>Loading comments…</p>
+      </div>
+      } @else if (comments.length === 0) {
       <div class="tvm-empty">
         <span class="material-icons">chat_bubble_outline</span>
         <p>No comments yet.</p>
@@ -77,25 +82,56 @@
         </div>
         }
       </div>
-      } }
+
+      @if (commentTotalItems > commentPageSize) {
+      <div class="tvm-pagination-wrap">
+        <app-pagination
+          [currentPage]="commentPage"
+          [totalItems]="commentTotalItems"
+          [itemsPerPage]="commentPageSize"
+          (pageChange)="onCommentPageChange($event)"
+        ></app-pagination>
+      </div>
+      } } }
 
       <!-- ATTACHMENTS TAB -->
-      @if (activeTab === 'attachments') { @if (attachments.length === 0) {
+      @if (activeTab === 'attachments') { @if (isLoadingAttachments) {
+      <div class="tvm-loading-state">
+        <span class="tvm-spinner"></span>
+        <p>Loading attachments…</p>
+      </div>
+      } @else if (attachments.length === 0) {
       <div class="tvm-empty">
         <span class="material-icons">attach_file</span>
         <p>No attachments yet.</p>
       </div>
       } @else {
       <div class="tvm-attach-grid">
-        @for (a of attachments; track a.id) { class="tvm-attach-card"
-        [href]="getAttachmentUrl(a.fileUrl)" target="_blank" rel="noopener" >
-        <span class="material-icons tvm-attach-icon">{{ getFileIcon(a.fileName) }}</span>
-        <span class="tvm-attach-name" [title]="a.fileName">{{ a.fileName }}</span>
-        <span class="tvm-attach-meta">{{ a.userName }}</span>
-        <span class="tvm-attach-size">{{ formatFileSize(a.fileSize) }}</span>
+        @for (a of attachments; track a.id) {
+        <a
+          class="tvm-attach-card"
+          [href]="getAttachmentUrl(a)"
+          target="_blank"
+          rel="noopener"
+        >
+          <span class="material-icons tvm-attach-icon">{{ getFileIcon(a.fileName) }}</span>
+          <span class="tvm-attach-name" [title]="a.fileName">{{ a.fileName }}</span>
+          <span class="tvm-attach-meta">{{ a.userName }}</span>
+          <span class="tvm-attach-size">{{ formatFileSize(a.fileSize) }}</span>
+        </a>
         }
       </div>
-      } }
+
+      @if (attachmentTotalItems > attachmentPageSize) {
+      <div class="tvm-pagination-wrap">
+        <app-pagination
+          [currentPage]="attachmentPage"
+          [totalItems]="attachmentTotalItems"
+          [itemsPerPage]="attachmentPageSize"
+          (pageChange)="onAttachmentPageChange($event)"
+        ></app-pagination>
+      </div>
+      } } }
     </div>
   </div>
 </div>

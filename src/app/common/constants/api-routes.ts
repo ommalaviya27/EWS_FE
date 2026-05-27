@@ -42,8 +42,10 @@ export const API_ROUTES = {
     ADD_COMMENT: (id: number) => `/api/my-tasks/${id}/comments`,
     UPDATE_COMMENT: (commentId: number) => `/api/my-tasks/${commentId}/comments`,
     DELETE_COMMENT: (commentId: number) => `/api/my-tasks/${commentId}/comments`,
+    GET_ATTACHMENTS: (id: number) => `/api/my-tasks/${id}/attachments`,
     ADD_ATTACHMENTS: (id: number) => `/api/my-tasks/${id}/attachments`,
     DELETE_ATTACHMENT: (attachmentId: number) => `/api/my-tasks/${attachmentId}/attachments`,
+    DOWNLOAD_ATTACHMENT: (attachmentId: number) => `/api/my-tasks/attachments/${attachmentId}/download`,
   },
   PROFILE: {
     GET: '/api/profile',
