@@ -1,16 +1,7 @@
 <div class="sidebar-overlay" [class.active]="isOpen" (click)="close()"></div>
 
 <aside class="sidebar-container" [class.open]="isOpen">
-  <div class="user-summary">
-    <div class="avatar">{{ initials }}</div>
-    <div class="user-detail">
-      <span class="name">{{ userName }}</span>
-      <span class="email">{{ userEmail }}</span>
-    </div>
-  </div>
-
   <nav class="nav-section">
-    <p class="nav-label">NAVIGATION</p>
     <ul class="nav-list">
       <li *ngFor="let item of config?.navItems">
         <a [routerLink]="item.route" routerLinkActive="active" class="nav-item" (click)="close()">
@@ -20,5 +11,4 @@
       </li>
     </ul>
   </nav>
-
-  </aside>
+</aside>

@@ -11,6 +11,7 @@ export const API_ROUTES = {
     GET_ALL: '/api/projects',
     GET_BY_ID: (id: string) => `/api/projects/${id}`,
     GET_TEAM_LEADERS: '/api/projects/team-leaders',
+    GET_TASKS: (id: string) => `/api/projects/${id}/tasks`,
     CREATE: '/api/projects',
     UPDATE: (id: string) => `/api/projects/${id}`,
     DELETE: (id: string) => `/api/projects/${id}`,
@@ -49,4 +50,7 @@ export const API_ROUTES = {
     UPDATE: '/api/profile',
     CHANGE_PASSWORD: '/api/profile/change-password',
   },
+  ADMIN: {
+    GET_DASHBOARD: '/api/admin/dashboard',
+  }
 };

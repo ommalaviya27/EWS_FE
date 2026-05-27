@@ -1,0 +1,102 @@
+@if (visible && task) {
+<div class="tvm-overlay" (click)="onClose()">
+  <div class="tvm-modal" (click)="$event.stopPropagation()">
+    <!-- HEADER -->
+    <div class="tvm-header">
+      <div class="tvm-header-info">
+        <h4 class="tvm-title">{{ task.title }}</h4>
+        <p class="tvm-subtitle">{{ task.projectName }}</p>
+      </div>
+      <button class="tvm-close" (click)="onClose()">✕</button>
+    </div>
+
+    <!-- META ROW -->
+    <div class="tvm-meta-bar">
+      <span class="tvm-status-badge" [attr.data-status]="task.taskStatus">
+        {{ statusLabels[task.taskStatus] }}
+      </span>
+      <span class="tvm-priority-badge" [attr.data-priority]="task.priority">
+        {{ priorityLabels[task.priority] }}
+      </span>
+      <span class="tvm-meta-item">
+        <span class="material-icons">person_outline</span>
+        {{ task.assignedToUserName }}
+      </span>
+      <span class="tvm-meta-item">
+        <span class="material-icons">event</span>
+        {{ formatDate(task.dueDate) }}
+      </span>
+    </div>
+
+    <!-- TABS -->
+    <div class="tvm-tabs">
+      <button
+        class="tvm-tab-btn"
+        [class.active]="activeTab === 'comments'"
+        (click)="setTab('comments')"
+      >
+        <span class="material-icons">chat_bubble_outline</span>
+        Comments @if (comments.length > 0) {
+        <span class="tvm-tab-count">{{ comments.length }}</span>
+        }
+      </button>
+      <button
+        class="tvm-tab-btn"
+        [class.active]="activeTab === 'attachments'"
+        (click)="setTab('attachments')"
+      >
+        <span class="material-icons">attach_file</span>
+        Attachments @if (attachments.length > 0) {
+        <span class="tvm-tab-count">{{ attachments.length }}</span>
+        }
+      </button>
+    </div>
+
+    <!-- BODY -->
+    <div class="tvm-body">
+      <!-- COMMENTS TAB -->
+      @if (activeTab === 'comments') { @if (comments.length === 0) {
+      <div class="tvm-empty">
+        <span class="material-icons">chat_bubble_outline</span>
+        <p>No comments yet.</p>
+      </div>
+      } @else {
+      <div class="tvm-comments-list">
+        @for (c of comments; track c.id) {
+        <div class="tvm-comment-item">
+          <div class="tvm-comment-avatar">
+            {{ c.userName?.charAt(0)?.toUpperCase() }}
+          </div>
+          <div class="tvm-comment-content">
+            <div class="tvm-comment-meta">
+              <span class="tvm-comment-author">{{ c.userName }}</span>
+              <span class="tvm-comment-time">{{ formatDateTime(c.createdAt) }}</span>
+            </div>
+            <p class="tvm-comment-text">{{ c.comment }}</p>
+          </div>
+        </div>
+        }
+      </div>
+      } }
+
+      <!-- ATTACHMENTS TAB -->
+      @if (activeTab === 'attachments') { @if (attachments.length === 0) {
+      <div class="tvm-empty">
+        <span class="material-icons">attach_file</span>
+        <p>No attachments yet.</p>
+      </div>
+      } @else {
+      <div class="tvm-attach-grid">
+        @for (a of attachments; track a.id) { class="tvm-attach-card"
+        [href]="getAttachmentUrl(a.fileUrl)" target="_blank" rel="noopener" >
+        <span class="material-icons tvm-attach-icon">{{ getFileIcon(a.fileName) }}</span>
+        <span class="tvm-attach-name" [title]="a.fileName">{{ a.fileName }}</span>
+        <span class="tvm-attach-meta">{{ a.userName }}</span>
+        <span class="tvm-attach-size">{{ formatFileSize(a.fileSize) }}</span>
+        }
+      </div>
+      } }
+    </div>
+  </div>
+</div>
+}

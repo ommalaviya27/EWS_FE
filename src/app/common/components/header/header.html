@@ -1,6 +1,6 @@
 <header class="header-container">
   <div class="sidebar-brand">
-    <button class="hamburger-btn" (click)="onMenuToggle()" aria-label="Toggle menu">
+    <button class="hamburger-btn" (click)="onMenuToggle()">
       <span class="material-icons">menu</span>
     </button>
     <div class="brand-header">
@@ -8,27 +8,20 @@
         <img src="assets/images/project-logo.png" alt="Logo" />
       </div>
       <div class="brand-text">
-        <h1>TaskManager</h1>
-        <p>Workflow System</p>
+        <h1>EWMS</h1>
+        <p>Management System</p>
       </div>
     </div>
-    <div class="portal-badge">{{ userRole }} Portal</div>
   </div>
 
   <div class="header-main">
     <div class="top-row">
       <div class="title-section">
-        <h2>{{ userRole }} Dashboard</h2>
+        <h2>{{ userRole }} Layout</h2>
         <div class="date-info">{{ currentDate }}</div>
       </div>
 
       <div class="user-profile" (click)="$event.stopPropagation()">
-
-        <div class="notification-wrapper">
-          <span class="material-icons">notifications_none</span>
-          <span class="notification-dot"></span>
-        </div>
-
         <div class="profile-trigger" (click)="toggleProfileDropdown()">
           <div class="user-info">
             <span class="user-name">{{ sessionService.name }}</span>

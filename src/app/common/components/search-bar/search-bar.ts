@@ -50,9 +50,11 @@ export class SearchBarComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   toggleSearch(): void {
-    this.isExpanded = !this.isExpanded;
-    if (!this.isExpanded) {
-      this.clearSearch();
+    if (window.innerWidth <= 950) {
+      this.isExpanded = !this.isExpanded;
+      if (!this.isExpanded) {
+        this.clearSearch();
+      }
     }
   }
 

@@ -2,15 +2,16 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { ProjectService } from './services/project.service';
-import { DeleteModel, PaginationComponent, Button, ButtonInputConfig, SearchBarComponent } from '@common'; // Added SearchBarComponent import
+import { DeleteModel, PaginationComponent, Button, ButtonInputConfig, SearchBarComponent } from '@common';
 import { ProjectAddeditModal } from './components/project-addedit-modal/project-addedit-modal';
+import { ProjectTasksModal } from './components/project-task-modal/project-task-modal';
 import { createDeleteConfig } from '../../../common/components/delete-model/delete-model.config';
 import { DEFAULT_PAGINATION } from '../../../common/constants/app.constants';
 import { Project, TeamLeader, ProjectStatus, PROJECT_STATUS_LABELS, CreateProjectRequest, UpdateProjectRequest } from './models/project.model';
 
 @Component({
   selector: 'app-project',
-  imports: [CommonModule, DeleteModel, ProjectAddeditModal, PaginationComponent, Button, SearchBarComponent], // Added SearchBarComponent here
+  imports: [CommonModule, DeleteModel, ProjectAddeditModal, ProjectTasksModal, PaginationComponent, Button, SearchBarComponent],
   templateUrl: './project.html',
   styleUrl: './project.css'
 })
@@ -29,7 +30,7 @@ export class ProjectModule implements OnInit {
   itemsPerPage = DEFAULT_PAGINATION.itemsPerPage;
   totalItems = DEFAULT_PAGINATION.totalItems;
 
-  searchTerm = ''; // Added tracking variable for search text input
+  searchTerm = '';
 
   showModal = false;
   selectedProject: Project | null = null;
@@ -37,6 +38,10 @@ export class ProjectModule implements OnInit {
   showDeleteModal = false;
   deleteConfig = createDeleteConfig('');
   projectToDeleteId: string | null = null;
+
+  // View tasks modal
+  showTasksModal = false;
+  projectToView: Project | null = null;
 
   readonly statusLabels = PROJECT_STATUS_LABELS;
   readonly ProjectStatus = ProjectStatus;
@@ -87,10 +92,10 @@ export class ProjectModule implements OnInit {
   private loadProjects(): void {
     this.isLoading = true;
     this.projectService
-      .getAll({ 
-        pageNumber: this.currentPage, 
+      .getAll({
+        pageNumber: this.currentPage,
         pageSize: this.itemsPerPage,
-        search: this.searchTerm || undefined 
+        search: this.searchTerm || undefined
       } as any)
       .subscribe({
         next: (res) => {
@@ -134,17 +139,31 @@ export class ProjectModule implements OnInit {
     this.activeDropdownId = null;
   }
 
-  onActionClick(event: MouseEvent, action: 'edit' | 'delete', project: Project): void {
+  onActionClick(event: MouseEvent, action: 'view' | 'edit' | 'delete', project: Project): void {
     event.stopPropagation();
     this.closeDropdown();
 
-    if (action === 'edit') {
+    if (action === 'view') {
+      this.openTasksModal(project);
+    } else if (action === 'edit') {
       this.openEditModal(project);
     } else if (action === 'delete') {
       this.openDeleteModal(project);
     }
   }
 
+  // ===== Tasks modal =====
+  openTasksModal(project: Project): void {
+    this.projectToView = project;
+    this.showTasksModal = true;
+  }
+
+  closeTasksModal(): void {
+    this.showTasksModal = false;
+    this.projectToView = null;
+  }
+
+  // ===== Add / Edit modal =====
   openAddModal(): void {
     this.selectedProject = null;
     this.showModal = true;
@@ -181,6 +200,7 @@ export class ProjectModule implements OnInit {
     });
   }
 
+  // ===== Delete modal =====
   openDeleteModal(project: Project): void {
     this.projectToDeleteId = project.id;
     this.deleteConfig = createDeleteConfig(project.name);
