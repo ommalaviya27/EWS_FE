@@ -9,7 +9,7 @@ export interface TeamLeadDashboard {
   overdueTaskCount: number;
   activeProjectCount: number;
   activeProjects: Project[];
-  myProjects: Project[];
+  completedProjects: Project[];
   recentTeamTasks: MyTask[];
   recentTeamTasksTotalCount: number;
   overdueTasks: MyTask[];

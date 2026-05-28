@@ -10,11 +10,18 @@
               {{ getStatusLabel(project.projectStatus) }}
             </span>
           </div>
-        </div>       
-        
-        <p class="pl-card-desc">{{ project.description }}</p>
+        </div>
 
-        <div class="pl-card-footer-group">
+        <p
+          class="pl-card-desc"
+          (mouseenter)="showTooltip($event, project.description)"
+          (mousemove)="moveTooltip($event)"
+          (mouseleave)="hideTooltip()"
+        >
+          {{ project.description }}
+        </p>
+
+        <div class="pl-card-footer">
           <div class="pl-card-meta">
             <span class="pl-card-date">
               {{ formatDate(project.startDate) }} - {{ formatDate(project.endDate) }}
@@ -24,9 +31,14 @@
             </button>
           </div>
         </div>
-
       </div>
     </div>
     }
   </div>
 </div>
+
+@if (tooltip.visible) {
+<div class="desc-tooltip" [style.top.px]="tooltip.y" [style.left.px]="tooltip.x">
+  {{ tooltip.text }}
+</div>
+}

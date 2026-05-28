@@ -114,6 +114,7 @@ export class TaskDetailModel implements OnChanges {
   selectedFiles: File[] = [];
   isUploadingFiles = false;
   deletingAttachmentId: number | null = null;
+  downloadingAttachmentId: number | null = null;
 
   readonly statusLabels = TASK_STATUS_LABELS;
   readonly priorityLabels = TASK_PRIORITY_LABELS;
@@ -354,6 +355,15 @@ export class TaskDetailModel implements OnChanges {
         this.uploadFilesConfig = { ...this.uploadFilesConfig, isLoading: false, disabled: false };
       },
     });
+  }
+
+  downloadAttachment(a: TaskAttachment): void {
+    this.downloadingAttachmentId = a.id;
+    try {
+      this.myTaskService.downloadAttachment(a.id, a.fileName);
+    } finally {
+      setTimeout(() => (this.downloadingAttachmentId = null), 1500);
+    }
   }
 
   deleteAttachment(a: TaskAttachment): void {

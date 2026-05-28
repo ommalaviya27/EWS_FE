@@ -22,6 +22,9 @@ export class ProjectList {
 
   readonly statusLabels = PROJECT_STATUS_LABELS;
 
+  // Tooltip state initialization
+  tooltip = { visible: false, text: '', x: 0, y: 0 };
+
   onProjectClick(project: ProjectCard): void {
     this.projectSelected.emit(project);
   }
@@ -37,5 +40,18 @@ export class ProjectList {
       month: 'short',
       year: 'numeric',
     });
+  }
+
+  showTooltip(event: MouseEvent, text: string): void {
+    this.tooltip = { visible: true, text, x: event.clientX, y: event.clientY };
+  }
+
+  moveTooltip(event: MouseEvent): void {
+    this.tooltip.x = event.clientX;
+    this.tooltip.y = event.clientY;
+  }
+
+  hideTooltip(): void {
+    this.tooltip.visible = false;
   }
 }

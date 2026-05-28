@@ -1,12 +1,10 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Task, TaskStatuses, TaskPriority, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS } from '../../../../team-lead/task-management/models/task-management.model';
-import { TaskComment, TaskAttachment } from '../../../../employee/my-tasks/models/my-task.model';
-import { MyTaskService } from '../../../../employee/my-tasks/services/my-task.service';
-import { PaginationComponent } from '../../../../../common/components/pagination/pagination';
-import { environment } from '../../../../../../environments/environment';
+import { Task, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS } from '../../../modules/team-lead/task-management/models/task-management.model';
+import { TaskComment, TaskAttachment } from '../../../modules/employee/my-tasks/models/my-task.model';
+import { MyTaskService } from '../../../modules/employee/my-tasks/services/my-task.service';
+import { PaginationComponent } from '@common';
 import { ToastrService } from 'ngx-toastr';
-import { API_ROUTES } from '../../../../../common/constants/api-routes';
 
 const MODAL_PAGE_SIZE = 5;
 
@@ -40,7 +38,7 @@ export class TaskViewModal implements OnChanges {
 
   readonly statusLabels = TASK_STATUS_LABELS;
   readonly priorityLabels = TASK_PRIORITY_LABELS;
-  readonly resourceUrl = environment.resourceUrl;
+  downloadingAttachmentId: number | null = null;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['task'] && this.task) {
@@ -153,8 +151,13 @@ export class TaskViewModal implements OnChanges {
     return map[ext] ?? 'attach_file';
   }
 
-  getAttachmentUrl(attachment: TaskAttachment): string {
-    return `${this.resourceUrl}${API_ROUTES.MY_TASKS.DOWNLOAD_ATTACHMENT(attachment.id)}`;
+  downloadAttachment(a: TaskAttachment): void {
+    this.downloadingAttachmentId = a.id;
+    try {
+      this.myTaskService.downloadAttachment(a.id, a.fileName);
+    } finally {
+      setTimeout(() => (this.downloadingAttachmentId = null), 1500);
+    }
   }
 
   private getError(err: any): string {

@@ -58,8 +58,6 @@ export class AdminDashboardComponent implements OnInit {
     const map: Record<ProjectStatus, string> = {
       [ProjectStatus.Active]: 'badge--active',
       [ProjectStatus.Completed]: 'badge--completed',
-      [ProjectStatus.OnHold]: 'badge--hold',
-      [ProjectStatus.Cancelled]: 'badge--cancelled',
     };
     return map[status] ?? '';
   }

@@ -16,3 +16,4 @@ export * from './confirmation-model/confirmation-model.config';
 export * from './button/button';
 export * from './button/button.config';
 export * from './search-bar/search-bar';
+export * from './task-view-modal/task-view-modal';

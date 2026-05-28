@@ -91,19 +91,19 @@
       }
     </div>
 
-    <!-- My Projects -->
+    <!-- Completed Projects -->
     <div class="tld-panel">
       <div class="tld-panel__head">
-        <h4 class="tld-panel__title">My Projects</h4>
-        <span>{{ dashboard.myProjects.length }}</span>
+        <h4 class="tld-panel__title">Completed Projects</h4>
+        <span>{{ dashboard.completedProjects.length }}</span>
       </div>
-      @if (dashboard.myProjects.length === 0) {
+      @if (dashboard.completedProjects.length === 0) {
       <div class="tld-empty">
-        <span class="material-icons">folder_special</span> No projects assigned to you yet.
+        <span class="material-icons">folder_special</span> No completed projects yet.
       </div>
       } @else {
       <div class="tld-scroll">
-        @for (project of dashboard.myProjects; track project.id) {
+        @for (project of dashboard.completedProjects; track project.id) {
         <div class="tld-item">
           <div class="tld-item__info">
             <label>{{ project.name }}</label>

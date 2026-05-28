@@ -33,7 +33,7 @@
   cursor: pointer;
   transition: box-shadow 0.18s, transform 0.18s;
   overflow: hidden;
-  min-height: 180px;
+  min-height: 150px;
 }
 
 .pl-card:hover {
@@ -54,6 +54,8 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: 12px;
+  border-bottom: 1px solid #e9ecef;
+  padding-bottom: 5px;
 }
 
 .pl-card-title {
@@ -76,14 +78,16 @@
   flex-grow: 1;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 2;
   overflow: hidden;
 }
 
-.pl-card-footer-group {
+.pl-card-footer {
   margin-top: auto;
   display: flex;
   flex-direction: column;
+  border-top: 1px solid #e9ecef;
+  padding-top: 5px;
 }
 
 .project-status-badge {
@@ -144,4 +148,21 @@
 .pl-view-btn:hover {
   background: #8e00ed;
   color: #fff;
+}
+
+.desc-tooltip {
+  position: fixed;
+  z-index: 99999;
+  background: #6c757d;
+  color: #f1f5f9;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.6;
+  max-width: 360px;
+  white-space: normal;
+  word-break: break-word;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.28);
+  pointer-events: none;
+  transform: translate(12px, 16px);
 }

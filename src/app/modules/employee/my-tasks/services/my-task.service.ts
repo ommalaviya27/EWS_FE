@@ -73,4 +73,22 @@ export class MyTaskService {
   deleteAttachment(attachmentId: number): Observable<ApiResponse<void>> {
     return this.apiService.delete<void>(API_ROUTES.MY_TASKS.DELETE_ATTACHMENT(attachmentId));
   }
+
+  downloadAttachment(attachmentId: number, fileName: string): void {
+    this.http
+      .get(`${this.baseUrl}${API_ROUTES.MY_TASKS.DOWNLOAD_ATTACHMENT(attachmentId)}`, {
+        responseType: 'blob',
+      })
+      .pipe(catchError((err: HttpErrorResponse) => throwError(() => err)))
+      .subscribe({
+        next: (blob) => {
+          const url = URL.createObjectURL(blob);
+          const anchor = document.createElement('a');
+          anchor.href = url;
+          anchor.download = fileName;
+          anchor.click();
+          URL.revokeObjectURL(url);
+        },
+      });
+  }
 }

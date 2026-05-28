@@ -49,7 +49,7 @@
   cursor: pointer;
   font-size: 18px;
   color: #6b7280;
-  transition: all 0.15s;
+  transition: color 0.15s;
 }
 
 .td-tabs {
@@ -63,6 +63,7 @@
 
 .td-nav-link {
   display: inline-flex;
+  align-items: center;
   gap: 6px;
   min-width: 120px;
   padding: 12px 18px;
@@ -72,9 +73,7 @@
   font-size: 13px;
   cursor: pointer;
 }
-.td-nav-link .material-icons {
-  font-size: 16px;
-}
+
 .td-nav-link.active {
   color: #8e00ed;
   border-bottom-color: #8e00ed;
@@ -103,7 +102,6 @@
 .td-tab-content {
   display: flex;
   flex-direction: column;
-  gap: 0;
   height: 100%;
 }
 
@@ -150,11 +148,6 @@
   font-size: 14px;
   display: flex;
   align-items: center;
-}
-
-.td-select-input:focus {
-  border: none;
-  outline: none;
   box-shadow: none;
 }
 
@@ -162,7 +155,6 @@
   align-items: flex-start;
   padding-top: 14px;
   padding-bottom: 14px;
-  min-height: 50px;
 }
 
 .td-priority-badge {
@@ -193,9 +185,6 @@
 
 .td-meta-text {
   margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 4px;
   font-size: 13px;
 }
 
@@ -209,8 +198,8 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 12px;
-  padding: 14px 0;
+  padding-bottom: 2px;
+  margin-top: 5px;
   border-bottom: 1px solid #eef1f5;
 }
 .td-comment-item:last-of-type {
@@ -222,52 +211,15 @@
   align-items: stretch;
 }
 
-.td-comment-avatar {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: #ede9fe;
-  color: #7c3aed;
-  font-size: 13px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
 .td-comment-body {
   flex: 1;
   min-width: 0;
-}
-
-.td-comment-meta {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  margin-bottom: 4px;
-}
-
-.td-comment-author {
-  font-size: 13px;
-  font-weight: 600;
-  color: #111827;
-}
-
-.td-comment-time {
-  font-size: 11px;
-  color: #9ca3af;
-}
-
-.td-edit-field-wrap {
-  width: 100%;
 }
 
 .td-comment-text {
   margin: 0;
   font-size: 14px;
   line-height: 1.75;
-  color: #374151;
   word-break: break-word;
 }
 
@@ -293,7 +245,7 @@
   background: transparent;
   color: #9ca3af;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: color 0.15s;
 }
 
 .td-dropdown {
@@ -304,7 +256,8 @@
   background: #fff;
   border: 1px solid #e5e7eb;
   border-radius: 12px;
-  z-index: 300;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+  z-index: 1080;
   transform: translateX(-20px);
 }
 
@@ -320,9 +273,6 @@
   font-weight: 500;
   cursor: pointer;
   transition: background 0.15s;
-}
-.td-drop-item .material-icons {
-  font-size: 16px;
 }
 
 .td-pagination-wrap {
@@ -353,13 +303,10 @@
   border: none;
   height: 48px;
   border-radius: 10px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   cursor: pointer;
   width: 150px;
-}
-.td-btn-outline .material-icons {
-  font-size: 18px;
 }
 
 .td-spinner {
@@ -389,10 +336,6 @@
   text-align: center;
 }
 
-.td-empty-icon {
-  font-size: 38px;
-}
-
 .td-attach-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
@@ -416,12 +359,13 @@
   border: 1px solid #e5e7eb;
   border-radius: 14px;
   overflow: hidden;
-  transition: all 0.15s;
+  transition: border-color 0.15s;
   height: 50px;
 }
 .td-attach-card:hover {
   border-color: #c7d2fe;
 }
+
 .td-faded {
   opacity: 0.5;
 }
@@ -436,11 +380,6 @@
   white-space: nowrap;
 }
 
-.td-attach-meta {
-  font-size: 11px;
-  color: #6c757d;
-}
-
 .td-attach-size {
   font-size: 11px;
   color: #6c757d;
@@ -453,6 +392,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   opacity: 0;
   transition: opacity 0.18s;
 }
@@ -460,12 +400,12 @@
   opacity: 1;
 }
 
+.td-attach-dl-btn,
 .td-attach-del-btn {
   width: 26px;
   height: 26px;
   border: none;
   border-radius: 50%;
-  background: #dc2626;
   color: #fff;
   display: flex;
   align-items: center;
@@ -473,9 +413,22 @@
   cursor: pointer;
 }
 
-.icon-default {
-  background: #f3f4f6;
-  color: #6b7280;
+.td-attach-dl-btn {
+  background: #16a34a;
+}
+.td-attach-dl-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.td-attach-del-btn {
+  background: #dc2626;
+}
+
+.td-spinner-sm {
+  width: 12px;
+  height: 12px;
+  border-width: 2px;
 }
 
 .td-pending-files {
@@ -502,6 +455,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
 .td-pending-size {
   font-size: 12px;
   color: #9ca3af;

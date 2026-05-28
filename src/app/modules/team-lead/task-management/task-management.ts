@@ -3,17 +3,16 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { TaskManagementService } from './services/task-management.service';
-import { DeleteModel, PaginationComponent, Button, ButtonInputConfig, SearchBarComponent } from '@common';
+import { DeleteModel, PaginationComponent, Button, ButtonInputConfig, SearchBarComponent, TaskViewModal } from '@common';
 import { TaskAddeditModal } from './components/task-addedit-modal/task-addedit-modal';
 import { ProjectList, ProjectCard } from './components/project-list/project-list';
 import { createDeleteConfig } from '../../../common/components/delete-model/delete-model.config';
 import { DEFAULT_PAGINATION } from '../../../common/constants/app.constants';
 import { Task, TeamMember, TaskStatuses, TaskPriority, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS, CreateTaskRequest, UpdateTaskRequest, ProjectCardData } from './models/task-management.model';
-import { TaskDetailModel } from '../../employee/my-tasks/components/task-detail-model/task-detail-model';
 
 @Component({
   selector: 'app-task-management',
-  imports: [CommonModule, DeleteModel, TaskAddeditModal, PaginationComponent, Button, SearchBarComponent, ProjectList, TaskDetailModel],
+  imports: [CommonModule, DeleteModel, TaskAddeditModal, PaginationComponent, Button, SearchBarComponent, ProjectList, TaskViewModal],
   templateUrl: './task-management.html',
   styleUrl: './task-management.css',
 })
