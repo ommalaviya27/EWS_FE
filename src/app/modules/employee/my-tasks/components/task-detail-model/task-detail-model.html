@@ -1,6 +1,7 @@
 @if (visible && task) {
 <div class="td-overlay" (click)="onClose()">
   <div class="td-modal" (click)="$event.stopPropagation()">
+
     <!-- HEADER -->
     <div class="td-header">
       <div>
@@ -12,42 +13,27 @@
 
     <!-- TABS -->
     <div class="td-tabs">
-      <button
-        class="td-nav-link"
-        [class.active]="activeTab === 'details'"
-        (click)="setTab('details')"
-      >
-        <span class="material-icons">info_outline</span>
+      <button class="td-nav-link" [class.active]="activeTab === 'details'" (click)="setTab('details')">
+        <i class="bi bi-info-circle"></i>
         <span>Details</span>
       </button>
-      <button
-        class="td-nav-link"
-        [class.active]="activeTab === 'comments'"
-        (click)="setTab('comments')"
-      >
-        <span class="material-icons">chat_bubble_outline</span>
-        <span
-          >Comments @if (commentTotalItems > 0) {
+      <button class="td-nav-link" [class.active]="activeTab === 'comments'" (click)="setTab('comments')">
+        <i class="bi bi-chat"></i>
+        <span>Comments @if (commentTotalItems > 0) {
           <span class="td-tab-badge">{{ commentTotalItems }}</span>
-          }</span
-        >
+        }</span>
       </button>
-      <button
-        class="td-nav-link"
-        [class.active]="activeTab === 'attachments'"
-        (click)="setTab('attachments')"
-      >
-        <span class="material-icons">attach_file</span>
-        <span
-          >Attachments @if (attachmentTotalItems > 0) {
+      <button class="td-nav-link" [class.active]="activeTab === 'attachments'" (click)="setTab('attachments')">
+        <i class="bi bi-paperclip"></i>
+        <span>Attachments @if (attachmentTotalItems > 0) {
           <span class="td-tab-badge">{{ attachmentTotalItems }}</span>
-          }</span
-        >
+        }</span>
       </button>
     </div>
 
     <!-- BODY -->
-    <div class="td-body">
+    <div class="td-body" (click)="closeMenu()">
+
       <!-- DETAILS TAB -->
       @if (activeTab === 'details') {
       <div class="td-details-grid">
@@ -62,16 +48,15 @@
                 [disabled]="isUpdatingStatus"
                 (change)="onStatusChange($event)"
               >
-                @for(s of allStatuses; track s){
+                @for (s of allStatuses; track s) {
                 <option [value]="s">{{ getStatusLabel(s) }}</option>
                 }
               </select>
-              @if(isUpdatingStatus){
+              @if (isUpdatingStatus) {
               <span class="td-spinner"></span>
               }
             </div>
           </div>
-
           <div class="td-field">
             <div class="td-fieldset has-value">
               <span class="td-legend">Priority</span>
@@ -85,9 +70,7 @@
         <div class="td-field">
           <div class="td-fieldset td-fieldset-text has-value">
             <span class="td-legend">Description</span>
-            <p class="td-description">
-              {{ task.description }}
-            </p>
+            <p class="td-description">{{ task.description }}</p>
           </div>
         </div>
 
@@ -95,17 +78,13 @@
           <div class="td-field">
             <div class="td-fieldset has-value">
               <span class="td-legend">Due Date</span>
-              <p class="td-meta-text">
-                {{ formatDate(task.dueDate) }}
-              </p>
+              <p class="td-meta-text">{{ formatDate(task.dueDate) }}</p>
             </div>
           </div>
           <div class="td-field">
             <div class="td-fieldset has-value">
               <span class="td-legend">Assigned By</span>
-              <p class="td-meta-text">
-                {{ task.assignedByUserName }}
-              </p>
+              <p class="td-meta-text">{{ task.assignedByUserName }}</p>
             </div>
           </div>
         </div>
@@ -122,66 +101,52 @@
           </div>
           } @else if (comments.length === 0) {
           <div class="td-center-state">
-            <span class="material-icons td-empty-icon">chat_bubble_outline</span>
             <p>No comments yet.</p>
           </div>
-          } @else { @for (c of comments; track c.id) { @if (editingCommentId === c.id) {
-          <div class="td-comment-item td-comment-edit-item">
-            <div class="td-edit-field-wrap">
-              <app-description-field
-                [formGroup]="editCommentForm"
-                [config]="editCommentConfig"
-              ></app-description-field>
-            </div>
-            <div class="td-edit-actions">
-              <app-button [config]="getSaveEditConfig(c)"></app-button>
-              <app-button [config]="cancelEditConfig"></app-button>
-            </div>
-          </div>
           } @else {
-          <div class="td-comment-item">
-            <div class="td-comment-avatar">{{ c.userName?.charAt(0)?.toUpperCase() }}</div>
-            <div class="td-comment-body">
-              <div class="td-comment-meta">
-                <span class="td-comment-author">{{ c.userName }}</span>
-                <span class="td-comment-time">{{ formatDateTime(c.createdAt) }}</span>
+            @for (c of comments; track c.id) {
+              @if (editingCommentId === c.id) {
+              <div class="td-comment-item td-comment-edit-item">
+                <div class="td-edit-field-wrap">
+                  <app-description-field [formGroup]="editCommentForm" [config]="editCommentConfig"></app-description-field>
+                </div>
+                <div class="td-edit-actions">
+                  <app-button [config]="getSaveEditConfig(c)"></app-button>
+                  <app-button [config]="cancelEditConfig"></app-button>
+                </div>
               </div>
-              <p class="td-comment-text">{{ c.comment }}</p>
-            </div>
-            @if (isOwnComment(c)) {
-            <div class="td-menu-wrap" (click)="$event.stopPropagation()">
-              <button
-                class="td-menu-btn"
-                (click)="toggleCommentMenu(c.id)"
-                [class.active]="openMenuCommentId === c.id"
-              >
-                <span class="material-icons">more_vert</span>
-              </button>
-              @if (openMenuCommentId === c.id) {
-              <div class="td-dropdown">
-                <button class="td-drop-item" (click)="startEdit(c); closeMenu()">
-                  <span class="material-icons">edit</span> Edit
-                </button>
-                <button
-                  class="td-drop-item"
-                  (click)="deleteComment(c); closeMenu()"
-                  [disabled]="deletingCommentId === c.id"
-                >
-                  @if(deletingCommentId === c.id){
-                  <span class="td-spinner"></span>
-                  } @else {
-                  <span class="material-icons">delete</span>
-                  } Delete
-                </button>
+              } @else {
+              <div class="td-comment-item">
+                <div class="td-comment-body">
+                  <p class="td-comment-text">{{ c.comment }}</p>
+                </div>
+                @if (isOwnComment(c)) {
+                <div class="td-menu-wrap" (click)="$event.stopPropagation()">
+                  <button class="td-menu-btn" [class.active]="openMenuCommentId === c.id" (click)="toggleCommentMenu(c.id)">
+                    <span class="material-icons">more_vert</span>
+                  </button>
+                  @if (openMenuCommentId === c.id) {
+                  <div class="td-dropdown">
+                    <button class="td-drop-item" (click)="startEdit(c); closeMenu()">
+                      <span class="material-icons">edit</span> Edit
+                    </button>
+                    <button class="td-drop-item" (click)="deleteComment(c); closeMenu()" [disabled]="deletingCommentId === c.id">
+                      @if (deletingCommentId === c.id) {
+                      <span class="td-spinner"></span>
+                      } @else {
+                        <span class="material-icons">delete</span>
+                      } Delete
+                    </button>
+                  </div>
+                  }
+                </div>
+                }
               </div>
               }
-            </div>
             }
-          </div>
-          } } }
+          }
         </div>
 
-        <!-- Comment Pagination -->
         @if (commentTotalItems > commentPageSize) {
         <div class="td-pagination-wrap">
           <app-pagination
@@ -193,13 +158,9 @@
         </div>
         }
 
-        <!-- COMPOSE -->
         <div class="td-compose">
           <div class="td-compose-field">
-            <app-description-field
-              [formGroup]="commentForm"
-              [config]="addCommentConfig"
-            ></app-description-field>
+            <app-description-field [formGroup]="commentForm" [config]="addCommentConfig"></app-description-field>
           </div>
           <app-button [config]="postCommentConfig"></app-button>
         </div>
@@ -216,28 +177,34 @@
           </div>
           } @else if (attachments.length === 0 && selectedFiles.length === 0) {
           <div class="td-center-state td-attach-empty">
-            <span class="material-icons td-empty-icon">attach_file</span>
             <p>No attachments yet.</p>
           </div>
-          } @else { @for (a of attachments; track a.id) {
-          <div class="td-attach-card" [class.td-faded]="deletingAttachmentId === a.id">
-            <span class="td-attach-name" [title]="a.fileName">{{ a.fileName }}</span>
-            <span class="td-attach-meta">{{ a.userName }}</span>
-            <span class="td-attach-size">{{ formatFileSize(a.fileSize) }}</span>
-            <div class="td-attach-overlay">
-              @if(deletingAttachmentId === a.id){
-              <span class="td-spinner"></span>
-              } @else {
-              <button class="td-attach-del-btn" (click)="deleteAttachment(a)" title="Delete">
-                <span class="material-icons">delete_outline</span>
-              </button>
-              }
+          } @else {
+            @for (a of attachments; track a.id) {
+            <div class="td-attach-card" [class.td-faded]="deletingAttachmentId === a.id">
+              <span class="td-attach-name" [title]="a.fileName">{{ a.fileName }}</span>
+              <span class="td-attach-size">{{ formatFileSize(a.fileSize) }}</span>
+              <div class="td-attach-overlay">
+                @if (deletingAttachmentId === a.id) {
+                <span class="td-spinner"></span>
+                } @else {
+                <button class="td-attach-dl-btn" (click)="downloadAttachment(a)" title="Download" [disabled]="downloadingAttachmentId === a.id">
+                  @if (downloadingAttachmentId === a.id) {
+                  <span class="td-spinner td-spinner-sm"></span>
+                  } @else {
+                    <span class="material-icons">download</span>
+                  }
+                </button>
+                <button class="td-attach-del-btn" (click)="deleteAttachment(a)" title="Delete">
+                  <span class="material-icons">delete</span>
+                </button>
+                }
+              </div>
             </div>
-          </div>
-          } }
+            }
+          }
         </div>
 
-        <!-- Attachment Pagination -->
         @if (attachmentTotalItems > attachmentPageSize) {
         <div class="td-pagination-wrap">
           <app-pagination
@@ -247,9 +214,11 @@
             (pageChange)="onAttachmentPageChange($event)"
           ></app-pagination>
         </div>
-        } @if (selectedFiles.length > 0) {
+        }
+
+        @if (selectedFiles.length > 0) {
         <div class="td-pending-files">
-          <label class="td-label">Upload files: - </label>
+          <label>Upload files: -</label>
           @for (f of selectedFiles; track f.name; let i = $index) {
           <div class="td-pending-item">
             <span class="td-pending-name">{{ f.name }}</span>
@@ -264,13 +233,7 @@
           <label class="td-btn-outline">
             <span class="material-icons">upload_file</span>
             Choose Files
-            <input
-              type="file"
-              multiple
-              accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx,.txt"
-              style="display: none"
-              (change)="onFilesSelected($event)"
-            />
+            <input type="file" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx,.txt" style="display:none" (change)="onFilesSelected($event)" />
           </label>
           @if (selectedFiles.length > 0) {
           <app-button [config]="uploadFilesConfig"></app-button>
@@ -278,6 +241,7 @@
         </div>
       </div>
       }
+
     </div>
   </div>
 </div>

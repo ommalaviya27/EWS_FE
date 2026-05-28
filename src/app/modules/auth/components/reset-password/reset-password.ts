@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Password, PasswordInputConfig } from '@common';
+import { Password, PasswordInputConfig, Button, ButtonInputConfig } from '@common';
 import { AppValidators } from '../../../../common/validators/app.validators';
 import { AuthService } from '../../services/auth.service';
 import { ROUTES } from '../../../../common/constants/route-paths';
@@ -12,7 +12,7 @@ import { ApiResponse } from '../../../../common/models/api-response.model';
 @Component({
   selector: 'app-reset-password',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, Password],
+  imports: [CommonModule, ReactiveFormsModule, Password, Button],
   templateUrl: './reset-password.html',
   styleUrls: ['./reset-password.css'],
 })
@@ -26,8 +26,8 @@ export class ResetPassword implements OnInit {
   resetForm!: FormGroup;
   newPasswordConfig!: PasswordInputConfig;
   confirmPasswordConfig!: PasswordInputConfig;
+  submitButtonConfig!: ButtonInputConfig;
   isLoading = false;
-  resetSuccess = false;
   token = '';
 
   ngOnInit(): void {
@@ -46,8 +46,17 @@ export class ResetPassword implements OnInit {
       { validators: AppValidators.matchPasswords('newPassword', 'confirmPassword') }
     );
 
-    this.newPasswordConfig = { formControlName: 'newPassword', placeholder: 'Enter Password', floating:true };
-    this.confirmPasswordConfig = { formControlName: 'confirmPassword', placeholder: 'Confirm Password', floating:true };
+    this.newPasswordConfig = { formControlName: 'newPassword', placeholder: 'Enter Password', floating: true };
+    this.confirmPasswordConfig = { formControlName: 'confirmPassword', placeholder: 'Confirm Password', floating: true };
+
+    this.submitButtonConfig = {
+      type: 'submit',
+      variant: 'save',
+      cssClass: 'btn-save',
+      text: 'Set New Password',
+      isLoading: false,
+      disabled: false,
+    };
   }
 
   onSubmit(): void {
@@ -58,22 +67,31 @@ export class ResetPassword implements OnInit {
     }
 
     this.isLoading = true;
+    this.submitButtonConfig = { ...this.submitButtonConfig, isLoading: true, disabled: true };
 
     this.authService
-      .resetPassword({ token: this.token, ...this.resetForm.value })
+      .resetPassword({
+        token: this.token,
+        newPassword: this.resetForm.value.newPassword,
+        confirmNewPassword: this.resetForm.value.confirmPassword,
+      })
       .subscribe({
         next: (res: ApiResponse<null>) => {
           this.isLoading = false;
+          this.submitButtonConfig = { ...this.submitButtonConfig, isLoading: false, disabled: false };
           if (res.isSuccess) {
-            this.resetSuccess = true;
-            this.toastr.success('Password reset successfully!');
+            this.toastr.success('Password reset successfully! Please sign in with your new password.');
+            this.router.navigate([ROUTES.AUTH.LOGIN.LOGIN_ABSOLUTE]);
           } else {
             this.toastr.error(res.errorMessages?.[0] || res.message || 'Reset failed.');
           }
         },
         error: (err: { error?: ApiResponse<null> }) => {
           this.isLoading = false;
-          this.toastr.error(err?.error?.errorMessages?.[0] || err?.error?.message || 'Something went wrong. The link may have expired.');
+          this.submitButtonConfig = { ...this.submitButtonConfig, isLoading: false, disabled: false };
+          this.toastr.error(
+            err?.error?.errorMessages?.[0] || err?.error?.message || 'Something went wrong. The link may have expired.'
+          );
         },
       });
   }

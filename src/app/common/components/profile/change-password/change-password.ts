@@ -2,9 +2,13 @@ import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, Simp
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { ProfileService } from '../../../services/profile.service';
+import { SessionService } from '../../../services/session.service';
 import { AppValidators } from '../../../validators/app.validators';
 import { Password, PasswordInputConfig, Button, ButtonInputConfig } from '@common';
+import { ROUTES } from '../../../constants/route-paths';
+import { ApiResponse } from '../../../models/api-response.model';
 
 @Component({
   selector: 'app-change-password',
@@ -19,7 +23,9 @@ export class ChangePassword implements OnInit, OnChanges {
 
   private fb = inject(FormBuilder);
   private profileService = inject(ProfileService);
+  private sessionService = inject(SessionService);
   private router = inject(Router);
+  private toastr = inject(ToastrService);
 
   passwordForm!: FormGroup;
   isSaving = false;
@@ -69,32 +75,69 @@ export class ChangePassword implements OnInit, OnChanges {
     this.closed.emit();
   }
 
+  get passwordMismatch(): boolean {
+    return !!(
+      this.passwordForm.hasError('passwordMismatch') &&
+      this.passwordForm.get('confirmNewPassword')?.touched
+    );
+  }
+
   onSubmit(): void {
+    this.passwordForm.markAllAsTouched();
+
     if (this.passwordForm.invalid) {
-      this.passwordForm.markAllAsTouched();
+      const controls = this.passwordForm.controls;
+
+      if (controls['oldPassword'].hasError('required')) {
+        this.toastr.warning('Current password is required.');
+        return;
+      }
+      if (controls['newPassword'].hasError('required')) {
+        this.toastr.warning('New password is required.');
+        return;
+      }
+      if (controls['newPassword'].hasError('invalidPassword')) {
+        this.toastr.warning('New password must be 8–15 characters with a letter, number, and special character.');
+        return;
+      }
+      if (controls['confirmNewPassword'].hasError('required')) {
+        this.toastr.warning('Please confirm your new password.');
+        return;
+      }
+      if (this.passwordForm.hasError('passwordMismatch')) {
+        this.toastr.warning('New password and confirm password do not match.');
+        return;
+      }
       return;
     }
+
     this.isSaving = true;
     this.initButtonConfigs();
 
     this.profileService.changePassword(this.passwordForm.value).subscribe({
-      next: (res) => {
+      next: (res: ApiResponse<null>) => {
+        this.isSaving = false;
+        this.initButtonConfigs();
         if (res.isSuccess) {
-          this.passwordForm.reset();
-          this.onCancel();
-          setTimeout(() => this.router.navigate(['/auth/login']), 300);
+          this.toastr.success(res.message || 'Password changed successfully. Please sign in again.');
+          this.sessionService.clearAll();
+          this.closed.emit();
+          setTimeout(() => this.router.navigate([ROUTES.AUTH.LOGIN.LOGIN_ABSOLUTE]), 300);
+        } else {
+          this.toastr.error(res.errorMessages?.[0] || res.message || 'Failed to change password.');
         }
-        this.isSaving = false;
-        this.initButtonConfigs();
       },
-      error: () => {
+      error: (err: { error?: ApiResponse<null> }) => {
         this.isSaving = false;
         this.initButtonConfigs();
+        this.toastr.error(
+          err?.error?.errorMessages?.[0] || err?.error?.message || 'Something went wrong. Please try again.'
+        );
       },
     });
   }
 
   navigateToForgotPassword(): void {
-    this.router.navigate(['/auth/forgot-password']);
+    this.router.navigate([ROUTES.AUTH.FORGOT_PASSWORD.FORGOT_PASSWORD_ABSOLUTE]);
   }
 }
