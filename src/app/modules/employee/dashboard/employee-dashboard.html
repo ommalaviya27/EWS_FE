@@ -3,17 +3,6 @@
   <div class="ed-center"><div class="spinner-border text-primary"></div></div>
   } @else if (dashboard) {
 
-  <!-- Header -->
-  <div class="ed-header">
-    <div>
-      <h3 class="ed-title">My Dashboard</h3>
-      <p class="ed-subtitle">Overview of your tasks and upcoming deadlines</p>
-    </div>
-    <a [routerLink]="myTasksRoute" class="ed-link-btn">
-      <span class="material-icons">open_in_new</span>View All Tasks
-    </a>
-  </div>
-
   <!-- Stat Cards -->
   <div class="ed-stats">
     <div class="ed-stat ed-stat--purple">
@@ -45,20 +34,19 @@
     <!-- Upcoming Deadlines -->
     <div class="ed-panel">
       <div class="ed-panel__head">
-        <h4 class="ed-panel__title ed-panel__title--orange">
-          <span class="material-icons">event_busy</span>Upcoming Deadlines
+        <h4 class="ed-panel__title">
+          <span>Upcoming Deadlines</span>
         </h4>
         <span class="ed-chip ed-chip--orange">{{ dashboard.upcomingDeadlines.length }}</span>
       </div>
       @if (dashboard.upcomingDeadlines.length === 0) {
       <div class="ed-empty">
-        <span class="material-icons">check_circle_outline</span>No deadlines in the next 7 days.
+        <span>No deadlines in the next 7 days.</span>
       </div>
       } @else {
       <div class="ed-list">
         @for (task of dashboard.upcomingDeadlines; track task.id) {
         <div class="ed-item" (click)="openTaskDetail(task)">
-          <span class="ed-dot ed-dot--orange"></span>
           <div class="ed-item__info">
             <span class="ed-item__name">{{ task.title }}</span>
             <span class="ed-item__sub">{{ task.projectName }}</span>
@@ -67,8 +55,8 @@
             <span class="pri-badge" [attr.data-p]="task.priority">{{
               getPriorityLabel(task.priority)
             }}</span>
-            <span class="ed-date ed-date--warn">
-              <span class="material-icons">calendar_today</span>{{ formatDate(task.dueDate) }}
+            <span class="ed-date">
+              {{ formatDate(task.dueDate) }}
             </span>
           </div>
         </div>
@@ -81,19 +69,18 @@
     <div class="ed-panel">
       <div class="ed-panel__head">
         <h4 class="ed-panel__title ed-panel__title--amber">
-          <span class="material-icons">pause_circle_outline</span>On Hold Tasks
+          <span>On Hold Tasks</span>
         </h4>
         <span class="ed-chip ed-chip--amber">{{ dashboard.onHoldTasks.length }}</span>
       </div>
       @if (dashboard.onHoldTasks.length === 0) {
       <div class="ed-empty">
-        <span class="material-icons">check_circle_outline</span>No tasks currently on hold.
+        <span>No tasks currently on hold.</span>
       </div>
       } @else {
       <div class="ed-list">
         @for (task of dashboard.onHoldTasks; track task.id) {
         <div class="ed-item" (click)="openTaskDetail(task)">
-          <span class="ed-dot ed-dot--amber"></span>
           <div class="ed-item__info">
             <span class="ed-item__name">{{ task.title }}</span>
             <span class="ed-item__sub">{{ task.projectName }}</span>
@@ -103,7 +90,7 @@
               getPriorityLabel(task.priority)
             }}</span>
             <span class="ed-date">
-              <span class="material-icons">calendar_today</span>{{ formatDate(task.dueDate) }}
+              {{ formatDate(task.dueDate) }}
             </span>
           </div>
         </div>
@@ -117,13 +104,13 @@
   <div class="ed-panel">
     <div class="ed-panel__head">
       <h4 class="ed-panel__title ed-panel__title--green">
-        <span class="material-icons">task_alt</span>Completed Tasks
+        <span>Completed Tasks</span>
       </h4>
       <span class="ed-chip ed-chip--green">{{ dashboard.completedTasks.length }}</span>
     </div>
     @if (dashboard.completedTasks.length === 0) {
     <div class="ed-empty">
-      <span class="material-icons">hourglass_empty</span>No completed tasks yet.
+      <span>No completed tasks yet.</span>
     </div>
     } @else {
     <div class="ed-table-wrap">
@@ -138,7 +125,7 @@
         @for (task of dashboard.completedTasks; track task.id) {
         <div class="ed-tr" (click)="openTaskDetail(task)">
           <div class="ed-td">
-            <span class="ed-task-name--done">{{ task.title }}</span>
+            <span class="ed-task-title">{{ task.title }}</span>
           </div>
           <div class="ed-td">
             <span class="ed-desc">{{ task.description }}</span>
@@ -151,7 +138,7 @@
           </div>
           <div class="ed-td">
             <span class="ed-date">
-              <span class="material-icons">calendar_today</span>{{ formatDate(task.dueDate) }}
+              {{ formatDate(task.dueDate) }}
             </span>
           </div>
         </div>

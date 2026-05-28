@@ -3,15 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { TeamLeadDashboardService } from '../dashboard/services/team-lead-dashboard.service';
-import {
-  TeamLeadDashboard,
-  TaskPriority,
-  TaskStatuses,
-  ProjectStatus,
-  TASK_PRIORITY_LABELS,
-  TASK_STATUS_LABELS,
-  PROJECT_STATUS_LABELS,
-} from '../dashboard/models/team-lead-dashboard.model';
+import { TeamLeadDashboard, TaskPriority, TaskStatuses, ProjectStatus, TASK_PRIORITY_LABELS, TASK_STATUS_LABELS, PROJECT_STATUS_LABELS } from '../dashboard/models/team-lead-dashboard.model';
 import { ROUTES } from '../../../common/constants/route-paths';
 
 @Component({
@@ -120,8 +112,6 @@ export class TeamLeadDashboardComponent implements OnInit {
     const map: Record<ProjectStatus, string> = {
       [ProjectStatus.Active]: 'badge--active',
       [ProjectStatus.Completed]: 'badge--completed',
-      [ProjectStatus.OnHold]: 'badge--hold',
-      [ProjectStatus.Cancelled]: 'badge--cancelled',
     };
     return map[status] ?? '';
   }
