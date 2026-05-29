@@ -38,7 +38,7 @@
 
 .pl-card:hover {
   box-shadow: 0 6px 24px rgba(79, 70, 229, 0.1);
-  transform: translateY(-2px);
+  transform: translateY(-5px);
 }
 
 .pl-card-body {
@@ -115,39 +115,13 @@
   color: #b91c1c;
 }
 
-.pl-card-meta {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .pl-card-date {
-  display: flex;
+  margin-left: auto;
   align-items: center;
   gap: 4px;
   font-size: 13px;
-  color: #6b7280;
-}
-
-.pl-view-btn {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 14px;
-  background: none;
-  border: 1px solid #8e00ed;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #8e00ed;
-  cursor: pointer;
-  transition: background 0.18s, color 0.18s;
-  width: 110px;
-  justify-content: center;
-}
-.pl-view-btn:hover {
-  background: #8e00ed;
-  color: #fff;
+  color: #6b7280; 
+  margin-top: 5px;
 }
 
 .desc-tooltip {
@@ -165,4 +139,8 @@
   box-shadow: 0 8px 24px rgba(0,0,0,0.28);
   pointer-events: none;
   transform: translate(12px, 16px);
+}
+.pl-card-desc--muted {
+  color: #c0c4cc;
+  font-style: italic;
 }

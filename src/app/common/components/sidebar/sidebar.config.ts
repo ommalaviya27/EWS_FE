@@ -23,14 +23,14 @@ export const ROLE_SIDEBAR_CONFIGS: Record<number, SidebarConfig> = {
     portalLabel: 'TL Portal',
     navItems: [
       { label: 'Dashboard', icon: 'dashboard', route: '/team-lead/dashboard' },
-      { label: 'Task Management', icon: 'assignment', route: '/team-lead/task-management' },
+      { label: 'Projects', icon: 'assignment', route: '/team-lead/task-management' },
     ],
   },
   3: {
     portalLabel: 'Employee Portal',
     navItems: [
       { label: 'Dashboard', icon: 'dashboard', route: '/employee/dashboard' },
-      { label: 'My Tasks', icon: 'task', route: '/employee/my-tasks' },
+      { label: 'Projects', icon: 'task', route: '/employee/my-tasks' },
     ],
   },
 };

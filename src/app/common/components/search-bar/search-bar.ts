@@ -24,7 +24,11 @@ export class SearchBarComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit(): void {
     this.inputSubject
-      .pipe(debounceTime(this.debounceMs), distinctUntilChanged(), takeUntil(this.destroy$))
+      .pipe(
+        debounceTime(this.debounceMs),
+        distinctUntilChanged((a, b) => a.toLowerCase() === b.toLowerCase()),
+        takeUntil(this.destroy$)
+      )
       .subscribe((term) => this.searchChange.emit(term));
   }
 

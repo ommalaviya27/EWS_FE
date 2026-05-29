@@ -8,6 +8,7 @@ import { ApiResponse } from '../../../../common/models/api-response.model';
 import { API_ROUTES } from '../../../../common/constants/api-routes';
 import { MyTask, TaskComment, TaskAttachment, AddCommentRequest, UpdateCommentRequest, UpdateTaskStatusRequest, EmployeeDashboard } from '../models/my-task.model';
 import { PaginationResponse } from '../../../../common/components/pagination/pagination.model';
+import { ProjectCard } from '../../../team-lead/task-management/models/task-management.model';
 
 @Injectable({ providedIn: 'root' })
 export class MyTaskService {
@@ -19,21 +20,24 @@ export class MyTaskService {
     return this.apiService.get<EmployeeDashboard>(API_ROUTES.MY_TASKS.GET_DASHBOARD);
   }
 
-  getMyTasks(): Observable<ApiResponse<MyTask[]>> {
-    return this.apiService.get<MyTask[]>(API_ROUTES.MY_TASKS.GET_MY_TASKS);
+  getMyProjects(): Observable<ApiResponse<ProjectCard[]>> {
+    return this.apiService.get<ProjectCard[]>(API_ROUTES.MY_TASKS.GET_MY_PROJECTS);
+  }
+
+  getMyTasks(projectId?: string): Observable<ApiResponse<MyTask[]>> {
+    const params: Record<string, string> = {};
+    if (projectId) params['projectId'] = projectId;
+    return this.apiService.get<MyTask[]>(API_ROUTES.MY_TASKS.GET_MY_TASKS, params);
   }
 
   updateTaskStatus(taskId: number, payload: UpdateTaskStatusRequest): Observable<ApiResponse<MyTask>> {
     return this.apiService.patch<MyTask>(API_ROUTES.MY_TASKS.UPDATE_STATUS(taskId), payload);
   }
 
-  getComments( taskId: number, pageNumber: number = 1, pageSize: number = 5): Observable<ApiResponse<PaginationResponse<TaskComment>>> {
+  getComments(taskId: number, pageNumber: number = 1, pageSize: number = 5): Observable<ApiResponse<PaginationResponse<TaskComment>>> {
     return this.apiService.get<PaginationResponse<TaskComment>>(
       API_ROUTES.MY_TASKS.GET_COMMENTS(taskId),
-      {
-        PageNumber: pageNumber.toString(),
-        PageSize: pageSize.toString(),
-      }
+      { PageNumber: pageNumber.toString(), PageSize: pageSize.toString() }
     );
   }
 
@@ -49,13 +53,10 @@ export class MyTaskService {
     return this.apiService.delete<void>(API_ROUTES.MY_TASKS.DELETE_COMMENT(commentId));
   }
 
-  getAttachments( taskId: number, pageNumber: number = 1, pageSize: number = 5): Observable<ApiResponse<PaginationResponse<TaskAttachment>>> {
+  getAttachments(taskId: number, pageNumber: number = 1, pageSize: number = 5): Observable<ApiResponse<PaginationResponse<TaskAttachment>>> {
     return this.apiService.get<PaginationResponse<TaskAttachment>>(
       API_ROUTES.MY_TASKS.GET_ATTACHMENTS(taskId),
-      {
-        PageNumber: pageNumber.toString(),
-        PageSize: pageSize.toString(),
-      }
+      { PageNumber: pageNumber.toString(), PageSize: pageSize.toString() }
     );
   }
 

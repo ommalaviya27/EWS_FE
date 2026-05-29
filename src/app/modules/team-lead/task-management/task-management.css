@@ -194,6 +194,15 @@
   color: #b91c1c;
 }
 
+.mt-overdue {
+  color: #b91c1c;
+  font-weight: 600;
+}
+.mt-due-soon {
+  color: #a16207;
+  font-weight: 600;
+}
+
 /* ===== Loading / Empty states ===== */
 .center-state {
   flex: 1;

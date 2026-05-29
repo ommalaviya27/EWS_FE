@@ -266,48 +266,14 @@
   border-bottom: none;
 }
 
-.tvm-comment-avatar {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: #e0e7ff;
-  color: #4f46e5;
-  font-size: 13px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
 .tvm-comment-content {
   flex: 1;
   min-width: 0;
 }
 
-.tvm-comment-meta {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  margin-bottom: 4px;
-}
-
-.tvm-comment-author {
-  font-size: 13px;
-  font-weight: 600;
-  color: #111827;
-}
-
-.tvm-comment-time {
-  font-size: 11px;
-  color: #9ca3af;
-}
-
 .tvm-comment-text {
   margin: 0;
   font-size: 13.5px;
-  line-height: 1.65;
-  color: #374151;
   word-break: break-word;
 }
 

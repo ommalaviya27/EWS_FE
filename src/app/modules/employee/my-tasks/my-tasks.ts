@@ -1,22 +1,42 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { MyTaskService } from './services/my-task.service';
 import { MyTask, TaskStatuses, TaskPriority, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS } from './models/my-task.model';
 import { TaskDetailModel } from './components/task-detail-model/task-detail-model';
+import { PaginationComponent, ProjectList, SearchBarComponent } from '@common';
+import { DEFAULT_PAGINATION } from '../../../common/constants/app.constants';
+import { ProjectCard } from '../../../modules/team-lead/task-management/models/task-management.model';
 
 @Component({
   selector: 'app-my-tasks',
-  imports: [CommonModule, TaskDetailModel],
+  imports: [CommonModule, TaskDetailModel, PaginationComponent, ProjectList, SearchBarComponent],
   templateUrl: './my-tasks.html',
   styleUrl: './my-tasks.css',
 })
 export class MyTasks implements OnInit {
   private myTaskService = inject(MyTaskService);
   private toastr = inject(ToastrService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+
+  view: 'projects' | 'tasks' = 'projects';
+  selectedProjectId: string | null = null;
+  selectedProjectName: string = '';
+
+  projectCards: ProjectCard[] = [];
+  isProjectsLoading = false;
 
   tasks: MyTask[] = [];
   isLoading = false;
+
+  searchTerm = '';
+
+  private allProjectTasks: MyTask[] = [];  
+  currentPage = DEFAULT_PAGINATION.currentPage;
+  itemsPerPage = DEFAULT_PAGINATION.itemsPerPage;
+  totalItems = DEFAULT_PAGINATION.totalItems;
 
   selectedTask: MyTask | null = null;
   showDetailModal = false;
@@ -29,14 +49,61 @@ export class MyTasks implements OnInit {
   tooltip = { visible: false, text: '', x: 0, y: 0 };
 
   ngOnInit(): void {
-    this.loadTasks();
+    this.route.queryParams.subscribe(params => {
+      const pid   = params['projectId'];
+      const pname = params['projectName'];
+      if (pid) {
+        this.selectedProjectId   = pid;
+        this.selectedProjectName = pname ?? '';
+        this.view = 'tasks';
+        this.loadTasksForProject(pid);
+      } else {
+        this.view = 'projects';
+        this.selectedProjectId   = null;
+        this.selectedProjectName = '';
+        this.loadProjectList();
+      }
+    });
   }
 
-  loadTasks(): void {
-    this.isLoading = true;
-    this.myTaskService.getMyTasks().subscribe({
+  private loadProjectList(): void {
+    this.isProjectsLoading = true;
+    this.myTaskService.getMyProjects().subscribe({
       next: (res) => {
-        this.tasks = res.data ?? [];
+        this.projectCards = res.data ?? [];
+        this.isProjectsLoading = false;
+      },
+      error: (err) => {
+        this.toastr.error(this.getError(err));
+        this.isProjectsLoading = false;
+      },
+    });
+  }
+
+  onProjectSelected(project: ProjectCard): void {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { projectId: project.id, projectName: project.name },
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  goBackToProjects(): void {
+    this.searchTerm = '';
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { projectId: null, projectName: null },
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  private loadTasksForProject(projectId: string): void {
+    this.isLoading = true;
+    this.myTaskService.getMyTasks(projectId).subscribe({
+      next: (res) => {
+        this.allProjectTasks = res.data ?? [];
+        this.currentPage = 1;
+        this.applySearchAndPaginate();
         this.isLoading = false;
       },
       error: (err) => {
@@ -46,14 +113,51 @@ export class MyTasks implements OnInit {
     });
   }
 
+  onSearchChange(term: string): void {
+    this.searchTerm = term;
+    this.currentPage = 1;
+    this.applySearchAndPaginate();
+  }
+
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.applySearchAndPaginate();
+  }
+
+  onPageSizeChange(size: number): void {
+    this.itemsPerPage = size;
+    this.currentPage  = 1;
+    this.applySearchAndPaginate();
+  }
+
+  private applySearchAndPaginate(): void {
+    const term = this.searchTerm.trim().toLowerCase();
+    const filtered = term
+      ? this.allProjectTasks.filter(t =>
+          t.title.toLowerCase().includes(term) ||
+          t.description?.toLowerCase().includes(term)
+        )
+      : this.allProjectTasks;
+
+    this.totalItems = filtered.length;
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    this.tasks = filtered.slice(start, start + this.itemsPerPage);
+  }
+
   openTaskDetail(task: MyTask): void {
-    this.selectedTask = task;
+    this.selectedTask  = task;
     this.showDetailModal = true;
   }
 
   closeDetailModal(): void {
     this.showDetailModal = false;
     this.selectedTask = null;
+  }
+
+  onTaskRefresh(): void {
+    if (this.selectedProjectId) {
+      this.loadTasksForProject(this.selectedProjectId);
+    }
   }
 
   getStatusLabel(status: TaskStatuses): string {
@@ -67,9 +171,7 @@ export class MyTasks implements OnInit {
   formatDate(dateStr: string): string {
     if (!dateStr) return '—';
     return new Date(dateStr).toLocaleDateString('en-IN', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
+      day: '2-digit', month: 'short', year: 'numeric',
     });
   }
 
