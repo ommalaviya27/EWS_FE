@@ -1,62 +1,143 @@
 <div class="mt-wrapper">
-  <!-- Header -->
+
+  <!-- ===== PROJECTS VIEW ===== -->
+  @if (view === 'projects') {
+    <div>
+      <h3 class="mt-page-title">Projects</h3>
+    </div>
+
+  @if (isProjectsLoading) {
+  <div class="mt-center-state">
+    <div class="spinner-border text-primary"></div>
+  </div>
+  } @else if (projectCards.length === 0) {
+  <div class="mt-center-state mt-empty-state">
+    <span class="material-icons">assignment</span>
+    <h4>No Tasks Assigned</h4>
+    <p>You have no tasks assigned to you yet.</p>
+  </div>
+  } @else {
+  <div class="mt-projects-scroll">
+    <app-project-list
+      [projects]="projectCards"
+      (projectSelected)="onProjectSelected($event)"
+    ></app-project-list>
+  </div>
+  }
+
+  } @else {
+
+  <div>
+    <button type="button" class="mt-btn-back" (click)="goBackToProjects()">
+      <span class="material-icons" style="font-size:16px">arrow_back</span>
+      Change Project
+    </button>
+  </div>
+
   <div class="mt-header-bar">
     <div>
-      <h3 class="mt-page-title">My Tasks</h3>
-      <p class="mt-page-subtitle">View and manage your assigned tasks</p>
+      <h3 class="mt-page-title">{{ selectedProjectName || 'My Tasks' }}</h3>
+    </div>
+    <div class="mt-header-actions">
+      <app-search-bar
+        placeholder="Search by title or description…"
+        [value]="searchTerm"
+        (searchChange)="onSearchChange($event)"
+      ></app-search-bar>
     </div>
   </div>
 
-  <!-- Loader -->
   @if (isLoading) {
   <div class="mt-center-state">
     <div class="spinner-border text-primary"></div>
   </div>
-  }
-
-  <!-- Empty -->
-  @else if (tasks.length === 0) {
+  } @else if (tasks.length === 0) {
   <div class="mt-center-state mt-empty-state">
-    <h4>No Tasks Assigned</h4>
-    <p>You have no tasks assigned to you yet.</p>
+    <span class="material-icons">{{ searchTerm ? 'search_off' : 'assignment' }}</span>
+    <h4>{{ searchTerm ? 'No results for "' + searchTerm + '"' : 'No Tasks Found' }}</h4>
+    @if (searchTerm) {
+    <p class="mt-empty-hint">Try a different title or clear the search.</p>
+    } @else {
+    <p>You have no tasks assigned for this project.</p>
+    }
   </div>
-  }
+  } @else {
+  <div class="mt-table-card">
+    <div class="mt-grid-scroll">
+      <div class="mt-grid-container">
 
-  <!-- Cards -->
-  @else {
-  <div class="mt-cards-scroll">
-    <div class="mt-cards-grid">
-      @for (task of tasks; track task.id) {
-      <div class="mt-card" (click)="openTaskDetail(task)">
-        <div class="mt-card-body">
-          <div class="mt-card-tps">
-            <div>
-              <h4 class="mt-card-title">{{ task.title }}</h4>
-              <span class="mt-card-project">{{ task.projectName }}</span>
+        <div class="mt-grid-row mt-grid-header">
+          <div class="mt-grid-th">Task</div>
+          <div class="mt-grid-th">Status</div>
+          <div class="mt-grid-th">Priority</div>
+          <div class="mt-grid-th">Due Date</div>
+          <div class="mt-grid-th text-center mt-action-cell">Details</div>
+        </div>
+
+        <!-- Rows -->
+        @for (task of tasks; track task.id) {
+        <div class="mt-grid-row">
+
+          <!-- Title + description -->
+          <div class="mt-grid-td mt-task-cell">
+            <div class="mt-task-title">{{ task.title }}</div>
+            <div
+              class="mt-task-desc"
+              (mouseenter)="showTooltip($event, task.description)"
+              (mousemove)="moveTooltip($event)"
+              (mouseleave)="hideTooltip()"
+            >
+              {{ task.description }}
             </div>
+          </div>
+
+          <!-- Status -->
+          <div class="mt-grid-td">
+            <span class="status-badge" [attr.data-status]="task.taskStatus">
+              {{ getStatusLabel(task.taskStatus) }}
+            </span>
+          </div>
+
+          <!-- Priority -->
+          <div class="mt-grid-td">
             <span class="priority-badge" [attr.data-priority]="task.priority">
               {{ getPriorityLabel(task.priority) }}
             </span>
           </div>
 
-          <div class="mt-card-desc" 
-             (mouseenter)="showTooltip($event, task.description)"
-             (mousemove)="moveTooltip($event)"
-             (mouseleave)="hideTooltip()">
-            {{ task.description }}
-        </div>
-
-          <div class="mt-card-pd">
-            <span class="status-badge" [attr.data-status]="task.taskStatus">
-              {{ getStatusLabel(task.taskStatus) }}
+          <!-- Due date -->
+          <div class="mt-grid-td">
+            <span
+            [class.mt-overdue]="task.taskStatus !== TaskStatuses.Completed && isOverdue(task.dueDate)"
+            [class.mt-due-soon]="task.taskStatus !== TaskStatuses.Completed && !isOverdue(task.dueDate) && isDueSoon(task.dueDate)"
+            >
+              {{ formatDate(task.dueDate) }}
             </span>
-            <span class="due-date">Due: {{ formatDate(task.dueDate) }}</span>
           </div>
+
+          <!-- View action -->
+          <div class="mt-grid-td text-center mt-action-cell">
+            <button type="button" class="mt-view-btn" (click)="openTaskDetail(task)">
+              <span class="material-icons" style="font-size:16px">visibility</span>
+              View
+            </button>
+          </div>
+
         </div>
+        }
       </div>
-      }
     </div>
+
+    <app-pagination
+      [currentPage]="currentPage"
+      [totalItems]="totalItems"
+      [itemsPerPage]="itemsPerPage"
+      (pageChange)="onPageChange($event)"
+      (pageSizeChange)="onPageSizeChange($event)"
+    ></app-pagination>
   </div>
+  }
+
   }
 </div>
 
@@ -66,10 +147,9 @@
 </div>
 }
 
-<!-- Detail modal -->
 <app-task-detail-model
   [visible]="showDetailModal"
   [task]="selectedTask"
   (closed)="closeDetailModal()"
-  (refreshTasks)="loadTasks()"
+  (refreshTasks)="onTaskRefresh()"
 ></app-task-detail-model>

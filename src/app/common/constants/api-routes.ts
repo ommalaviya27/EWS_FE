@@ -36,6 +36,7 @@ export const API_ROUTES = {
   },
   MY_TASKS: {
     GET_DASHBOARD: '/api/my-tasks/dashboard',
+    GET_MY_PROJECTS: '/api/my-tasks/my-projects',
     GET_MY_TASKS: '/api/my-tasks/my-tasks',
     UPDATE_STATUS: (id: number) => `/api/my-tasks/${id}/status`,
     GET_COMMENTS: (id: number) => `/api/my-tasks/${id}/comments`,

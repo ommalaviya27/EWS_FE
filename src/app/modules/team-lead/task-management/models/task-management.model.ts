@@ -1,4 +1,5 @@
 import { TaskAttachment, TaskComment } from "../../../employee/my-tasks/models/my-task.model";
+import { ProjectStatus } from "../../dashboard/models/team-lead-dashboard.model";
 
 export enum TaskStatuses {
   Pending = 1,
@@ -94,4 +95,13 @@ export interface ProjectCardData {
   projectStatus: number;
   startDate: string;
   endDate: string;
+}
+
+export interface ProjectCard extends ProjectOption {
+  id: string;
+  name: string;
+  description?: string;
+  projectStatus?: ProjectStatus;
+  startDate?: string;
+  endDate?: string;
 }

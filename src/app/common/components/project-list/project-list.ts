@@ -1,14 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProjectOption } from '../../models/task-management.model';
-import { ProjectStatus, PROJECT_STATUS_LABELS } from '../../../../admin/project/models/project.model';
-
-export interface ProjectCard extends ProjectOption {
-  description: string;
-  projectStatus: ProjectStatus;
-  startDate: string;
-  endDate: string;
-}
+import { ProjectCard } from '../../../modules/team-lead/task-management/models/task-management.model';
+import { ProjectStatus, PROJECT_STATUS_LABELS } from '../../../modules/admin/project/models/project.model';
 
 @Component({
   selector: 'app-project-list',
@@ -18,11 +11,11 @@ export interface ProjectCard extends ProjectOption {
 })
 export class ProjectList {
   @Input() projects: ProjectCard[] = [];
+  @Input() actionLabel: string = 'View Tasks';
   @Output() projectSelected = new EventEmitter<ProjectCard>();
 
   readonly statusLabels = PROJECT_STATUS_LABELS;
 
-  // Tooltip state initialization
   tooltip = { visible: false, text: '', x: 0, y: 0 };
 
   onProjectClick(project: ProjectCard): void {

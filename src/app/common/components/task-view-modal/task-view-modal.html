@@ -69,14 +69,7 @@
         <div class="tvm-comments-list">
           @for (c of comments; track c.id) {
           <div class="tvm-comment-item">
-            <div class="tvm-comment-avatar">
-              {{ c.userName?.charAt(0)?.toUpperCase() }}
-            </div>
             <div class="tvm-comment-content">
-              <div class="tvm-comment-meta">
-                <span class="tvm-comment-author">{{ c.userName }}</span>
-                <span class="tvm-comment-time">{{ formatDateTime(c.createdAt) }}</span>
-              </div>
               <p class="tvm-comment-text">{{ c.comment }}</p>
             </div>
           </div>

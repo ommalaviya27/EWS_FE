@@ -3,12 +3,11 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { TaskManagementService } from './services/task-management.service';
-import { DeleteModel, PaginationComponent, Button, ButtonInputConfig, SearchBarComponent, TaskViewModal } from '@common';
+import { DeleteModel, PaginationComponent, Button, ButtonInputConfig, SearchBarComponent, TaskViewModal, ProjectList } from '@common';
 import { TaskAddeditModal } from './components/task-addedit-modal/task-addedit-modal';
-import { ProjectList, ProjectCard } from './components/project-list/project-list';
 import { createDeleteConfig } from '../../../common/components/delete-model/delete-model.config';
 import { DEFAULT_PAGINATION } from '../../../common/constants/app.constants';
-import { Task, TeamMember, TaskStatuses, TaskPriority, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS, CreateTaskRequest, UpdateTaskRequest, ProjectCardData } from './models/task-management.model';
+import { Task, TeamMember, TaskStatuses, TaskPriority, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS, CreateTaskRequest, UpdateTaskRequest, ProjectCardData, ProjectCard } from './models/task-management.model';
 
 @Component({
   selector: 'app-task-management',
@@ -269,6 +268,17 @@ export class TaskManagement implements OnInit {
   closeViewModal(): void {
     this.showViewModal = false;
     this.viewTask = null;
+  }
+
+  isDueSoon(dateStr: string): boolean {
+    const due = new Date(dateStr);
+    const now = new Date();
+    const diffMs = due.getTime() - now.getTime();
+    return diffMs > 0 && diffMs < 3 * 24 * 60 * 60 * 1000;
+  }
+
+  isOverdue(dateStr: string): boolean {
+    return new Date(dateStr) < new Date();
   }
 
   showTooltip(event: MouseEvent, text: string): void {

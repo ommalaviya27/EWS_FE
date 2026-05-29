@@ -5,13 +5,16 @@
       <div class="pl-card-body">
         <div class="pl-card-header">
           <h4 class="pl-card-title">{{ project.name }}</h4>
+          @if (project.projectStatus) {
           <div class="pl-card-badges">
             <span class="project-status-badge" [attr.data-status]="project.projectStatus">
               {{ getStatusLabel(project.projectStatus) }}
             </span>
           </div>
+          }
         </div>
 
+        @if (project.description) {
         <p
           class="pl-card-desc"
           (mouseenter)="showTooltip($event, project.description)"
@@ -20,16 +23,16 @@
         >
           {{ project.description }}
         </p>
+        } @else {
+        <p class="pl-card-desc pl-card-desc--muted">No description available.</p>
+        }
 
         <div class="pl-card-footer">
-          <div class="pl-card-meta">
+            @if (project.startDate || project.endDate) {
             <span class="pl-card-date">
-              {{ formatDate(project.startDate) }} - {{ formatDate(project.endDate) }}
+              {{ formatDate(project.startDate ?? '') }} – {{ formatDate(project.endDate ?? '') }}
             </span>
-            <button class="pl-view-btn" (click)="onProjectClick(project); $event.stopPropagation()">
-              Create Tasks
-            </button>
-          </div>
+            }
         </div>
       </div>
     </div>

@@ -104,7 +104,14 @@
             </span>
           </div>
 
-          <div class="grid-td">{{ formatDate(task.dueDate) }}</div>
+          <div class="grid-td">
+            <span
+            [class.mt-overdue]="task.taskStatus !== TaskStatuses.Completed && isOverdue(task.dueDate)"
+            [class.mt-due-soon]="task.taskStatus !== TaskStatuses.Completed && !isOverdue(task.dueDate) && isDueSoon(task.dueDate)"
+            >
+              {{ formatDate(task.dueDate) }}
+            </span>
+          </div>
 
           <div class="grid-td text-center action-cell">
             <div class="action-container">
