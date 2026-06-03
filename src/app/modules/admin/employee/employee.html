@@ -2,7 +2,6 @@
   <div class="header-bar">
     <div>
       <h3 class="page-title">Employee Management</h3>
-      <p class="page-subtitle">Manage employees and assign them to team leads</p>
     </div>
 
     <div class="header-actions" (click)="$event.stopPropagation()">
@@ -11,6 +10,7 @@
         [value]="searchTerm"
         (searchChange)="onSearchChange($event)"
       ></app-search-bar>
+      <app-button [config]="filterBtnConfig"></app-button>
       <app-button [config]="addEmployeeBtnConfig"></app-button>
     </div>
   </div>
@@ -151,3 +151,9 @@
   (confirm)="onConfirmDelete()"
   (closed)="closeDeleteModal()"
 ></app-delete-model>
+
+<app-filter-panel
+  [config]="filterConfig"
+  [isOpen]="isFilterOpen"
+  [activeValues]="activeFilterValues"
+></app-filter-panel>

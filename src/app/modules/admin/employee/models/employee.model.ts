@@ -78,4 +78,6 @@ export interface UserPaginationRequest {
   pageSize: number;
   filter: 'all' | 'assigned' | 'unassigned';
   search?: string;
+  roleId?: number | string | null;
+  status?: string | null;
 }

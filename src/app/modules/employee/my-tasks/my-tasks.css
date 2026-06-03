@@ -16,6 +16,14 @@
   overflow: hidden;
 }
 
+.mt-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
 .mt-page-title {
   margin: 0 0 4px;
   font-size: 20px;

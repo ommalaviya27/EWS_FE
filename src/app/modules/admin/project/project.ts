@@ -2,16 +2,16 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { ProjectService } from './services/project.service';
-import { DeleteModel, PaginationComponent, Button, ButtonInputConfig, SearchBarComponent } from '@common';
+import { DeleteModel, PaginationComponent, Button, ButtonInputConfig, SearchBarComponent, FilterPanel, FilterPanelConfig, FilterValues } from '@common';
 import { ProjectAddeditModal } from './components/project-addedit-modal/project-addedit-modal';
 import { ProjectTasksModal } from './components/project-task-modal/project-task-modal';
 import { createDeleteConfig } from '../../../common/components/delete-model/delete-model.config';
 import { DEFAULT_PAGINATION } from '../../../common/constants/app.constants';
-import { Project, TeamLeader, ProjectStatus, PROJECT_STATUS_LABELS, CreateProjectRequest, UpdateProjectRequest } from './models/project.model';
+import { Project, TeamLeader, ProjectStatus, PROJECT_STATUS_LABELS, PROJECT_STATUS_LIST, CreateProjectRequest, UpdateProjectRequest } from './models/project.model';
 
 @Component({
   selector: 'app-project',
-  imports: [CommonModule, DeleteModel, ProjectAddeditModal, ProjectTasksModal, PaginationComponent, Button, SearchBarComponent],
+  imports: [CommonModule, DeleteModel, ProjectAddeditModal, ProjectTasksModal, PaginationComponent, Button, SearchBarComponent, FilterPanel],
   templateUrl: './project.html',
   styleUrl: './project.css'
 })
@@ -39,7 +39,6 @@ export class ProjectModule implements OnInit {
   deleteConfig = createDeleteConfig('');
   projectToDeleteId: string | null = null;
 
-  // View tasks modal
   showTasksModal = false;
   projectToView: Project | null = null;
 
@@ -49,9 +48,13 @@ export class ProjectModule implements OnInit {
   activeDropdownId: string | null = null;
 
   createProjectBtnConfig!: ButtonInputConfig;
+  filterBtnConfig!: ButtonInputConfig;
 
-  /* ===== Tooltip state ===== */
   tooltip = { visible: false, text: '', x: 0, y: 0 };
+
+  isFilterOpen = false;
+  activeFilterValues: FilterValues | null = null;
+  filterConfig!: FilterPanelConfig;
 
   showTooltip(event: MouseEvent, text: string): void {
     this.tooltip = { visible: true, text, x: event.clientX, y: event.clientY };
@@ -68,8 +71,9 @@ export class ProjectModule implements OnInit {
 
   ngOnInit(): void {
     this.initButtonConfigs();
-    this.loadProjects();
+    this.buildFilterConfig([]);
     this.loadTeamLeaders();
+    this.loadProjects();
   }
 
   private initButtonConfigs(): void {
@@ -81,6 +85,57 @@ export class ProjectModule implements OnInit {
         this.openAddModal();
       }
     };
+    this.filterBtnConfig = {
+      variant: 'filter',
+      text: 'Filter',
+      onClick: (event: MouseEvent) => {
+        event?.stopPropagation();
+        this.isFilterOpen = true;
+      }
+    };
+  }
+
+  private buildFilterConfig(leaders: TeamLeader[]): void {
+    this.filterConfig = {
+      fields: [
+        {
+          key: 'projectStatus',
+          label: null,
+          type: 'select',
+          placeholder: 'Project Status',
+          options: PROJECT_STATUS_LIST,
+        },
+        {
+          key: 'teamLeadId',
+          label: null,
+          type: 'select',
+          placeholder: 'Team Leads',
+          options: leaders.map(tl => ({ value: tl.userId, label: tl.name })),
+        },
+        {
+          key: 'startDate',
+          label: 'From',
+          type: 'date',
+        },
+        {
+          key: 'endDate',
+          label: 'To',
+          type: 'date',
+        },
+      ],
+      onFilter: (values: FilterValues) => {
+        this.activeFilterValues = values;
+        this.currentPage = 1;
+        this.isFilterOpen = false;
+        this.loadProjects();
+      },
+      onCancel: () => {
+        this.activeFilterValues = null;
+        this.currentPage = 1;
+        this.isFilterOpen = false;
+        this.loadProjects();
+      },
+    };
   }
 
   onSearchChange(term: string): void {
@@ -91,12 +146,30 @@ export class ProjectModule implements OnInit {
 
   private loadProjects(): void {
     this.isLoading = true;
+    const params: Record<string, string> = {
+      pageNumber: this.currentPage.toString(),
+      pageSize: this.itemsPerPage.toString(),
+    };
+
+    if (this.searchTerm?.trim()) params['search'] = this.searchTerm.trim();
+
+    if (this.activeFilterValues) {
+      if (this.activeFilterValues['projectStatus'] != null && this.activeFilterValues['projectStatus'] !== '') {
+        params['projectStatus'] = this.activeFilterValues['projectStatus'].toString();
+      }
+      if (this.activeFilterValues['teamLeadId'] != null && this.activeFilterValues['teamLeadId'] !== '') {
+        params['teamLeadId'] = this.activeFilterValues['teamLeadId'].toString();
+      }
+      if (this.activeFilterValues['startDate'] != null && this.activeFilterValues['startDate'] !== '') {
+        params['startDateFrom'] = this.activeFilterValues['startDate'].toString();
+      }
+      if (this.activeFilterValues['endDate'] != null && this.activeFilterValues['endDate'] !== '') {
+        params['endDateTo'] = this.activeFilterValues['endDate'].toString();
+      }
+    }
+
     this.projectService
-      .getAll({
-        pageNumber: this.currentPage,
-        pageSize: this.itemsPerPage,
-        search: this.searchTerm || undefined
-      } as any)
+      .getAll(params as any)
       .subscribe({
         next: (res) => {
           this.projects = res.data?.items ?? [];
@@ -112,8 +185,14 @@ export class ProjectModule implements OnInit {
 
   private loadTeamLeaders(): void {
     this.projectService.getTeamLeaders().subscribe({
-      next: (res) => (this.teamLeaders = res.data ?? []),
-      error: (err) => this.toastr.error(this.getErrorMessage(err)),
+      next: (res) => {
+        this.teamLeaders = res.data ?? [];
+        this.buildFilterConfig(this.teamLeaders);
+      },
+      error: (err) => {
+        this.toastr.error(this.getErrorMessage(err));
+        this.buildFilterConfig([]);
+      },
     });
   }
 
@@ -152,7 +231,6 @@ export class ProjectModule implements OnInit {
     }
   }
 
-  // ===== Tasks modal =====
   openTasksModal(project: Project): void {
     this.projectToView = project;
     this.showTasksModal = true;
@@ -163,7 +241,6 @@ export class ProjectModule implements OnInit {
     this.projectToView = null;
   }
 
-  // ===== Add / Edit modal =====
   openAddModal(): void {
     this.selectedProject = null;
     this.showModal = true;
@@ -200,7 +277,6 @@ export class ProjectModule implements OnInit {
     });
   }
 
-  // ===== Delete modal =====
   openDeleteModal(project: Project): void {
     this.projectToDeleteId = project.id;
     this.deleteConfig = createDeleteConfig(project.name);

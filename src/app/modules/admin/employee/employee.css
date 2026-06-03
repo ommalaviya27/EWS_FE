@@ -32,12 +32,6 @@
   color: #1a1a2e;
 }
 
-.page-subtitle {
-  margin: 0;
-  font-size: 13px;
-  color: #6c757d;
-}
-
 .btn-create {
   display: flex;
   align-items: center;

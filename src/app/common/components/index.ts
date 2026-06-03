@@ -18,3 +18,5 @@ export * from './button/button.config';
 export * from './search-bar/search-bar';
 export * from './task-view-modal/task-view-modal';
 export * from './project-list/project-list'
+export * from './filter-panel/filter-panel';
+export * from './filter-panel/filter-panel.config';

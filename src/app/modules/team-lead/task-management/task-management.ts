@@ -3,15 +3,15 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { TaskManagementService } from './services/task-management.service';
-import { DeleteModel, PaginationComponent, Button, ButtonInputConfig, SearchBarComponent, TaskViewModal, ProjectList } from '@common';
+import { DeleteModel, PaginationComponent, Button, ButtonInputConfig, SearchBarComponent, TaskViewModal, ProjectList, FilterPanel, FilterPanelConfig, FilterValues } from '@common';
 import { TaskAddeditModal } from './components/task-addedit-modal/task-addedit-modal';
 import { createDeleteConfig } from '../../../common/components/delete-model/delete-model.config';
 import { DEFAULT_PAGINATION } from '../../../common/constants/app.constants';
-import { Task, TeamMember, TaskStatuses, TaskPriority, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS, CreateTaskRequest, UpdateTaskRequest, ProjectCardData, ProjectCard } from './models/task-management.model';
+import { Task, TeamMember, TaskStatuses, TaskPriority, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS, TASK_STATUS_LIST, TASK_PRIORITY_LIST, CreateTaskRequest, UpdateTaskRequest, ProjectCardData, ProjectCard } from './models/task-management.model';
 
 @Component({
   selector: 'app-task-management',
-  imports: [CommonModule, DeleteModel, TaskAddeditModal, PaginationComponent, Button, SearchBarComponent, ProjectList, TaskViewModal],
+  imports: [CommonModule, DeleteModel, TaskAddeditModal, PaginationComponent, Button, SearchBarComponent, ProjectList, TaskViewModal, FilterPanel],
   templateUrl: './task-management.html',
   styleUrl: './task-management.css',
 })
@@ -20,7 +20,6 @@ export class TaskManagement implements OnInit {
   private toastr = inject(ToastrService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
-
 
   view: 'projects' | 'tasks' = 'projects';
   selectedProjectId: string | null = null;
@@ -60,11 +59,17 @@ export class TaskManagement implements OnInit {
   activeDropdownId: number | null = null;
 
   createTaskBtnConfig!: ButtonInputConfig;
+  filterBtnConfig!: ButtonInputConfig;
 
   tooltip = { visible: false, text: '', x: 0, y: 0 };
 
+  isFilterOpen = false;
+  activeFilterValues: FilterValues | null = null;
+  filterConfig!: FilterPanelConfig;
+
   ngOnInit(): void {
     this.initButtonConfigs();
+    this.buildFilterConfig();
 
     this.route.queryParams.subscribe(params => {
       const pid = params['projectId'];
@@ -90,6 +95,57 @@ export class TaskManagement implements OnInit {
         event?.stopPropagation();
         this.openAddModal();
       }
+    };
+    this.filterBtnConfig = {
+      variant: 'filter',
+      text: 'Filter',
+      onClick: (event: MouseEvent) => {
+        event?.stopPropagation();
+        this.isFilterOpen = true;
+      }
+    };
+  }
+
+  private buildFilterConfig(): void {
+    this.filterConfig = {
+      fields: [
+        {
+          key: 'status',
+          label: null,
+          type: 'select',
+          placeholder: 'Task Status',
+          options: TASK_STATUS_LIST,
+        },
+        {
+          key: 'priority',
+          label: null,
+          type: 'select',
+          placeholder: 'Task Priority',
+          options: TASK_PRIORITY_LIST,
+        },
+        {
+          key: 'dueDateFrom',
+          label: 'From',
+          type: 'date',
+        },
+        {
+          key: 'dueDateTo',
+          label: 'To',
+          type: 'date',
+        },
+      ],
+      onFilter: (values: FilterValues) => {
+        this.activeFilterValues = values;
+        this.currentPage = 1;
+        this.isFilterOpen = false;
+        this.loadTasks();
+      },
+      onCancel: () => {
+        this.activeFilterValues = null;
+        this.currentPage = 1;
+        this.isFilterOpen = false;
+        this.loadTasks();
+      },
     };
   }
 
@@ -139,9 +195,26 @@ export class TaskManagement implements OnInit {
 
   private loadTasks(): void {
     this.isLoading = true;
+    const extraParams: Record<string, string> = {};
+
+    if (this.activeFilterValues) {
+      if (this.activeFilterValues['status'] != null && this.activeFilterValues['status'] !== '') {
+        extraParams['Status'] = this.activeFilterValues['status'].toString();
+      }
+      if (this.activeFilterValues['priority'] != null && this.activeFilterValues['priority'] !== '') {
+        extraParams['Priority'] = this.activeFilterValues['priority'].toString();
+      }
+      if (this.activeFilterValues['dueDateFrom'] != null && this.activeFilterValues['dueDateFrom'] !== '') {
+        extraParams['DueDateFrom'] = this.activeFilterValues['dueDateFrom'].toString();
+      }
+      if (this.activeFilterValues['dueDateTo'] != null && this.activeFilterValues['dueDateTo'] !== '') {
+        extraParams['DueDateTo'] = this.activeFilterValues['dueDateTo'].toString();
+      }
+    }
+
     this.taskService
       .getAll(
-        { pageNumber: this.currentPage, pageSize: this.itemsPerPage, search: this.searchTerm || undefined },
+        { pageNumber: this.currentPage, pageSize: this.itemsPerPage, search: this.searchTerm || undefined, ...extraParams } as any,
         this.selectedProjectId ?? undefined
       )
       .subscribe({
@@ -188,11 +261,15 @@ export class TaskManagement implements OnInit {
 
   onActionClick(event: MouseEvent, action: 'view' | 'edit' | 'delete', task: Task): void {
     event.stopPropagation();
-    this.hideTooltip();
     this.closeDropdown();
-    if (action === 'view') this.openViewModal(task);
-    if (action === 'edit') this.openEditModal(task);
-    else if (action === 'delete') this.openDeleteModal(task);
+
+    if (action === 'view') {
+      this.openViewModal(task);
+    } else if (action === 'edit') {
+      this.openEditModal(task);
+    } else if (action === 'delete') {
+      this.openDeleteModal(task);
+    }
   }
 
   openAddModal(): void {

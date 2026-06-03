@@ -2,17 +2,17 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { EmployeeService } from './services/employee.service';
-import { DeleteModel, PaginationComponent, Button, ButtonInputConfig, SearchBarComponent } from '@common';
+import { DeleteModel, PaginationComponent, Button, ButtonInputConfig, SearchBarComponent, FilterPanel, FilterPanelConfig, FilterValues } from '@common';
 import { EmployeeAddeditModal } from './components/employee-addedit-modal/employee-addedit-modal';
 import { createDeleteConfig } from '../../../common/components/delete-model/delete-model.config';
 import { DEFAULT_PAGINATION } from '../../../common/constants/app.constants';
-import { Employee, EMPLOYEE_ROLE_LABELS, CreateEmployeeRequest, UpdateEmployeeRequest, UserSummary } from './models/employee.model';
+import { Employee, EMPLOYEE_ROLE_LABELS, EMPLOYEE_ROLE_LIST, CreateEmployeeRequest, UpdateEmployeeRequest, UserSummary } from './models/employee.model';
 
 type TabType = 'all' | 'assigned' | 'unassigned';
 
 @Component({
   selector: 'app-employee',
-  imports: [CommonModule, DeleteModel, EmployeeAddeditModal, PaginationComponent, Button, SearchBarComponent],
+  imports: [CommonModule, DeleteModel, EmployeeAddeditModal, PaginationComponent, Button, SearchBarComponent, FilterPanel],
   templateUrl: './employee.html',
   styleUrl: './employee.css',
 })
@@ -47,9 +47,15 @@ export class EmployeeModule implements OnInit {
   activeDropdownId: number | null = null;
 
   addEmployeeBtnConfig!: ButtonInputConfig;
+  filterBtnConfig!: ButtonInputConfig;
+
+  isFilterOpen = false;
+  activeFilterValues: FilterValues | null = null;
+  filterConfig!: FilterPanelConfig;
 
   ngOnInit(): void {
     this.initButtonConfigs();
+    this.initFilterConfig();
     this.loadEmployees();
   }
 
@@ -61,6 +67,50 @@ export class EmployeeModule implements OnInit {
         event?.stopPropagation();
         this.openAddModal();
       }
+    };
+    this.filterBtnConfig = {
+      variant: 'filter',
+      text: 'Filter',
+      onClick: (event: MouseEvent) => {
+        event?.stopPropagation();
+        this.isFilterOpen = true;
+      }
+    };
+  }
+
+  private initFilterConfig(): void {
+    this.filterConfig = {
+      fields: [
+        {
+          key: 'roleId',
+          label: null,
+          type: 'select',
+          placeholder: 'Select Role',
+          options: EMPLOYEE_ROLE_LIST,
+        },
+        {
+          key: 'status',
+          label: null,
+          type: 'select',
+          placeholder: 'User Status',
+          options: [
+            { value: 'true', label: 'Active' },
+            { value: 'false', label: 'Inactive' },
+          ],
+        },
+      ],
+      onFilter: (values: FilterValues) => {
+        this.activeFilterValues = values;
+        this.currentPage = 1;
+        this.isFilterOpen = false;
+        this.loadEmployees();
+      },
+      onCancel: () => {
+        this.activeFilterValues = null;
+        this.currentPage = 1;
+        this.isFilterOpen = false;
+        this.loadEmployees();
+      },
     };
   }
 
@@ -81,13 +131,20 @@ export class EmployeeModule implements OnInit {
 
   private loadEmployees(): void {
     this.isLoading = true;
+    const params: any = {
+      pageNumber: this.currentPage,
+      pageSize: this.itemsPerPage,
+      filter: this.activeTab,
+      search: this.searchTerm || undefined,
+    };
+
+    if (this.activeFilterValues) {
+      if (this.activeFilterValues['roleId'] != null) params['roleId'] = this.activeFilterValues['roleId'];
+      if (this.activeFilterValues['status'] != null) params['status'] = this.activeFilterValues['status'];
+    }
+
     this.employeeService
-      .getAll({
-        pageNumber: this.currentPage,
-        pageSize: this.itemsPerPage,
-        filter: this.activeTab,
-        search: this.searchTerm || undefined,
-      })
+      .getAll(params)
       .subscribe({
         next: (res) => {
           this.employees = res.data?.items ?? [];
@@ -203,6 +260,10 @@ export class EmployeeModule implements OnInit {
 
   getRoleLabel(roleId: number): string {
     return this.roleLabels[roleId] ?? '—';
+  }
+
+  get hasActiveFilters(): boolean {
+    return !!this.activeFilterValues && Object.values(this.activeFilterValues).some(v => v != null && v !== '');
   }
 
   private getErrorMessage(err: any): string {
