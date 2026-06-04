@@ -32,6 +32,20 @@ export const ADMIN_ROUTES: Routes = [
                 './reports/components/employee-performnace-report/employee-performnace-report'
               ).then((m) => m.EmployeePerformnaceReport),
           },
+          {
+            path: 'task-completion',
+            loadComponent: () =>
+              import(
+                './reports/components/task-completion-report/task-completion-report'
+              ).then((m) => m.TaskCompletionReport),
+          },
+          {
+            path: 'project-progress',
+            loadComponent: () =>
+              import(
+                './reports/components/project-progress-report/project-progress-report'
+              ).then((m) => m.ProjectProgressReport),
+          },
           { path: '', redirectTo: 'employee-performance', pathMatch: 'full' },
         ],
       },

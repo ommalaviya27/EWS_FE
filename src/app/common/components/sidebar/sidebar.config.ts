@@ -28,13 +28,13 @@ export const ROLE_SIDEBAR_CONFIGS: Record<number, SidebarConfig> = {
           },
           {
             label: 'Task Completion',
-            icon: 'leaderboard',
-            route: '/admin/reports/employee-performance',
+            icon: 'task_alt',
+            route: '/admin/reports/task-completion',
           },
           {
             label: 'Project Progress',
-            icon: 'leaderboard',
-            route: '/admin/reports/employee-performance',
+            icon: 'rocket_launch',
+            route: '/admin/reports/project-progress',
           },
         ],
       },

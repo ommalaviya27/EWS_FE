@@ -2,8 +2,8 @@ import { Component, inject, OnInit, OnDestroy, ViewChild, ElementRef, HostListen
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { Subject, takeUntil } from 'rxjs';
-import { EmployeePerformanceReportService } from '../../services/employee-performance-report.service';
-import { EmployeeTaskSummary, TopEmployeeTask, ReportFilter } from '../../models/employee-performance-report.model';
+import { ReportService } from '../../services/report.service';
+import { EmployeeTaskSummary, TopEmployeeTask, ReportFilter } from '../../models/report.model';
 import { SearchBarComponent } from 'src/app/common/components/search-bar/search-bar';
 import { PaginationComponent } from 'src/app/common/components/pagination/pagination';
 import { DEFAULT_PAGINATION } from 'src/app/common/constants/app.constants';
@@ -15,7 +15,7 @@ import { DEFAULT_PAGINATION } from 'src/app/common/constants/app.constants';
   styleUrl: './employee-performnace-report.css',
 })
 export class EmployeePerformnaceReport implements OnInit, OnDestroy {
-  private readonly reportService = inject(EmployeePerformanceReportService);
+  private readonly reportService = inject(ReportService);
   private readonly toastr = inject(ToastrService);
   private readonly destroy$ = new Subject<void>();
 

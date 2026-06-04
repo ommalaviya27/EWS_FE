@@ -59,5 +59,9 @@ export const API_ROUTES = {
   REPORT: {
     GET_EMPLOYEE_PERFORMANCE_REPORT: '/api/admin/reports/employee-performance',
     GET_EMPLOYEE_SUMMARY: '/api/admin/reports/employee-summary',
+    GET_TASK_COMPLETION_OVERVIEW: '/api/admin/reports/task-completion-overview',
+    GET_TASK_COMPLETION_SUMMARY: '/api/admin/reports/task-completion-summary',
+    GET_PROJECT_PROGRESS_OVERVIEW: '/api/admin/reports/project-progress-overview',
+    GET_PROJECT_PROGRESS_SUMMARY: '/api/admin/reports/project-progress-summary',
   },
 };

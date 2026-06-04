@@ -1,0 +1,121 @@
+<div class="ppr-wrap">
+  <div class="ppr-header">
+    <h2 class="ppr-title">Project Progress Report</h2>
+  </div>
+
+  <!-- Pie Chart Card -->
+  <div class="ppr-card ppr-card--pie">
+    <div class="ppr-card-head">
+      <h4 class="ppr-card-title">Projects by Status — Overall</h4>
+      <div class="ppr-legend">
+        <span class="dot dot--active"></span><span>Active</span>
+        <span class="dot dot--completed"></span><span>Completed</span>
+      </div>
+    </div>
+
+    @if (isChartLoading) {
+    <div class="ppr-state"><span class="spinner-border text-primary"></span></div>
+    } @else if (!overview) {
+    <div class="ppr-empty">No data available.</div>
+    } @else {
+    <div class="ppr-pie-body">
+      <div class="ppr-legend ppr-legend--counts">
+        <span class="legend-item">
+          <span class="dot dot--active"></span>
+          <span>Active ({{ overview.statusDistribution.active }})</span>
+        </span>
+        <span class="legend-item">
+          <span class="dot dot--completed"></span>
+          <span>Completed ({{ overview.statusDistribution.completed }})</span>
+        </span>
+      </div>
+      <div class="ppr-donut-wrap">
+        <canvas #statusPieCanvas></canvas>
+      </div>
+    </div>
+    }
+  </div>
+
+  <!-- Active Projects Grid -->
+  <div class="ppr-card ppr-card--grid">
+    <div class="ppr-card-head">
+      <h4 class="ppr-card-title">Active Projects Summary</h4>
+      <app-search-bar
+        placeholder="Search by project name…"
+        [value]="searchQuery"
+        (searchChange)="onSearchChange($event)"
+      />
+    </div>
+
+    @if (isGridLoading) {
+    <div class="ppr-state"><span class="spinner-border text-primary"></span></div>
+    } @else if (!pagedProjects.length) {
+    <div class="ppr-empty">
+      {{ searchQuery ? 'No results for "' + searchQuery + '".' : 'No active projects found.' }}
+    </div>
+    } @else {
+    <div class="ppr-table-wrap">
+      <table class="ppr-table">
+        <thead>
+          <tr>
+            <th>Project</th>
+            <th class="center">Total</th>
+            <th class="center">Completed</th>
+            <th class="center hide-sm">In Progress</th>
+            <th class="center hide-sm">Pending</th>
+            <th class="center hide-sm">On Hold</th>
+            <th class="rate-col">Progress</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (project of pagedProjects; track project.projectId) {
+          <tr>
+            <td>
+              <div class="proj-cell">
+                <span class="proj-avatar">{{ project.projectName.charAt(0).toUpperCase() }}</span>
+                <span class="proj-name">{{ project.projectName }}</span>
+              </div>
+            </td>
+            <td class="center">
+              <span class="badge badge--total">{{ project.totalTasks }}</span>
+            </td>
+            <td class="center">
+              <span class="badge badge--done">{{ project.completedTasks }}</span>
+            </td>
+            <td class="center hide-sm">
+              <span class="badge badge--progress">{{ project.inProgressTasks }}</span>
+            </td>
+            <td class="center hide-sm">
+              <span class="badge badge--pending">{{ project.pendingTasks }}</span>
+            </td>
+            <td class="center hide-sm">
+              <span class="badge badge--hold">{{ project.onHoldTasks }}</span>
+            </td>
+            <td class="rate-col">
+              <div class="rate-wrap">
+                <div class="rate-track">
+                  <div
+                    class="rate-fill"
+                    [style.width.%]="project.progressPercentage"
+                    [style.background]="getBarColor(project.progressPercentage)"
+                  ></div>
+                </div>
+                <span class="rate-pct">{{ project.progressPercentage }}%</span>
+              </div>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <app-pagination
+      [currentPage]="currentPage"
+      [totalItems]="totalItems"
+      [itemsPerPage]="pageSize"
+      (pageChange)="onPageChange($event)"
+      (pageSizeChange)="onPageSizeChange($event)"
+    />
+    }
+  </div>
+</div>
