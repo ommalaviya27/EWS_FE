@@ -45,6 +45,7 @@
         [value]="searchTerm"
         (searchChange)="onSearchChange($event)"
       ></app-search-bar>
+      <app-button [config]="filterBtnConfig"></app-button>
       <app-button [config]="createTaskBtnConfig"></app-button>
     </div>
   </div>
@@ -204,3 +205,9 @@
   [task]="viewTask"
   (closed)="closeViewModal()"
 ></app-task-view-modal>
+
+<app-filter-panel
+  [config]="filterConfig"
+  [isOpen]="isFilterOpen"
+  [activeValues]="activeFilterValues"
+></app-filter-panel>

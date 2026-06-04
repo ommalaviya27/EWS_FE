@@ -3,12 +3,46 @@
 <aside class="sidebar-container" [class.open]="isOpen">
   <nav class="nav-section">
     <ul class="nav-list">
-      <li *ngFor="let item of config?.navItems">
+      @for (item of config.navItems; track item.label) { @if (isGroup(item)) {
+      <li class="nav-group">
+        <button
+          class="nav-item nav-group__header"
+          [class.active]="isGroupActive(item)"
+          [class.expanded]="isGroupExpanded(item.label)"
+          (click)="toggleGroup(item.label)"
+        >
+          <span class="material-icons">{{ item.icon }}</span>
+          <span class="label-text">{{ item.label }}</span>
+          <span class="material-icons nav-group__arrow">
+            {{ isGroupExpanded(item.label) ? 'expand_less' : 'expand_more' }}
+          </span>
+        </button>
+
+        <ul class="nav-children" [class.nav-children--open]="isGroupExpanded(item.label)">
+          @for (child of item.children; track child.label) {
+          <li>
+            <a
+              [routerLink]="child.route"
+              routerLinkActive="active"
+              class="nav-item nav-child"
+              (click)="close()"
+            >
+              <span class="material-icons nav-child__icon">{{ child.icon }}</span>
+              <span class="label-text">{{ child.label }}</span>
+            </a>
+          </li>
+          }
+        </ul>
+      </li>
+
+      } @else {
+      <li>
         <a [routerLink]="item.route" routerLinkActive="active" class="nav-item" (click)="close()">
           <span class="material-icons">{{ item.icon }}</span>
           <span class="label-text">{{ item.label }}</span>
         </a>
       </li>
+      } }
     </ul>
   </nav>
 </aside>

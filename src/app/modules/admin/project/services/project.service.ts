@@ -4,21 +4,37 @@ import { ApiService } from '../../../../common/services/api.service';
 import { API_ROUTES } from '../../../../common/constants/api-routes';
 import { ApiResponse } from '../../../../common/models/api-response.model';
 import { PaginationRequest, PaginationResponse } from '../../../../common/components/pagination/pagination.model';
-import { Project, TeamLeader, CreateProjectRequest, UpdateProjectRequest } from '../models/project.model';
+import { Project, TeamLeader, CreateProjectRequest, UpdateProjectRequest, ProjectFilterParams } from '../models/project.model';
 import { Task } from '../../../team-lead/task-management/models/task-management.model';
 
 @Injectable({ providedIn: 'root' })
 export class ProjectService {
   private apiService = inject(ApiService);
 
-  getAll(pagination: PaginationRequest & { search?: string }): Observable<ApiResponse<PaginationResponse<Project>>> {
+  getAll(filters: ProjectFilterParams): Observable<ApiResponse<PaginationResponse<Project>>> {
     const params: Record<string, string> = {
-      PageNumber: pagination.pageNumber.toString(),
-      PageSize: pagination.pageSize.toString(),
+      PageNumber: filters.pageNumber.toString(),
+      PageSize: filters.pageSize.toString(),
     };
 
-    if (pagination.search?.trim()) {
-      params['Search'] = pagination.search.trim();
+    if (filters.search?.trim()) {
+      params['Search'] = filters.search.trim();
+    }
+
+    if (filters.projectStatus != null && filters.projectStatus !== '') {
+      params['ProjectStatus'] = filters.projectStatus.toString();
+    }
+
+    if (filters.teamLeadId != null && filters.teamLeadId !== '') {
+      params['TeamLeadId'] = filters.teamLeadId.toString();
+    }
+
+    if (filters.startDateFrom != null && filters.startDateFrom !== '') {
+      params['StartDateFrom'] = filters.startDateFrom.toString();
+    }
+
+    if (filters.endDateTo != null && filters.endDateTo !== '') {
+      params['EndDateTo'] = filters.endDateTo.toString();
     }
 
     return this.apiService.get<PaginationResponse<Project>>(API_ROUTES.PROJECT.GET_ALL, params);

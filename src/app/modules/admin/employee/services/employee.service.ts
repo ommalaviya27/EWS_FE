@@ -23,6 +23,14 @@ export class EmployeeService {
       params['Search'] = pagination.search.trim();
     }
 
+    if (pagination.roleId != null && pagination.roleId !== '') {
+      params['RoleId'] = pagination.roleId.toString();
+    }
+
+    if (pagination.status != null && pagination.status !== '') {
+      params['Status'] = pagination.status.toString();
+    }
+
     return this.apiService.get<UserPagedResponse>(API_ROUTES.EMPLOYEE.GET_ALL, params);
   }
 

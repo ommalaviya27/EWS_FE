@@ -105,3 +105,13 @@ export interface ProjectCard extends ProjectOption {
   startDate?: string;
   endDate?: string;
 }
+
+export interface TaskFilterParams {
+  pageNumber: number;
+  pageSize: number;
+  search?: string;
+  Status?: string;
+  Priority?: string;
+  DueDateFrom?: string;
+  DueDateTo?: string;
+}

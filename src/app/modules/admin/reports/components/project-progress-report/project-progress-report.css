@@ -1,0 +1,300 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.ppr-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 5px;
+  overflow-y: auto;
+  flex: 1;
+  scrollbar-width: none;
+}
+
+/* ── Header ── */
+.ppr-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.ppr-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* ── Card ── */
+.ppr-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05), 0 4px 20px rgba(0, 0, 0, 0.07);
+  flex-shrink: 0;
+}
+
+.ppr-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e7eb;
+  flex-wrap: wrap;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.ppr-card-title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+  white-space: nowrap;
+}
+
+/* ── Legend in header ── */
+.ppr-legend {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.75rem;
+  color: #6c757d;
+  flex-wrap: wrap;
+}
+
+.ppr-legend--counts {
+  gap: 8px 14px;
+  width: 100%;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dot--active {
+  background: #8e00ed;
+}
+
+.dot--completed {
+  background: #166534;
+}
+
+/* ── Pie card ── */
+.ppr-pie-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 20px 20px;
+  gap: 16px;
+}
+
+.ppr-donut-wrap {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.ppr-donut-wrap canvas {
+  display: block;
+}
+
+/* ── Grid ── */
+.ppr-table-wrap {
+  overflow-x: auto;
+  max-height: 720px;
+  scrollbar-width: none;
+}
+
+.ppr-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+
+.ppr-table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #fafafa;
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.ppr-table td {
+  padding: 12px 14px;
+  border-top: 1px solid #e5e7eb;
+  color: #111827;
+  vertical-align: middle;
+}
+
+.ppr-table tbody tr:hover {
+  background: #fafbff;
+}
+
+.ppr-table th.center,
+.ppr-table td.center {
+  text-align: center;
+}
+
+/* ── Project cell ── */
+.proj-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.proj-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #f3e8ff;
+  color: #7c3aed;
+  font-weight: 700;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.proj-name {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  display: block;
+}
+
+/* ── Badges ── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge--total {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.badge--done {
+  background: #ede9fe;
+  color: #7c3aed;
+}
+
+.badge--progress {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.badge--pending {
+  background: #e5e7eb;
+  color: #6b7280;
+}
+
+.badge--hold {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.rate-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 130px;
+}
+
+.rate-track {
+  flex: 1;
+  min-width: 60px;
+  height: 7px;
+  border-radius: 4px;
+  background: #e5e7eb;
+  overflow: hidden;
+}
+
+.rate-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.rate-pct {
+  font-size: 0.75rem;
+  font-weight: 700;
+  min-width: 38px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ── States ── */
+.ppr-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 56px;
+}
+
+.ppr-empty {
+  text-align: center;
+  padding: 36px;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .ppr-wrap {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .hide-sm {
+    display: none;
+  }
+
+  .ppr-card--grid {
+    min-height: 320px;
+    max-height: 460px;
+  }
+}
+
+@media (max-width: 480px) {
+  .proj-name {
+    max-width: 130px;
+  }
+
+  .rate-col {
+    display: none;
+  }
+}

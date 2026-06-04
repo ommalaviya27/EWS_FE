@@ -25,6 +25,11 @@ export const ROUTES = {
     PROJECT_ABSOLUTE: '/admin/project',
     EMPLOYEE: 'employee',
     EMPLOYEE_ABSOLUTE: '/admin/employee',
+    REPORTS: 'reports',
+    REPORT_ABSOLUTE: '/admin/reports',
+    EMPLOYEE_PERFORMANCE_REPORT_ABSOLUTE: '/admin/reports/employee-performance',
+    TASK_COMPLETION_REPORT_ABSOLUTE: '/admin/reports/task-completion',
+    PROJECT_PROGRESS_REPORT_ABSOLUTE: '/admin/reports/project-progress',
     ADMIN_ABSOLUTE: '/admin',
   },
 

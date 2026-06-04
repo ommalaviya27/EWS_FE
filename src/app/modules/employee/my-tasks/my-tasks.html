@@ -40,10 +40,11 @@
     </div>
     <div class="mt-header-actions">
       <app-search-bar
-        placeholder="Search by title or description…"
+        placeholder="Search by title…"
         [value]="searchTerm"
         (searchChange)="onSearchChange($event)"
       ></app-search-bar>
+      <app-button [config]="filterBtnConfig"></app-button>
     </div>
   </div>
 
@@ -153,3 +154,8 @@
   (closed)="closeDetailModal()"
   (refreshTasks)="onTaskRefresh()"
 ></app-task-detail-model>
+<app-filter-panel
+  [config]="filterConfig"
+  [isOpen]="isFilterOpen"
+  [activeValues]="activeFilterValues"
+></app-filter-panel>

@@ -12,23 +12,42 @@ export const ADMIN_ROUTES: Routes = [
       {
         path: ROUTES.ADMIN.DASHBOARD,
         loadComponent: () =>
-          import('./dashboard/admin-dashboard').then(
-            (m) => m.AdminDashboardComponent
-          ),
+          import('./dashboard/admin-dashboard').then((m) => m.AdminDashboardComponent),
       },
       {
         path: ROUTES.ADMIN.PROJECT,
-        loadComponent: () =>
-          import('./project/project').then(
-            (m) => m.ProjectModule
-          )
+        loadComponent: () => import('./project/project').then((m) => m.ProjectModule),
       },
       {
         path: ROUTES.ADMIN.EMPLOYEE,
-        loadComponent: () =>
-          import('./employee/employee').then(
-            (m) => m.EmployeeModule
-          )
+        loadComponent: () => import('./employee/employee').then((m) => m.EmployeeModule),
+      },
+      {
+        path: ROUTES.ADMIN.REPORTS,
+        children: [
+          {
+            path: 'employee-performance',
+            loadComponent: () =>
+              import(
+                './reports/components/employee-performnace-report/employee-performnace-report'
+              ).then((m) => m.EmployeePerformnaceReport),
+          },
+          {
+            path: 'task-completion',
+            loadComponent: () =>
+              import(
+                './reports/components/task-completion-report/task-completion-report'
+              ).then((m) => m.TaskCompletionReport),
+          },
+          {
+            path: 'project-progress',
+            loadComponent: () =>
+              import(
+                './reports/components/project-progress-report/project-progress-report'
+              ).then((m) => m.ProjectProgressReport),
+          },
+          { path: '', redirectTo: 'employee-performance', pathMatch: 'full' },
+        ],
       },
       { path: '', redirectTo: ROUTES.ADMIN.DASHBOARD, pathMatch: 'full' },
     ],

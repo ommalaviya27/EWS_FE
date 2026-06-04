@@ -4,14 +4,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { MyTaskService } from './services/my-task.service';
 import { MyTask, TaskStatuses, TaskPriority, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS } from './models/my-task.model';
+import { TASK_STATUS_LIST, TASK_PRIORITY_LIST } from '../../team-lead/task-management/models/task-management.model';
 import { TaskDetailModel } from './components/task-detail-model/task-detail-model';
-import { PaginationComponent, ProjectList, SearchBarComponent } from '@common';
+import { PaginationComponent, ProjectList, SearchBarComponent, FilterPanel, FilterPanelConfig, FilterValues, Button, ButtonInputConfig } from '@common';
 import { DEFAULT_PAGINATION } from '../../../common/constants/app.constants';
 import { ProjectCard } from '../../../modules/team-lead/task-management/models/task-management.model';
 
 @Component({
   selector: 'app-my-tasks',
-  imports: [CommonModule, TaskDetailModel, PaginationComponent, ProjectList, SearchBarComponent],
+  imports: [CommonModule, TaskDetailModel, PaginationComponent, ProjectList, SearchBarComponent, FilterPanel, Button],
   templateUrl: './my-tasks.html',
   styleUrl: './my-tasks.css',
 })
@@ -33,7 +34,7 @@ export class MyTasks implements OnInit {
 
   searchTerm = '';
 
-  private allProjectTasks: MyTask[] = [];  
+  private allProjectTasks: MyTask[] = [];
   currentPage = DEFAULT_PAGINATION.currentPage;
   itemsPerPage = DEFAULT_PAGINATION.itemsPerPage;
   totalItems = DEFAULT_PAGINATION.totalItems;
@@ -48,7 +49,16 @@ export class MyTasks implements OnInit {
 
   tooltip = { visible: false, text: '', x: 0, y: 0 };
 
+  // Filter panel
+  isFilterOpen = false;
+  activeFilterValues: FilterValues | null = null;
+  filterConfig!: FilterPanelConfig;
+  filterBtnConfig!: ButtonInputConfig;
+
   ngOnInit(): void {
+    this.buildFilterConfig();
+    this.initButtonConfigs();
+
     this.route.queryParams.subscribe(params => {
       const pid   = params['projectId'];
       const pname = params['projectName'];
@@ -64,6 +74,60 @@ export class MyTasks implements OnInit {
         this.loadProjectList();
       }
     });
+  }
+
+  private initButtonConfigs(): void {
+    this.filterBtnConfig = {
+      variant: 'filter',
+      text: 'Filter',
+      onClick: (event: MouseEvent) => {
+        event?.stopPropagation();
+        this.isFilterOpen = true;
+      }
+    };
+  }
+
+  private buildFilterConfig(): void {
+    this.filterConfig = {
+      fields: [
+        {
+          key: 'status',
+          label: null,
+          type: 'select',
+          placeholder: 'Task Status',
+          options: TASK_STATUS_LIST,
+        },
+        {
+          key: 'priority',
+          label: null,
+          type: 'select',
+          placeholder: 'Task Priority',
+          options: TASK_PRIORITY_LIST,
+        },
+        {
+          key: 'dueDateFrom',
+          label: 'From',
+          type: 'date',
+        },
+        {
+          key: 'dueDateTo',
+          label: 'To',
+          type: 'date',
+        },
+      ],
+      onFilter: (values: FilterValues) => {
+        this.activeFilterValues = values;
+        this.currentPage = 1;
+        this.isFilterOpen = false;
+        this.applyFiltersAndPaginate();
+      },
+      onCancel: () => {
+        this.activeFilterValues = null;
+        this.currentPage = 1;
+        this.isFilterOpen = false;
+        this.applyFiltersAndPaginate();
+      },
+    };
   }
 
   private loadProjectList(): void {
@@ -90,6 +154,7 @@ export class MyTasks implements OnInit {
 
   goBackToProjects(): void {
     this.searchTerm = '';
+    this.activeFilterValues = null;
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { projectId: null, projectName: null },
@@ -103,7 +168,7 @@ export class MyTasks implements OnInit {
       next: (res) => {
         this.allProjectTasks = res.data ?? [];
         this.currentPage = 1;
-        this.applySearchAndPaginate();
+        this.applyFiltersAndPaginate();
         this.isLoading = false;
       },
       error: (err) => {
@@ -116,28 +181,54 @@ export class MyTasks implements OnInit {
   onSearchChange(term: string): void {
     this.searchTerm = term;
     this.currentPage = 1;
-    this.applySearchAndPaginate();
+    this.applyFiltersAndPaginate();
   }
 
   onPageChange(page: number): void {
     this.currentPage = page;
-    this.applySearchAndPaginate();
+    this.applyFiltersAndPaginate();
   }
 
   onPageSizeChange(size: number): void {
     this.itemsPerPage = size;
     this.currentPage  = 1;
-    this.applySearchAndPaginate();
+    this.applyFiltersAndPaginate();
   }
 
-  private applySearchAndPaginate(): void {
+  private applyFiltersAndPaginate(): void {
     const term = this.searchTerm.trim().toLowerCase();
-    const filtered = term
-      ? this.allProjectTasks.filter(t =>
-          t.title.toLowerCase().includes(term) ||
-          t.description?.toLowerCase().includes(term)
-        )
-      : this.allProjectTasks;
+    let filtered = this.allProjectTasks;
+
+    if (term) {
+      filtered = filtered.filter(t =>
+        t.title.toLowerCase().includes(term)
+      );
+    }
+
+    if (this.activeFilterValues) {
+      const statusVal = this.activeFilterValues['status'];
+      if (statusVal != null && statusVal !== '') {
+        filtered = filtered.filter(t => t.taskStatus === Number(statusVal));
+      }
+
+      const priorityVal = this.activeFilterValues['priority'];
+      if (priorityVal != null && priorityVal !== '') {
+        filtered = filtered.filter(t => t.priority === Number(priorityVal));
+      }
+
+      const fromDate = this.activeFilterValues['dueDateFrom'];
+      if (fromDate != null && fromDate !== '') {
+        const from = new Date(fromDate as string);
+        filtered = filtered.filter(t => new Date(t.dueDate) >= from);
+      }
+
+      const toDate = this.activeFilterValues['dueDateTo'];
+      if (toDate != null && toDate !== '') {
+        const to = new Date(toDate as string);
+        to.setHours(23, 59, 59, 999);
+        filtered = filtered.filter(t => new Date(t.dueDate) <= to);
+      }
+    }
 
     this.totalItems = filtered.length;
     const start = (this.currentPage - 1) * this.itemsPerPage;

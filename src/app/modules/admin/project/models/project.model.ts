@@ -47,6 +47,12 @@ export interface UpdateProjectRequest {
   projectStatus: ProjectStatus;
 }
 
-export interface ProjectSearchRequest {
-
+export interface ProjectFilterParams {
+  pageNumber: number;
+  pageSize: number;
+  search?: string;
+  projectStatus?: string | number | null;
+  teamLeadId?: string | number | null;
+  startDateFrom?: string | null;
+  endDateTo?: string | null;
 }

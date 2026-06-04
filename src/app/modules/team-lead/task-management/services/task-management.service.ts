@@ -3,24 +3,14 @@ import { Observable } from 'rxjs';
 import { ApiService } from '../../../../common/services/api.service';
 import { API_ROUTES } from '../../../../common/constants/api-routes';
 import { ApiResponse } from '../../../../common/models/api-response.model';
-import {
-  PaginationRequest,
-  PaginationResponse,
-} from '../../../../common/components/pagination/pagination.model';
-import {
-  Task,
-  TeamMember,
-  ProjectOption,
-  CreateTaskRequest,
-  UpdateTaskRequest,
-  ProjectCardData,
-} from '../models/task-management.model';
+import { PaginationResponse } from '../../../../common/components/pagination/pagination.model';
+import { Task, TeamMember, ProjectOption, CreateTaskRequest, UpdateTaskRequest, ProjectCardData, TaskFilterParams } from '../models/task-management.model';
 
 @Injectable({ providedIn: 'root' })
 export class TaskManagementService {
   private apiService = inject(ApiService);
 
-  getAll(pagination: PaginationRequest & { search?: string }, projectId?: string): Observable<ApiResponse<PaginationResponse<Task>>> {
+  getAll(pagination: TaskFilterParams, projectId?: string): Observable<ApiResponse<PaginationResponse<Task>>> {
     const params: Record<string, string> = {
       PageNumber: pagination.pageNumber.toString(),
       PageSize: pagination.pageSize.toString(),
@@ -29,6 +19,11 @@ export class TaskManagementService {
     if (pagination.search?.trim()) {
       params['Search'] = pagination.search.trim();
     }
+
+    if (pagination.Status) params['Status'] = pagination.Status;
+    if (pagination.Priority) params['Priority'] = pagination.Priority;
+    if (pagination.DueDateFrom) params['DueDateFrom'] = pagination.DueDateFrom;
+    if (pagination.DueDateTo) params['DueDateTo'] = pagination.DueDateTo;
 
     if (projectId) params['projectId'] = projectId;
     return this.apiService.get<PaginationResponse<Task>>(API_ROUTES.TASK.GET_ALL, params);
