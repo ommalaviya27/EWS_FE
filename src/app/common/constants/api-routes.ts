@@ -55,5 +55,9 @@ export const API_ROUTES = {
   },
   ADMIN: {
     GET_DASHBOARD: '/api/admin/dashboard',
-  }
+  },
+  REPORT: {
+    GET_EMPLOYEE_PERFORMANCE_REPORT: '/api/admin/reports/employee-performance',
+    GET_EMPLOYEE_SUMMARY: '/api/admin/reports/employee-summary',
+  },
 };

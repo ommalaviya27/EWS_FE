@@ -181,7 +181,7 @@
 }
 
 .grid-scroll {
-  flex: 1;
+  flex: 0 1 auto;
   overflow-y: auto;
   overflow-x: auto;
   min-height: 0;

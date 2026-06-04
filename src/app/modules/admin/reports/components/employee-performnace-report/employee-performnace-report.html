@@ -1,0 +1,128 @@
+<div class="epr-wrap">
+  <div class="epr-header">
+    <div>
+      <h2 class="epr-title">Employee Performance Report</h2>
+    </div>
+    <div class="epr-filter-group">
+      <button
+        class="epr-filter-btn"
+        [class.active]="selectedFilter === 'weekly'"
+        (click)="onFilterChange('weekly')"
+      >
+        Weekly
+      </button>
+      <button
+        class="epr-filter-btn"
+        [class.active]="selectedFilter === 'monthly'"
+        (click)="onFilterChange('monthly')"
+      >
+        Monthly
+      </button>
+    </div>
+  </div>
+
+  <div class="epr-card">
+    <div class="epr-card-head">
+      <h4 class="epr-card-title">Tasks Completed — Top Employees</h4>
+      <div class="epr-legend">
+        <span class="dot dot--completed"></span><span>Completed</span>
+        <span class="dot dot--progress"></span><span>In Progress</span>
+        <span class="dot dot--hold"></span><span>On Hold</span>
+        <span class="dot dot--pending"></span><span>Pending</span>
+      </div>
+    </div>
+
+    @if (isChartLoading) {
+    <div class="epr-state"><span class="spinner-border text-primary"></span></div>
+    } @else if (topEmployees.length) {
+    <div class="epr-chart-wrap"><canvas #barCanvas></canvas></div>
+    } @else {
+    <div class="epr-empty">No data available for this period.</div>
+    }
+  </div>
+
+  <div class="epr-card epr-card--grid">
+    <div class="epr-card-head">
+      <h4 class="epr-card-title">All Employee Task Summary</h4>
+      <app-search-bar
+        placeholder="Search by name or email…"
+        [value]="searchQuery"
+        (searchChange)="onSearchChange($event)"
+      />
+    </div>
+
+    @if (isGridLoading) {
+    <div class="epr-state"><span class="spinner-border text-primary"></span></div>
+    } @else if (!pagedEmployees.length) {
+    <div class="epr-empty">
+      {{ searchQuery ? 'No results for "' + searchQuery + '".' : 'No employee data available.' }}
+    </div>
+    } @else {
+    <div class="epr-table-wrap">
+      <table class="epr-table">
+        <thead>
+          <tr>
+            <th>Employee</th>
+            <th class="center">Total</th>
+            <th class="center">Completed</th>
+            <th class="center hide-sm">In Progress</th>
+            <th class="center hide-sm">Pending</th>
+            <th class="center hide-sm">On Hold</th>
+            <th class="rate-col">Completion Rate</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (emp of pagedEmployees; track emp.userId) {
+          <tr>
+            <td>
+              <div class="emp-cell">
+                <span class="emp-avatar">{{ emp.employeeName.charAt(0).toUpperCase() }}</span>
+                <div class="emp-info">
+                  <span class="emp-name">{{ emp.employeeName }}</span>
+                  <span class="emp-email">{{ emp.email }}</span>
+                </div>
+              </div>
+            </td>
+            <td class="center">
+              <span class="badge badge--total">{{ emp.totalAssigned }}</span>
+            </td>
+            <td class="center">
+              <span class="badge badge--done">{{ emp.completed }}</span>
+            </td>
+            <td class="center hide-sm">
+              <span class="badge badge--progress">{{ emp.inProgress }}</span>
+            </td>
+            <td class="center hide-sm">
+              <span class="badge badge--pending">{{ emp.pending }}</span>
+            </td>
+            <td class="center hide-sm">
+              <span class="badge badge--hold">{{ emp.onHold }}</span>
+            </td>
+            <td class="rate-col">
+              <div class="rate-wrap">
+                <div class="rate-track">
+                  <div
+                    class="rate-fill"
+                    [style.width.%]="emp.completionRate"
+                    [style.background]="getBarColor(emp.completionRate)"
+                  ></div>
+                </div>
+                <span class="rate-pct"> {{ emp.completionRate }}% </span>
+              </div>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <app-pagination
+      [currentPage]="currentPage"
+      [totalItems]="totalItems"
+      [itemsPerPage]="pageSize"
+      (pageChange)="onPageChange($event)"
+      (pageSizeChange)="onPageSizeChange($event)"
+    />
+    }
+  </div>
+</div>

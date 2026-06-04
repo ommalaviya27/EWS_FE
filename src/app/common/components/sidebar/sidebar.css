@@ -15,11 +15,13 @@
   padding: 20px;
   overflow-y: auto;
 }
+
 .nav-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
+
 .nav-item {
   display: flex;
   align-items: center;
@@ -28,12 +30,61 @@
   text-decoration: none;
   border-radius: 10px;
   margin-bottom: 5px;
+  color: #6c757d;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s;
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  box-sizing: border-box;
+}
+
+.nav-item:hover {
+  background: #f9f5ff;
+  color: #8e00ed;
 }
 
 .nav-item.active {
   background: #f0e6ff;
   color: #8e00ed;
   font-weight: 600;
+}
+
+.nav-group__arrow {
+  margin-left: auto;
+  font-size: 18px;
+  transition: transform 0.2s;
+}
+
+.nav-group__header.expanded .nav-group__arrow {
+  transform: none;
+}
+
+.nav-children {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.25s ease;
+}
+
+.nav-children--open {
+  max-height: 400px;
+}
+
+.nav-child {
+  padding-left: 44px;
+  margin-bottom: 2px;
+  font-size: 0.8125rem;
+}
+
+.nav-child__icon {
+  font-size: 16px;
+  opacity: 0.75;
 }
 
 .sidebar-overlay {
