@@ -3,7 +3,7 @@
 <aside class="sidebar-container" [class.open]="isOpen">
   <nav class="nav-section">
     <ul class="nav-list">
-      @for (item of config?.navItems; track item.label) { @if (isGroup(item)) {
+      @for (item of config.navItems; track item.label) { @if (isGroup(item)) {
       <li class="nav-group">
         <button
           class="nav-item nav-group__header"

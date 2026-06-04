@@ -201,8 +201,7 @@ export class MyTasks implements OnInit {
 
     if (term) {
       filtered = filtered.filter(t =>
-        t.title.toLowerCase().includes(term) ||
-        t.description?.toLowerCase().includes(term)
+        t.title.toLowerCase().includes(term)
       );
     }
 
