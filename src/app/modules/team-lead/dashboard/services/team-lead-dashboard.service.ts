@@ -9,10 +9,7 @@ import { TeamLeadDashboard } from '../models/team-lead-dashboard.model';
 export class TeamLeadDashboardService {
   private apiService = inject(ApiService);
 
-  getDashboard(pageNumber: number = 1, pageSize: number = 5): Observable<ApiResponse<TeamLeadDashboard>> {
-    return this.apiService.get<TeamLeadDashboard>(API_ROUTES.TASK.GET_TEAM_LEAD_DASHBOARD, {
-      PageNumber: pageNumber.toString(),
-      PageSize: pageSize.toString(),
-    });
+  getDashboard(): Observable<ApiResponse<TeamLeadDashboard>> {
+    return this.apiService.get<TeamLeadDashboard>(API_ROUTES.TASK.GET_TEAM_LEAD_DASHBOARD);
   }
 }

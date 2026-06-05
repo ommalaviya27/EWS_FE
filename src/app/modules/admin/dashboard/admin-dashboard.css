@@ -310,7 +310,7 @@
 
 .tld-tr {
   display: grid;
-  grid-template-columns: 2fr 1.5fr 1.5fr 1fr 1.1fr;
+  grid-template-columns: 2fr 1.5fr 1.5fr 1fr 1.1fr 0.8fr;
   align-items: center;
   border-bottom: 1px solid #f1f3f5;
   transition: background 0.1s;

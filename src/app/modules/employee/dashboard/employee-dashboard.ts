@@ -6,12 +6,10 @@ import { MyTaskService } from '../my-tasks/services/my-task.service';
 import {
   EmployeeDashboard,
   MyTask,
-  TaskStatuses,
   TaskPriority,
   TASK_PRIORITY_LABELS,
 } from '../my-tasks/models/my-task.model';
 import { TaskDetailModel } from '../my-tasks/components/task-detail-model/task-detail-model';
-import { ROUTES } from '../../../common/constants/route-paths';
 
 @Component({
   selector: 'app-employee-dashboard',
@@ -30,8 +28,6 @@ export class EmployeeDashboardComponent implements OnInit {
   showDetailModal = false;
 
   readonly priorityLabels = TASK_PRIORITY_LABELS;
-  readonly TaskStatuses = TaskStatuses;
-  readonly myTasksRoute = ROUTES.EMPLOYEE.MY_TASKS_ABSOLUTE;
 
   ngOnInit(): void {
     this.loadDashboard();
@@ -55,10 +51,12 @@ export class EmployeeDashboardComponent implements OnInit {
     this.selectedTask = task;
     this.showDetailModal = true;
   }
+
   closeDetailModal(): void {
     this.showDetailModal = false;
     this.selectedTask = null;
   }
+
   onTaskRefresh(): void {
     this.loadDashboard();
   }
@@ -74,15 +72,6 @@ export class EmployeeDashboardComponent implements OnInit {
       month: 'short',
       year: 'numeric',
     });
-  }
-
-  isOverdue(dateStr: string): boolean {
-    return new Date(dateStr) < new Date();
-  }
-
-  isDueSoon(dateStr: string): boolean {
-    const diff = new Date(dateStr).getTime() - Date.now();
-    return diff > 0 && diff < 3 * 24 * 60 * 60 * 1000;
   }
 
   private getError(err: any): string {

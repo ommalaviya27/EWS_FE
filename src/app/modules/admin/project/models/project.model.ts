@@ -21,6 +21,7 @@ export interface Project {
   projectStatus: ProjectStatus;
   startDate: string;
   endDate: string;
+  taskCount: number;
 }
 
 export interface TeamLeader {

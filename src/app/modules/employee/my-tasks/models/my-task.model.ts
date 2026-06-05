@@ -78,10 +78,10 @@ export interface EmployeeDashboard {
   assignedTaskCount: number;
   completedTaskCount: number;
   upcomingDeadlineCount: number;
-  assignedTasks: MyTask[];
   upcomingDeadlines: MyTask[];
   onHoldTasks: MyTask[];
   completedTasks: MyTask[];
+  overdueTasks: MyTask[];
 }
 
 export interface MyTaskFilterParams {
