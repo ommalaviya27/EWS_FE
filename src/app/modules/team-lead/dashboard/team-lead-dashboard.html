@@ -76,13 +76,15 @@
         <div class="tld-item">
           <div class="tld-item__info">
             <label>{{ task.title }}</label>
-            <span class="over_pro_name">{{ task.projectName }}</span>
+            <div class="tld-item-pnp">
+              <span class="over_pro_name">{{ task.projectName }}</span>
+              <span class="tld-pri-badge" [attr.data-p]="task.priority">{{
+                getPriorityLabel(task.priority)
+              }}</span>
+            </div>
           </div>
           <div class="tld-item__end">
             <span class="tld-assignee">{{ task.assignedToUserName }}</span>
-            <span class="tld-pri-badge" [attr.data-p]="task.priority">{{
-              getPriorityLabel(task.priority)
-            }}</span>
             <span class="tld-date">{{ formatDate(task.dueDate) }}</span>
           </div>
         </div>

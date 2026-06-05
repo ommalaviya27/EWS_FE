@@ -6,7 +6,7 @@ import { environment } from '../../../../../environments/environment';
 import { ApiService } from '../../../../common/services/api.service';
 import { ApiResponse } from '../../../../common/models/api-response.model';
 import { API_ROUTES } from '../../../../common/constants/api-routes';
-import { MyTask, TaskComment, TaskAttachment, AddCommentRequest, UpdateCommentRequest, UpdateTaskStatusRequest, EmployeeDashboard } from '../models/my-task.model';
+import { MyTask, TaskComment, TaskAttachment, AddCommentRequest, UpdateCommentRequest, UpdateTaskStatusRequest, EmployeeDashboard, MyTaskFilterParams } from '../models/my-task.model';
 import { PaginationResponse } from '../../../../common/components/pagination/pagination.model';
 import { ProjectCard } from '../../../team-lead/task-management/models/task-management.model';
 
@@ -24,10 +24,23 @@ export class MyTaskService {
     return this.apiService.get<ProjectCard[]>(API_ROUTES.MY_TASKS.GET_MY_PROJECTS);
   }
 
-  getMyTasks(projectId?: string): Observable<ApiResponse<MyTask[]>> {
-    const params: Record<string, string> = {};
+  getMyTasks( filters: MyTaskFilterParams, projectId?: string): Observable<ApiResponse<PaginationResponse<MyTask>>> {
+    const params: Record<string, string> = {
+      PageNumber: filters.pageNumber.toString(),
+      PageSize: filters.pageSize.toString(),
+    };
+
+    if (filters.search?.trim()) params['Search'] = filters.search.trim();
+    if (filters.Status) params['Status'] = filters.Status;
+    if (filters.Priority) params['Priority'] = filters.Priority;
+    if (filters.DueDateFrom) params['DueDateFrom'] = filters.DueDateFrom;
+    if (filters.DueDateTo) params['DueDateTo'] = filters.DueDateTo;
     if (projectId) params['projectId'] = projectId;
-    return this.apiService.get<MyTask[]>(API_ROUTES.MY_TASKS.GET_MY_TASKS, params);
+
+    return this.apiService.get<PaginationResponse<MyTask>>(
+      API_ROUTES.MY_TASKS.GET_MY_TASKS,
+      params
+    );
   }
 
   updateTaskStatus(taskId: number, payload: UpdateTaskStatusRequest): Observable<ApiResponse<MyTask>> {

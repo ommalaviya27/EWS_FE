@@ -31,13 +31,11 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding: 24px 20px;
+  padding: 10px 10px;
   gap: 20px;
   overflow-y: auto;
   min-height: 0;
-  scrollbar-width: thin;
-  scrollbar-color: #d1d5db transparent;
-  animation: fadeIn 0.35s ease both;
+  scrollbar-width: none;
 }
 
 @keyframes fadeIn {

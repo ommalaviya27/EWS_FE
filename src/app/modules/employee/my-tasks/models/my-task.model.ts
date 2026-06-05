@@ -83,3 +83,13 @@ export interface EmployeeDashboard {
   onHoldTasks: MyTask[];
   completedTasks: MyTask[];
 }
+
+export interface MyTaskFilterParams {
+  pageNumber: number;
+  pageSize: number;
+  search?: string;
+  Status?: string;
+  Priority?: string;
+  DueDateFrom?: string;
+  DueDateTo?: string;
+}

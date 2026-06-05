@@ -5,7 +5,7 @@
 
 .custom-textarea.form-control {
   width: 100%;
-  min-height: 60px;
+  min-height: 70px;
   padding: 20px 14px 10px 14px;
   border: 1.5px solid #d0d0d0;
   border-radius: 8px;
@@ -17,6 +17,7 @@
   box-shadow: none;
   resize: vertical;
   transition: border-color 0.2s, box-shadow 0.2s;
+  scrollbar-width: none;
 }
 
 .custom-textarea.form-control:focus {
