@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { AdminDashboardService } from './services/admin-dashboard.service';
-import { AdminDashboard, TaskPriority, TaskStatuses, ProjectStatus, TASK_PRIORITY_LABELS, TASK_STATUS_LABELS, PROJECT_STATUS_LABELS } from './models/admin-dashboard.model';
+import { AdminDashboard, TaskPriority, TaskStatuses, TASK_PRIORITY_LABELS, TASK_STATUS_LABELS } from './models/admin-dashboard.model';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -19,10 +19,8 @@ export class AdminDashboardComponent implements OnInit {
   isLoading = false;
 
   readonly TaskStatuses = TaskStatuses;
-  readonly ProjectStatus = ProjectStatus;
   readonly priorityLabels = TASK_PRIORITY_LABELS;
   readonly statusLabels = TASK_STATUS_LABELS;
-  readonly projectStatusLabels = PROJECT_STATUS_LABELS;
 
   ngOnInit(): void {
     this.loadDashboard();
@@ -44,22 +42,6 @@ export class AdminDashboardComponent implements OnInit {
 
   getPriorityLabel(priority: TaskPriority): string {
     return this.priorityLabels[priority] ?? '—';
-  }
-
-  getStatusLabel(status: TaskStatuses): string {
-    return this.statusLabels[status] ?? '—';
-  }
-
-  getProjectStatusLabel(status: ProjectStatus): string {
-    return this.projectStatusLabels[status] ?? '—';
-  }
-
-  getProjectStatusBadge(status: ProjectStatus): string {
-    const map: Record<ProjectStatus, string> = {
-      [ProjectStatus.Active]: 'badge--active',
-      [ProjectStatus.Completed]: 'badge--completed',
-    };
-    return map[status] ?? '';
   }
 
   formatDate(dateStr: string): string {

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { MyTaskService } from './services/my-task.service';
-import { MyTask, TaskStatuses, TaskPriority, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS } from './models/my-task.model';
+import { MyTask, TaskStatuses, TaskPriority, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS, MyTaskFilterParams } from './models/my-task.model';
 import { TASK_STATUS_LIST, TASK_PRIORITY_LIST } from '../../team-lead/task-management/models/task-management.model';
 import { TaskDetailModel } from './components/task-detail-model/task-detail-model';
 import { PaginationComponent, ProjectList, SearchBarComponent, FilterPanel, FilterPanelConfig, FilterValues, Button, ButtonInputConfig } from '@common';
@@ -34,7 +34,6 @@ export class MyTasks implements OnInit {
 
   searchTerm = '';
 
-  private allProjectTasks: MyTask[] = [];
   currentPage = DEFAULT_PAGINATION.currentPage;
   itemsPerPage = DEFAULT_PAGINATION.itemsPerPage;
   totalItems = DEFAULT_PAGINATION.totalItems;
@@ -66,7 +65,7 @@ export class MyTasks implements OnInit {
         this.selectedProjectId   = pid;
         this.selectedProjectName = pname ?? '';
         this.view = 'tasks';
-        this.loadTasksForProject(pid);
+        this.loadTasks();
       } else {
         this.view = 'projects';
         this.selectedProjectId   = null;
@@ -119,15 +118,39 @@ export class MyTasks implements OnInit {
         this.activeFilterValues = values;
         this.currentPage = 1;
         this.isFilterOpen = false;
-        this.applyFiltersAndPaginate();
+        this.loadTasks();
       },
       onCancel: () => {
         this.activeFilterValues = null;
         this.currentPage = 1;
         this.isFilterOpen = false;
-        this.applyFiltersAndPaginate();
+        this.loadTasks();
       },
     };
+  }
+
+  private buildFilterParams(): MyTaskFilterParams {
+    const params: MyTaskFilterParams = {
+      pageNumber: this.currentPage,
+      pageSize: this.itemsPerPage,
+      search: this.searchTerm.trim() || undefined,
+    };
+
+    if (this.activeFilterValues) {
+      const statusVal = this.activeFilterValues['status'];
+      if (statusVal != null && statusVal !== '') params.Status = String(statusVal);
+
+      const priorityVal = this.activeFilterValues['priority'];
+      if (priorityVal != null && priorityVal !== '') params.Priority = String(priorityVal);
+
+      const fromDate = this.activeFilterValues['dueDateFrom'];
+      if (fromDate != null && fromDate !== '') params.DueDateFrom = fromDate as string;
+
+      const toDate = this.activeFilterValues['dueDateTo'];
+      if (toDate != null && toDate !== '') params.DueDateTo = toDate as string;
+    }
+
+    return params;
   }
 
   private loadProjectList(): void {
@@ -140,6 +163,24 @@ export class MyTasks implements OnInit {
       error: (err) => {
         this.toastr.error(this.getError(err));
         this.isProjectsLoading = false;
+      },
+    });
+  }
+
+  private loadTasks(): void {
+    if (!this.selectedProjectId) return;
+    this.isLoading = true;
+    const filters = this.buildFilterParams();
+    this.myTaskService.getMyTasks(filters, this.selectedProjectId).subscribe({
+      next: (res) => {
+        const paged = res.data;
+        this.tasks      = paged?.items ?? [];
+        this.totalItems = paged?.totalCount ?? 0;
+        this.isLoading  = false;
+      },
+      error: (err) => {
+        this.toastr.error(this.getError(err));
+        this.isLoading = false;
       },
     });
   }
@@ -162,81 +203,25 @@ export class MyTasks implements OnInit {
     });
   }
 
-  private loadTasksForProject(projectId: string): void {
-    this.isLoading = true;
-    this.myTaskService.getMyTasks(projectId).subscribe({
-      next: (res) => {
-        this.allProjectTasks = res.data ?? [];
-        this.currentPage = 1;
-        this.applyFiltersAndPaginate();
-        this.isLoading = false;
-      },
-      error: (err) => {
-        this.toastr.error(this.getError(err));
-        this.isLoading = false;
-      },
-    });
-  }
-
   onSearchChange(term: string): void {
     this.searchTerm = term;
     this.currentPage = 1;
-    this.applyFiltersAndPaginate();
+    this.loadTasks();
   }
 
   onPageChange(page: number): void {
     this.currentPage = page;
-    this.applyFiltersAndPaginate();
+    this.loadTasks();
   }
 
   onPageSizeChange(size: number): void {
     this.itemsPerPage = size;
     this.currentPage  = 1;
-    this.applyFiltersAndPaginate();
-  }
-
-  private applyFiltersAndPaginate(): void {
-    const term = this.searchTerm.trim().toLowerCase();
-    let filtered = this.allProjectTasks;
-
-    if (term) {
-      filtered = filtered.filter(t =>
-        t.title.toLowerCase().includes(term)
-      );
-    }
-
-    if (this.activeFilterValues) {
-      const statusVal = this.activeFilterValues['status'];
-      if (statusVal != null && statusVal !== '') {
-        filtered = filtered.filter(t => t.taskStatus === Number(statusVal));
-      }
-
-      const priorityVal = this.activeFilterValues['priority'];
-      if (priorityVal != null && priorityVal !== '') {
-        filtered = filtered.filter(t => t.priority === Number(priorityVal));
-      }
-
-      const fromDate = this.activeFilterValues['dueDateFrom'];
-      if (fromDate != null && fromDate !== '') {
-        const from = new Date(fromDate as string);
-        filtered = filtered.filter(t => new Date(t.dueDate) >= from);
-      }
-
-      const toDate = this.activeFilterValues['dueDateTo'];
-      if (toDate != null && toDate !== '') {
-        const to = new Date(toDate as string);
-        to.setHours(23, 59, 59, 999);
-        filtered = filtered.filter(t => new Date(t.dueDate) <= to);
-      }
-    }
-
-    this.totalItems = filtered.length;
-    const start = (this.currentPage - 1) * this.itemsPerPage;
-    this.tasks = filtered.slice(start, start + this.itemsPerPage);
+    this.loadTasks();
   }
 
   openTaskDetail(task: MyTask): void {
-    this.selectedTask  = task;
+    this.selectedTask   = task;
     this.showDetailModal = true;
   }
 
@@ -246,9 +231,7 @@ export class MyTasks implements OnInit {
   }
 
   onTaskRefresh(): void {
-    if (this.selectedProjectId) {
-      this.loadTasksForProject(this.selectedProjectId);
-    }
+    this.loadTasks();
   }
 
   getStatusLabel(status: TaskStatuses): string {

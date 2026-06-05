@@ -12,5 +12,5 @@ export interface AdminDashboard {
   pendingTasks: number;
   overdueProjects: Project[];
   recentCompletedProjects: Project[];
-  inProgressTasks: MyTask[];
+  overdueTasks: MyTask[];
 }

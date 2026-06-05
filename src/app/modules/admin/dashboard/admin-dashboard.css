@@ -31,13 +31,11 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  padding: 24px 20px;
+  padding: 10px 10px;
   gap: 20px;
   overflow-y: auto;
   min-height: 0;
-  scrollbar-width: thin;
-  scrollbar-color: #d1d5db transparent;
-  animation: fadeIn 0.35s ease both;
+  scrollbar-width: none;
 }
 
 @keyframes fadeIn {
@@ -312,7 +310,7 @@
 
 .tld-tr {
   display: grid;
-  grid-template-columns: 2fr 1.5fr 1.5fr 1fr 1.1fr;
+  grid-template-columns: 2fr 1.5fr 1.5fr 1fr 1.1fr 0.8fr;
   align-items: center;
   border-bottom: 1px solid #f1f3f5;
   transition: background 0.1s;

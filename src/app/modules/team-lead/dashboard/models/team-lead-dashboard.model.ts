@@ -14,3 +14,18 @@ export interface TeamLeadDashboard {
   recentTeamTasksTotalCount: number;
   overdueTasks: MyTask[];
 }
+
+export interface TeamLeadDashboardTask {
+  id: number;
+  title: string;
+  description: string;
+  projectId: string;
+  projectName: string;
+  assignedToUserId: number;
+  assignedToUserName: string;
+  assignedByUserId: number;
+  assignedByUserName: string;
+  taskStatus: TaskStatuses;
+  priority: TaskPriority;
+  dueDate: string;
+}

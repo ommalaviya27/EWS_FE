@@ -6,18 +6,14 @@
   flex-direction: column;
   max-width: 100%;
   background-color: #fff;
-  background-clip: padding-box;
   outline: 0;
   padding: 0 10px;
-  transition: transform 0.3s ease-in-out;
-  box-shadow: -5px 0 25px rgba(0, 0, 0, 0.1);
 }
 
 .offcanvas-end {
   top: 0;
   right: 0;
-  width: 380px !important;
-  border-left: 1px solid #dee2e6;
+  width: 350px !important;
   transform: translateX(100%);
 }
 
@@ -44,10 +40,13 @@
   flex-direction: row;
   justify-content: space-between;
   text-align: center;
+  border-bottom: 1px solid #e0e0e0;
+  height: 60px;
 }
 
 .title {
   font-size: 18px;
+  margin-top: 22px;
 }
 
 .close-btn{
@@ -55,7 +54,6 @@
   border: none;
   font-size: 18px;
   cursor: pointer;
-  
 }
 
 .filter-input,
@@ -66,6 +64,10 @@
   border-radius: 8px;
   padding-left: 10px;
   border: 1px solid #e0e0e0;
+}
+
+.filter-input {
+  margin: 10px 0;
 }
 
 .filter-select {
@@ -150,6 +152,6 @@
 
 @media (max-width: 480px) {
   .offcanvas {
-    width: 100% !important;
+    width: 90% !important;
   }
 }

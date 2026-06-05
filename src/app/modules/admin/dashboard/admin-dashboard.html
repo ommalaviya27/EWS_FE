@@ -39,11 +39,10 @@
     <div class="tld-panel">
       <div class="tld-panel__head">
         <h4 class="tld-panel__title">Overdue Projects</h4>
-        <span>{{ dashboard.overdueProjects.length }}</span>
       </div>
       @if (dashboard.overdueProjects.length === 0) {
       <div class="tld-empty">
-        <span>No overdue projects</span> 
+        <span>No overdue projects</span>
       </div>
       } @else {
       <div class="tld-scroll">
@@ -54,9 +53,6 @@
             <p>{{ project.description }}</p>
           </div>
           <div class="tld-item__end">
-            <span class="tld-status-badge" [ngClass]="getProjectStatusBadge(project.projectStatus)">
-              {{ getProjectStatusLabel(project.projectStatus) }}
-            </span>
             <span class="mp_date tld-date">
               Due: {{ formatDate(project.endDate) }}
             </span>
@@ -74,11 +70,10 @@
     <div class="tld-panel">
       <div class="tld-panel__head">
         <h4 class="tld-panel__title">Recently Completed Projects</h4>
-        <span>{{ dashboard.recentCompletedProjects.length }}</span>
       </div>
       @if (dashboard.recentCompletedProjects.length === 0) {
       <div class="tld-empty">
-        <span> No completed projects yet.</span>
+        <span>No completed projects yet.</span>
       </div>
       } @else {
       <div class="tld-scroll">
@@ -89,7 +84,6 @@
             <p>{{ project.description }}</p>
           </div>
           <div class="tld-item__end">
-            <span class="tld-status-badge badge--completed">Completed</span>
             <span class="mp_date">
               {{ formatDate(project.startDate) }} – {{ formatDate(project.endDate) }}
             </span>
@@ -100,15 +94,14 @@
       }
     </div>
 
-    <!-- In-Progress Tasks -->
+    <!-- Overdue Tasks -->
     <div class="tld-panel tld-panel--wide">
       <div class="tld-panel__head">
-        <h4 class="tld-panel__title">In-Progress Tasks</h4>
-        <span>{{ dashboard.inProgressTasks.length }}</span>
+        <h4 class="tld-panel__title">Overdue Tasks</h4>
       </div>
-      @if (dashboard.inProgressTasks.length === 0) {
+      @if (dashboard.overdueTasks.length === 0) {
       <div class="tld-empty">
-        <span>No in-progress tasks found.</span> 
+        <span>No overdue tasks found.</span>
       </div>
       } @else {
       <div class="tld-table-wrap">
@@ -119,8 +112,9 @@
             <div class="tld-th">Assigned To</div>
             <div class="tld-th">Priority</div>
             <div class="tld-th">Due Date</div>
+            <div class="tld-th">Overdue</div>
           </div>
-          @for (task of dashboard.inProgressTasks; track task.id) {
+          @for (task of dashboard.overdueTasks; track task.id) {
           <div class="tld-tr">
             <div class="tld-td">
               <span class="tld-task-name">{{ task.title }}</span>
@@ -138,6 +132,9 @@
             </div>
             <div class="tld-td">
               <span class="tld-date">{{ formatDate(task.dueDate) }}</span>
+            </div>
+            <div class="tld-td">
+              <span class="tld-overdue-badge">{{ getDaysOverdue(task.dueDate) }}d</span>
             </div>
           </div>
           }

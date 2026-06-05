@@ -183,8 +183,7 @@
 /* Responsive */
 @media (max-width: 700px) {
   .header-container {
-    height: auto;
-    min-height: 64px;
+    height: 60px;
   }
 
   .sidebar-brand {
