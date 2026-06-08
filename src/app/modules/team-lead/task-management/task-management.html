@@ -6,6 +6,13 @@
     <div>
       <h3 class="page-title">Projects</h3>
     </div>
+    <div class="header-actions" (click)="$event.stopPropagation()">
+      <app-search-bar
+        placeholder="Search by title…"
+        [value]="projectSearchTerm"
+        (searchChange)="onProjectSearchChange($event)"
+      ></app-search-bar>
+    </div>
   </div>
 
   @if (isProjectsLoading) {
@@ -14,8 +21,13 @@
   </div>
   } @else if (projectCards.length === 0) {
   <div class="center-state empty-state">
-    <h4>No Projects Found</h4>
+    <span class="material-icons">{{ projectSearchTerm ? 'search_off' : 'folder_open' }}</span>
+    <h4>{{ projectSearchTerm ? 'No results for "' + projectSearchTerm + '"' : 'No Projects Found' }}</h4>
+    @if (projectSearchTerm) {
+    <p>Try a different name or clear the search.</p>
+    } @else {
     <p>You have no projects assigned to you yet.</p>
+    }
   </div>
   } @else {
   <div class="projects-scroll">
@@ -24,6 +36,13 @@
       (projectSelected)="onProjectSelected($event)"
     ></app-project-list>
   </div>
+  <app-pagination
+    [currentPage]="projectCurrentPage"
+    [totalItems]="projectTotalItems"
+    [itemsPerPage]="projectItemsPerPage"
+    (pageChange)="onProjectPageChange($event)"
+    (pageSizeChange)="onProjectPageSizeChange($event)"
+  ></app-pagination>
   } } @else {
   <div>
     <button type="button" class="btn-back" (click)="goBackToProjects()">

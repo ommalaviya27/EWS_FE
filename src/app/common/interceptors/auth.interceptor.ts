@@ -24,6 +24,9 @@ export const AuthInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, ne
     req.url.includes(API_ROUTES.AUTH.RESET_PASSWORD) ||
     req.url.includes(API_ROUTES.AUTH.LOGOUT);
 
+  const isSkipRefreshEndpoint =
+    req.url.includes(API_ROUTES.PROFILE.CHANGE_PASSWORD);
+
   const accessToken = sessionService.getAccessToken();
 
   const cloned = (accessToken && !isAuthEndpoint)
@@ -32,7 +35,7 @@ export const AuthInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, ne
 
   return next(cloned).pipe(
     catchError((err: HttpErrorResponse) => {
-      if (err.status !== 401 || isAuthEndpoint) {
+      if (err.status !== 401 || isAuthEndpoint || isSkipRefreshEndpoint) {
         return throwError(() => err);
       }
 

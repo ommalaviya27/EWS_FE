@@ -126,7 +126,7 @@ export class EmployeePerformnaceReport implements OnInit, OnDestroy {
     const dpr = window.devicePixelRatio || 1;
     const logicalW = (canvas.parentElement?.clientWidth ?? 620) - 32;
     const numBars  = this.topEmployees.length;
-    const logicalH = numBars * 56 + 60;
+    const logicalH = numBars * 52 + 60;
 
     canvas.width = logicalW * dpr;
     canvas.height = logicalH * dpr;
@@ -135,7 +135,7 @@ export class EmployeePerformnaceReport implements OnInit, OnDestroy {
     ctx.scale(dpr, dpr);
     ctx.clearRect(0, 0, logicalW, logicalH);
 
-    const pL = 130, pR = 48, pT = 20, pB = 36;
+    const pL = 100, pR = 50, pT = 20, pB = 36;
     const chartW = logicalW - pL - pR;
     const chartH = logicalH - pT - pB;
     const barH = 26;
@@ -160,12 +160,12 @@ export class EmployeePerformnaceReport implements OnInit, OnDestroy {
     }
 
     this.topEmployees.forEach((emp, idx) => {
-      const y    = pT + idx * slotH + (slotH - barH) / 2;
+      const y = pT + idx * slotH + (slotH - barH) / 2;
       const segs = [
-        { count: emp.completed,  color: this.BAR_COLORS.completed  },
+        { count: emp.completed, color: this.BAR_COLORS.completed },
         { count: emp.inProgress, color: this.BAR_COLORS.inProgress },
-        { count: emp.onHold,     color: this.BAR_COLORS.onHold     },
-        { count: emp.pending,    color: this.BAR_COLORS.pending     },
+        { count: emp.onHold, color: this.BAR_COLORS.onHold },
+        { count: emp.pending, color: this.BAR_COLORS.pending },
       ];
 
       ctx.fillStyle = '#f3f4f6';

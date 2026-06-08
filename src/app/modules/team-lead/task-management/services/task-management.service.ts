@@ -37,8 +37,13 @@ export class TaskManagementService {
     return this.apiService.get<ProjectOption[]>(API_ROUTES.TASK.GET_MY_PROJECTS);
   }
 
-  getMyProjectsFull(): Observable<ApiResponse<ProjectCardData[]>> {
-    return this.apiService.get<ProjectCardData[]>(API_ROUTES.TASK.GET_MY_PROJECTS);
+  getMyProjectsFull(pageNumber: number, pageSize: number, search?: string): Observable<ApiResponse<PaginationResponse<ProjectCardData>>> {
+    const params: Record<string, string> = {
+      PageNumber: pageNumber.toString(),
+      PageSize: pageSize.toString(),
+    };
+    if (search?.trim()) params['Search'] = search.trim();
+    return this.apiService.get<PaginationResponse<ProjectCardData>>(API_ROUTES.TASK.GET_MY_PROJECTS, params);
   }
 
   getTeamMembers(): Observable<ApiResponse<TeamMember[]>> {
