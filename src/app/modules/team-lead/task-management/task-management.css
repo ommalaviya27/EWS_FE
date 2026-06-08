@@ -28,8 +28,7 @@
 .page-title {
   margin: 0 0 2px;
   font-size: 20px;
-  font-weight: 700;
-  color: #1a1a2e;
+  font-weight: 600;
 }
 
 .btn-back {
@@ -100,7 +99,7 @@
   padding: 12px 14px;
   font-size: 12px;
   font-weight: 700;
-  color: #4b5563;
+  color: #6c757d;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   height: 20px;
@@ -114,7 +113,6 @@
   margin-top: 3px;
 }
 
-/* ===== Task cell ===== */
 .task-title {
   font-weight: 600;
   font-size: semibold;
@@ -256,7 +254,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: #4b5563;
+  color: #6c757d;
   cursor: pointer;
   transition: background-color 0.15s ease;
 }
@@ -313,7 +311,7 @@
 .empty-hint {
   margin: 4px 0 0;
   font-size: 13px;
-  color: #94a3b8;
+  color: #6c757d;
 }
 
 .projects-scroll {

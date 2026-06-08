@@ -2,6 +2,7 @@ import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, Simp
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { ProfileService } from '../../../services/profile.service';
 import { SessionService } from '../../../services/session.service';
 import { GetProfileResponse } from '../../../models/profile.model';
@@ -26,14 +27,13 @@ export class MyProfile implements OnInit, OnChanges {
   private fb = inject(FormBuilder);
   private profileService = inject(ProfileService);
   private router = inject(Router);
+  private toastr = inject(ToastrService);
   sessionService = inject(SessionService);
 
   profileForm!: FormGroup;
   profile: GetProfileResponse | null = null;
   isLoading = true;
   isSaving = false;
-  successMessage = '';
-  errorMessage = '';
   initials = '';
   isChangePasswordOpen = false;
 
@@ -91,7 +91,7 @@ export class MyProfile implements OnInit, OnChanges {
         this.isLoading = false;
       },
       error: () => {
-        this.errorMessage = 'Failed to load profile.';
+        this.toastr.error('Failed to load profile.');
         this.isLoading = false;
       },
     });
@@ -121,8 +121,6 @@ export class MyProfile implements OnInit, OnChanges {
       return;
     }
     this.isSaving = true;
-    this.successMessage = '';
-    this.errorMessage = '';
     this.initButtonConfigs();
 
     this.profileService.updateProfile(this.profileForm.value).subscribe({
@@ -139,15 +137,16 @@ export class MyProfile implements OnInit, OnChanges {
               localStorage.setItem(APP_CONSTANTS.USER_KEY, JSON.stringify(stored));
             } catch { }
           }
-          this.successMessage = res.message || 'Profile updated successfully.';
+          this.toastr.success(res.message);
+          this.closed.emit();
         } else {
-          this.errorMessage = res.message || 'Failed to update profile.';
+          this.toastr.error(res.message);
         }
         this.isSaving = false;
         this.initButtonConfigs();
       },
       error: (err) => {
-        this.errorMessage = err?.error?.message || 'An error occurred. Please try again.';
+        this.toastr.error(err?.error?.message || 'An error occurred. Please try again.');
         this.isSaving = false;
         this.initButtonConfigs();
       },

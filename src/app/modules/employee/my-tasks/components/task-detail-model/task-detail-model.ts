@@ -169,10 +169,10 @@ export class TaskDetailModel implements OnChanges {
     this.pendingStatus = null;
     this.isUpdatingStatus = true;
     this.myTaskService.updateTaskStatus(this.task.id, { status: newStatus }).subscribe({
-      next: () => {
+      next: (res) => {
         this.currentStatus = newStatus;
         this.task = { ...this.task!, taskStatus: newStatus };
-        this.toastr.success('Status updated.');
+        this.toastr.success(res.message);
         this.isUpdatingStatus = false;
         this.refreshTasks.emit();
       },
@@ -221,14 +221,14 @@ export class TaskDetailModel implements OnChanges {
     this.isSubmittingComment = true;
     this.postCommentConfig = { ...this.postCommentConfig, isLoading: true, disabled: true };
     this.myTaskService.addComment(this.task.id, { comment: text }).subscribe({
-      next: () => {
+      next: (res) => {
         this.commentForm.reset();
         this.isSubmittingComment = false;
         this.postCommentConfig = { ...this.postCommentConfig, isLoading: false, disabled: false };
         const newTotal = this.commentTotalItems + 1;
         this.commentPage = Math.ceil(newTotal / this.commentPageSize);
         this.loadComments();
-        this.toastr.success('Comment added.');
+        this.toastr.success(res.message);
       },
       error: (err) => {
         this.toastr.error(this.getError(err));
@@ -266,10 +266,10 @@ export class TaskDetailModel implements OnChanges {
     this.myTaskService
       .updateComment(comment.id, { taskId: comment.taskId, comment: text })
       .subscribe({
-        next: () => {
+        next: (res) => {
           this.cancelEdit();
           this.loadComments();
-          this.toastr.success('Comment updated.');
+          this.toastr.success(res.message);
         },
         error: (err) => {
           this.toastr.error(this.getError(err));
@@ -281,9 +281,9 @@ export class TaskDetailModel implements OnChanges {
   deleteComment(comment: TaskComment): void {
     this.deletingCommentId = comment.id;
     this.myTaskService.deleteComment(comment.id).subscribe({
-      next: () => {
+      next: (res) => {
         this.deletingCommentId = null;
-        this.toastr.success('Comment deleted.');
+        this.toastr.success(res.message);
         const remaining = this.commentTotalItems - 1;
         const maxPage = Math.max(1, Math.ceil(remaining / this.commentPageSize));
         if (this.commentPage > maxPage) this.commentPage = maxPage;
@@ -339,11 +339,11 @@ export class TaskDetailModel implements OnChanges {
     this.isUploadingFiles = true;
     this.uploadFilesConfig = { ...this.uploadFilesConfig, isLoading: true, disabled: true };
     this.myTaskService.addAttachments(this.task.id, this.selectedFiles).subscribe({
-      next: () => {
+      next: (res) => {
         this.selectedFiles = [];
         this.isUploadingFiles = false;
         this.uploadFilesConfig = { ...this.uploadFilesConfig, isLoading: false, disabled: false };
-        this.toastr.success('Files uploaded.');
+        this.toastr.success(res.message);
         this.refreshTasks.emit();
         const newTotal = this.attachmentTotalItems + 1;
         this.attachmentPage = Math.ceil(newTotal / this.attachmentPageSize);
@@ -369,9 +369,9 @@ export class TaskDetailModel implements OnChanges {
   deleteAttachment(a: TaskAttachment): void {
     this.deletingAttachmentId = a.id;
     this.myTaskService.deleteAttachment(a.id).subscribe({
-      next: () => {
+      next: (res) => {
         this.deletingAttachmentId = null;
-        this.toastr.success('Attachment deleted.');
+        this.toastr.success(res.message);
         this.refreshTasks.emit();
         const remaining = this.attachmentTotalItems - 1;
         const maxPage = Math.max(1, Math.ceil(remaining / this.attachmentPageSize));

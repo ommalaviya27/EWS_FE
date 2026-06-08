@@ -27,6 +27,10 @@ export class TaskManagement implements OnInit {
 
   projectCards: ProjectCard[] = [];
   isProjectsLoading = false;
+  projectSearchTerm = '';
+  projectCurrentPage = DEFAULT_PAGINATION.currentPage;
+  projectItemsPerPage = DEFAULT_PAGINATION.itemsPerPage;
+  projectTotalItems = DEFAULT_PAGINATION.totalItems;
 
   tasks: Task[] = [];
   teamMembers: TeamMember[] = [];
@@ -151,9 +155,14 @@ export class TaskManagement implements OnInit {
 
   private loadProjectCards(): void {
     this.isProjectsLoading = true;
-    this.taskService.getMyProjectsFull().subscribe({
+    this.taskService.getMyProjectsFull(
+      this.projectCurrentPage,
+      this.projectItemsPerPage,
+      this.projectSearchTerm || undefined
+    ).subscribe({
       next: (res) => {
-        const raw: ProjectCardData[] = res.data ?? [];
+        const paged = res.data;
+        const raw: ProjectCardData[] = paged?.items ?? [];
         this.projectCards = raw.map(p => ({
           id: p.id,
           name: p.name,
@@ -162,6 +171,7 @@ export class TaskManagement implements OnInit {
           startDate: p.startDate,
           endDate: p.endDate,
         }));
+        this.projectTotalItems = paged?.totalCount ?? 0;
         this.isProjectsLoading = false;
       },
       error: (err) => {
@@ -169,6 +179,23 @@ export class TaskManagement implements OnInit {
         this.isProjectsLoading = false;
       },
     });
+  }
+
+  onProjectSearchChange(term: string): void {
+    this.projectSearchTerm = term;
+    this.projectCurrentPage = 1;
+    this.loadProjectCards();
+  }
+
+  onProjectPageChange(page: number): void {
+    this.projectCurrentPage = page;
+    this.loadProjectCards();
+  }
+
+  onProjectPageSizeChange(size: number): void {
+    this.projectItemsPerPage = size;
+    this.projectCurrentPage = 1;
+    this.loadProjectCards();
   }
 
   onProjectSelected(project: ProjectCard): void {

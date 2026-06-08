@@ -19,13 +19,6 @@
             <h2 class="profile-name">{{ profile?.name }}</h2>
           </div>
   
-          <div class="alert alert-success" *ngIf="successMessage">
-            <span class="material-icons">check_circle</span>{{ successMessage }}
-          </div>
-          <div class="alert alert-error" *ngIf="errorMessage">
-            <span class="material-icons">error</span>{{ errorMessage }}
-          </div>
-  
           <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" novalidate>
             <div class="pm-field">
               <app-name-field [config]="nameConfig" />
