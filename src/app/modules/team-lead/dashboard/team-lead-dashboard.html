@@ -5,24 +5,24 @@
 
   <div class="tld-stats">
     <div class="tld-stat tld-stat--purple">
-      <span class="tld-stat__icon material-icons">groups</span>
+      <span class="tld-stat--icon material-icons">groups</span>
       <div class="tld-col">
-        <span class="tld-stat__num">{{ dashboard.myTeamTaskCount }}</span>
-        <span class="tld-stat__lbl">My Team Tasks</span>
+        <span class="tld-stat--num">{{ dashboard.myTeamTaskCount }}</span>
+        <span class="tld-stat--lbl">My Team Tasks</span>
       </div>
     </div>
     <div class="tld-stat tld-stat--red">
-      <span class="tld-stat__icon material-icons">warning_amber</span>
+      <span class="tld-stat--icon material-icons">warning_amber</span>
       <div class="tld-col">
-        <span class="tld-stat__num">{{ dashboard.overdueTaskCount }}</span>
-        <span class="tld-stat__lbl">Overdue Tasks</span>
+        <span class="tld-stat--num">{{ dashboard.overdueTaskCount }}</span>
+        <span class="tld-stat--lbl">Overdue Tasks</span>
       </div>
     </div>
     <div class="tld-stat tld-stat--green">
-      <span class="tld-stat__icon material-icons">folder_open</span>
+      <span class="tld-stat--icon material-icons">folder_open</span>
       <div class="tld-col">
-        <span class="tld-stat__num">{{ dashboard.activeProjectCount }}</span>
-        <span class="tld-stat__lbl">Active Projects</span>
+        <span class="tld-stat--num">{{ dashboard.activeProjectCount }}</span>
+        <span class="tld-stat--lbl">Active Projects</span>
       </div>
     </div>
   </div>
@@ -30,8 +30,8 @@
   <div class="tld-grid">
     <!-- Active Projects -->
     <div class="tld-panel">
-      <div class="tld-panel__head">
-        <h4 class="tld-panel__title">Active Projects</h4>
+      <div class="tld-panel--head">
+        <h4 class="tld-panel--title">Active Projects</h4>
       </div>
       @if (dashboard.activeProjects.length === 0) {
       <div class="tld-empty">
@@ -41,13 +41,12 @@
       <div class="tld-scroll">
         @for (project of dashboard.activeProjects; track project.id) {
         <div class="tld-item">
-          <div class="tld-item__info">
+          <div class="tld-item--info">
             <label>{{ project.name }}</label>
             <p>{{ project.description }}</p>
           </div>
-          <div class="tld-item__end">
+          <div class="tld-item--end">
             <span class="tld-task-count-badge">
-              <span class="material-icons tld-task-count-icon">assignment</span>
               {{ project.taskCount }} task{{ project.taskCount !== 1 ? 's' : '' }}
             </span>
             <span class="mp_date">{{ formatDate(project.startDate) }} – {{ formatDate(project.endDate) }}</span>
@@ -60,8 +59,8 @@
 
     <!-- Overdue Tasks -->
     <div class="tld-panel">
-      <div class="tld-panel__head">
-        <h4 class="tld-panel__title">Overdue Tasks</h4>
+      <div class="tld-panel--head">
+        <h4 class="tld-panel--title">Overdue Tasks</h4>
       </div>
       @if (dashboard.overdueTasks.length === 0) {
       <div class="tld-empty">
@@ -71,14 +70,14 @@
       <div class="tld-scroll">
         @for (task of dashboard.overdueTasks; track task.id) {
         <div class="tld-item">
-          <div class="tld-item__info">
+          <div class="tld-item--info">
             <label>{{ task.title }}</label>
             <div class="tld-item-pnp">
               <span class="over_pro_name">{{ task.projectName }}</span>
               <span class="tld-pri-badge" [attr.data-p]="task.priority">{{getPriorityLabel(task.priority)}}</span>
             </div>
           </div>
-          <div class="tld-item__end">
+          <div class="tld-item--end">
             <span class="tld-assignee">{{ task.assignedToUserName }}</span>
             <span class="tld-overdue-badge">{{ getDaysOverdue(task.dueDate) }}d overdue</span>
           </div>
@@ -90,8 +89,8 @@
 
     <!-- Completed Projects -->
     <div class="tld-panel">
-      <div class="tld-panel__head">
-        <h4 class="tld-panel__title">Completed Projects</h4>
+      <div class="tld-panel--head">
+        <h4 class="tld-panel--title">Completed Projects</h4>
       </div>
       @if (dashboard.completedProjects.length === 0) {
       <div class="tld-empty">
@@ -101,11 +100,11 @@
       <div class="tld-scroll">
         @for (project of dashboard.completedProjects; track project.id) {
         <div class="tld-item">
-          <div class="tld-item__info">
+          <div class="tld-item--info">
             <label>{{ project.name }}</label>
             <p>{{ project.description }}</p>
           </div>
-          <div class="tld-item__end">
+          <div class="tld-item--end">
             <span class="mp_date">{{ formatDate(project.startDate) }} – {{ formatDate(project.endDate) }}</span>
           </div>
         </div>
@@ -116,9 +115,8 @@
 
     <!-- Recent Team Tasks (High Priority, nearest due date) -->
     <div class="tld-panel">
-      <div class="tld-panel__head">
-        <h4 class="tld-panel__title">Recent Team Tasks</h4>
-        <span class="tld-panel__badge tld-panel__badge--high">High Priority</span>
+      <div class="tld-panel--head">
+        <h4 class="tld-panel--title">Recent Team Tasks</h4>
       </div>
       @if (dashboard.recentTeamTasks.length === 0) {
       <div class="tld-empty">
@@ -130,6 +128,7 @@
           <div class="tld-tr tld-tr--head">
             <div class="tld-th">Task Name</div>
             <div class="tld-th">Assigned To</div>
+            <div class="tld-th">Priority</div>
             <div class="tld-th">Due Date</div>
           </div>
           @for (task of dashboard.recentTeamTasks; track task.id) {
@@ -142,10 +141,10 @@
               <span class="tld-assignee">{{ task.assignedToUserName }}</span>
             </div>
             <div class="tld-td">
+              <span class="tld-pri-badge" [attr.data-p]="task.priority">{{getPriorityLabel(task.priority)}}</span>
+            </div>
+            <div class="tld-td">
               <span class="tld-date">{{ formatDate(task.dueDate) }}</span>
-              @if (getDaysUntilDue(task.dueDate) <= 3) {
-              <span class="tld-due-soon">{{ getDaysUntilDue(task.dueDate) <= 0 ? 'Overdue' : getDaysUntilDue(task.dueDate) + 'd left' }}</span>
-              }
             </div>
           </div>
           }
