@@ -136,12 +136,12 @@
   background: #fafafa;
   padding: 10px 14px;
   text-align: left;
-  font-size: 0.7rem;
+  font-size: 13px;
   font-weight: 700;
-  color: #6b7280;
+  color: #6c757d;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  white-space: nowrap;
+  letter-spacing: 0.03rem;
+  height: 30px;
   border-bottom: 1px solid #e5e7eb;
 }
 
@@ -154,20 +154,6 @@
 
 .epr-table tbody tr:hover {
   background: #fafbff;
-}
-
-.emp-avatar {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: #ede9fe;
-  color: #7c3aed;
-  font-weight: 700;
-  font-size: 0.875rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
 }
 
 .emp-cell {

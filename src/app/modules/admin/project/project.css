@@ -88,24 +88,22 @@
 
 .grid-th {
   padding: 12px 14px;
-  font-size: 11px;
+  font-size: 13px;
   color: #6c757d;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.03rem;
 }
 
 .grid-td {
   padding: 13px 14px;
-  font-size: 13.5px;
-  color: #212529;
+  font-size: 13.5px;  
   overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
 }
 
 /* Description cell cursor hint */
 .desc-cell {
-  cursor: default;
+  cursor: pointer;
+  color: #6c757d;
 }
 
 /* Generic truncation helper */

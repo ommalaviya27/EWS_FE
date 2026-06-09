@@ -8,7 +8,7 @@ import { TASK_STATUS_LIST, TASK_PRIORITY_LIST } from '../../team-lead/task-manag
 import { TaskDetailModel } from './components/task-detail-model/task-detail-model';
 import { PaginationComponent, ProjectList, SearchBarComponent, FilterPanel, FilterPanelConfig, FilterValues, Button, ButtonInputConfig } from '@common';
 import { DEFAULT_PAGINATION } from '../../../common/constants/app.constants';
-import { ProjectCard } from '../../../modules/team-lead/task-management/models/task-management.model';
+import { Project } from '../../admin/project/models/project.model';
 
 @Component({
   selector: 'app-my-tasks',
@@ -26,8 +26,12 @@ export class MyTasks implements OnInit {
   selectedProjectId: string | null = null;
   selectedProjectName: string = '';
 
-  projectCards: ProjectCard[] = [];
+  projectCards: Project[] = [];
   isProjectsLoading = false;
+  projectSearchTerm = '';
+  projectCurrentPage = DEFAULT_PAGINATION.currentPage;
+  projectItemsPerPage = DEFAULT_PAGINATION.itemsPerPage;
+  projectTotalItems = DEFAULT_PAGINATION.totalItems;
 
   tasks: MyTask[] = [];
   isLoading = false;
@@ -155,9 +159,25 @@ export class MyTasks implements OnInit {
 
   private loadProjectList(): void {
     this.isProjectsLoading = true;
-    this.myTaskService.getMyProjects().subscribe({
+    this.myTaskService.getMyProjects(
+      this.projectCurrentPage,
+      this.projectItemsPerPage,
+      this.projectSearchTerm.trim() || undefined
+    ).subscribe({
       next: (res) => {
-        this.projectCards = res.data ?? [];
+        const paged = res.data;
+        const raw: Project[] = (paged?.items ?? []) as Project[];
+        this.projectCards = raw.map(p => ({
+          id: p.id,
+          name: p.name,
+          description: p.description,
+          userId: p.userId,
+          projectStatus: p.projectStatus as any,
+          startDate: p.startDate,
+          endDate: p.endDate,
+          taskCount: p.taskCount ?? 0,
+        }))
+        this.projectTotalItems = paged?.totalCount ?? 0;
         this.isProjectsLoading = false;
       },
       error: (err) => {
@@ -165,6 +185,23 @@ export class MyTasks implements OnInit {
         this.isProjectsLoading = false;
       },
     });
+  }
+
+  onProjectSearchChange(term: string): void {
+    this.projectSearchTerm = term;
+    this.projectCurrentPage = 1;
+    this.loadProjectList();
+  }
+
+  onProjectPageChange(page: number): void {
+    this.projectCurrentPage = page;
+    this.loadProjectList();
+  }
+
+  onProjectPageSizeChange(size: number): void {
+    this.projectItemsPerPage = size;
+    this.projectCurrentPage = 1;
+    this.loadProjectList();
   }
 
   private loadTasks(): void {
@@ -185,7 +222,7 @@ export class MyTasks implements OnInit {
     });
   }
 
-  onProjectSelected(project: ProjectCard): void {
+  onProjectSelected(project: Project): void {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { projectId: project.id, projectName: project.name },
@@ -194,8 +231,7 @@ export class MyTasks implements OnInit {
   }
 
   goBackToProjects(): void {
-    this.searchTerm = '';
-    this.activeFilterValues = null;
+    this.projectSearchTerm = '';
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { projectId: null, projectName: null },

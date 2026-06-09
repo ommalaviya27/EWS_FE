@@ -70,13 +70,13 @@
 
 .tab-btn:hover {
   background: #f8f9ff;
-  color: #4f46e5;
+  color: #8e00ed;
 }
 
 .tab-btn.active {
-  color: #4f46e5;
+  color: #8e00ed;
   background: #f0f0ff;
-  border-bottom-color: #4f46e5;
+  border-bottom-color: #8e00ed;
   font-weight: 600;
 }
 
@@ -105,7 +105,7 @@
 
 .tab-btn.active .tab-count {
   background: #ddd8ff;
-  color: #4f46e5;
+  color: #8e00ed;
 }
 
 /* ===== Card & Grid Scroll ===== */
@@ -154,11 +154,11 @@
 
 .grid-th {
   padding: 12px 14px;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   color: #6c757d;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.03rem;
 }
 
 .grid-td {

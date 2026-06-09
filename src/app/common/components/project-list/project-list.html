@@ -23,14 +23,15 @@
         >
           {{ project.description }}
         </p>
-        } @else {
-        <p class="pl-card-desc pl-card-desc--muted">No description available.</p>
         }
 
         <div class="pl-card-footer">
+            <span class="pl-card-task-count">
+              {{ project.taskCount }} {{ (project.taskCount) === 1 ? 'Task' : 'Tasks' }}
+            </span>
             @if (project.startDate || project.endDate) {
             <span class="pl-card-date">
-              {{ formatDate(project.startDate ?? '') }} – {{ formatDate(project.endDate ?? '') }}
+              {{ formatDate(project.startDate) }} – {{ formatDate(project.endDate) }}
             </span>
             }
         </div>
