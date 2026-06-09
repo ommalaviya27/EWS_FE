@@ -231,8 +231,7 @@ export class MyTasks implements OnInit {
   }
 
   goBackToProjects(): void {
-    this.searchTerm = '';
-    this.activeFilterValues = null;
+    this.projectSearchTerm = '';
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { projectId: null, projectName: null },
