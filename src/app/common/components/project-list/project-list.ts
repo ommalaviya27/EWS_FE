@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ProjectCard } from '../../../modules/team-lead/task-management/models/task-management.model';
+import { Project} from '../../../modules/admin/project/models/project.model';
 import { ProjectStatus, PROJECT_STATUS_LABELS } from '../../../modules/admin/project/models/project.model';
 
 @Component({
@@ -10,15 +10,15 @@ import { ProjectStatus, PROJECT_STATUS_LABELS } from '../../../modules/admin/pro
   styleUrl: './project-list.css',
 })
 export class ProjectList {
-  @Input() projects: ProjectCard[] = [];
+  @Input() projects: Project[] = [];
   @Input() actionLabel: string = 'View Tasks';
-  @Output() projectSelected = new EventEmitter<ProjectCard>();
+  @Output() projectSelected = new EventEmitter<Project>();
 
   readonly statusLabels = PROJECT_STATUS_LABELS;
 
   tooltip = { visible: false, text: '', x: 0, y: 0 };
 
-  onProjectClick(project: ProjectCard): void {
+  onProjectClick(project: Project): void {
     this.projectSelected.emit(project);
   }
 

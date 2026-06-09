@@ -4,7 +4,8 @@ import { ApiService } from '../../../../common/services/api.service';
 import { API_ROUTES } from '../../../../common/constants/api-routes';
 import { ApiResponse } from '../../../../common/models/api-response.model';
 import { PaginationResponse } from '../../../../common/components/pagination/pagination.model';
-import { Task, TeamMember, ProjectOption, CreateTaskRequest, UpdateTaskRequest, ProjectCardData, TaskFilterParams } from '../models/task-management.model';
+import { Task, TeamMember, ProjectOption, CreateTaskRequest, UpdateTaskRequest, TaskFilterParams } from '../models/task-management.model';
+import { Project } from 'src/app/modules/admin/project/models/project.model';
 
 @Injectable({ providedIn: 'root' })
 export class TaskManagementService {
@@ -37,13 +38,13 @@ export class TaskManagementService {
     return this.apiService.get<ProjectOption[]>(API_ROUTES.TASK.GET_MY_PROJECTS);
   }
 
-  getMyProjectsFull(pageNumber: number, pageSize: number, search?: string): Observable<ApiResponse<PaginationResponse<ProjectCardData>>> {
+  getMyProjectsFull(pageNumber: number, pageSize: number, search?: string): Observable<ApiResponse<PaginationResponse<Project>>> {
     const params: Record<string, string> = {
       PageNumber: pageNumber.toString(),
       PageSize: pageSize.toString(),
     };
     if (search?.trim()) params['Search'] = search.trim();
-    return this.apiService.get<PaginationResponse<ProjectCardData>>(API_ROUTES.TASK.GET_MY_PROJECTS, params);
+    return this.apiService.get<PaginationResponse<Project>>(API_ROUTES.TASK.GET_MY_PROJECTS, params);
   }
 
   getTeamMembers(): Observable<ApiResponse<TeamMember[]>> {

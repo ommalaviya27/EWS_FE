@@ -8,7 +8,7 @@ import { ApiResponse } from '../../../../common/models/api-response.model';
 import { API_ROUTES } from '../../../../common/constants/api-routes';
 import { MyTask, TaskComment, TaskAttachment, AddCommentRequest, UpdateCommentRequest, UpdateTaskStatusRequest, EmployeeDashboard, MyTaskFilterParams } from '../models/my-task.model';
 import { PaginationResponse } from '../../../../common/components/pagination/pagination.model';
-import { ProjectCard } from '../../../team-lead/task-management/models/task-management.model';
+import { Project } from '../../../admin/project/models/project.model';
 
 @Injectable({ providedIn: 'root' })
 export class MyTaskService {
@@ -20,8 +20,13 @@ export class MyTaskService {
     return this.apiService.get<EmployeeDashboard>(API_ROUTES.MY_TASKS.GET_DASHBOARD);
   }
 
-  getMyProjects(): Observable<ApiResponse<ProjectCard[]>> {
-    return this.apiService.get<ProjectCard[]>(API_ROUTES.MY_TASKS.GET_MY_PROJECTS);
+  getMyProjects(pageNumber: number, pageSize: number, search?: string): Observable<ApiResponse<PaginationResponse<Project>>> {
+    const params: Record<string, string> = {
+      PageNumber: pageNumber.toString(),
+      PageSize: pageSize.toString(),
+    };
+    if(search?.trim()) params['Search'] = search.trim();
+    return this.apiService.get<PaginationResponse<Project>>(API_ROUTES.MY_TASKS.GET_MY_PROJECTS, params);
   }
 
   getMyTasks( filters: MyTaskFilterParams, projectId?: string): Observable<ApiResponse<PaginationResponse<MyTask>>> {

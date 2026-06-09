@@ -7,7 +7,8 @@ import { DeleteModel, PaginationComponent, Button, ButtonInputConfig, SearchBarC
 import { TaskAddeditModal } from './components/task-addedit-modal/task-addedit-modal';
 import { createDeleteConfig } from '../../../common/components/delete-model/delete-model.config';
 import { DEFAULT_PAGINATION } from '../../../common/constants/app.constants';
-import { Task, TeamMember, TaskStatuses, TaskPriority, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS, TASK_STATUS_LIST, TASK_PRIORITY_LIST, CreateTaskRequest, UpdateTaskRequest, ProjectCardData, ProjectCard } from './models/task-management.model';
+import { Task, TeamMember, TaskStatuses, TaskPriority, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS, TASK_STATUS_LIST, TASK_PRIORITY_LIST, CreateTaskRequest, UpdateTaskRequest } from './models/task-management.model';
+import { Project } from '../../admin/project/models/project.model';
 
 @Component({
   selector: 'app-task-management',
@@ -25,7 +26,7 @@ export class TaskManagement implements OnInit {
   selectedProjectId: string | null = null;
   selectedProjectName: string = '';
 
-  projectCards: ProjectCard[] = [];
+  projectCards: Project[] = [];
   isProjectsLoading = false;
   projectSearchTerm = '';
   projectCurrentPage = DEFAULT_PAGINATION.currentPage;
@@ -162,14 +163,16 @@ export class TaskManagement implements OnInit {
     ).subscribe({
       next: (res) => {
         const paged = res.data;
-        const raw: ProjectCardData[] = paged?.items ?? [];
+        const raw: Project[] = paged?.items ?? [];
         this.projectCards = raw.map(p => ({
           id: p.id,
           name: p.name,
           description: p.description,
+          userId: p.userId,
           projectStatus: p.projectStatus as any,
           startDate: p.startDate,
           endDate: p.endDate,
+          taskCount: p.taskCount ?? 0,
         }));
         this.projectTotalItems = paged?.totalCount ?? 0;
         this.isProjectsLoading = false;
@@ -198,7 +201,7 @@ export class TaskManagement implements OnInit {
     this.loadProjectCards();
   }
 
-  onProjectSelected(project: ProjectCard): void {
+  onProjectSelected(project: Project): void {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { projectId: project.id, projectName: project.name },
