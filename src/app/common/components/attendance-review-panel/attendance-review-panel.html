@@ -1,0 +1,76 @@
+<div class="review-wrapper">
+  <div class="review-header">
+    <div class="review-header-left">
+      <h3 class="review-title">Pending Approvals</h3>
+      @if (!isLoading && totalItems > 0) {
+      <span class="review-count-badge">{{ totalItems }} pending</span>
+      }
+    </div>
+    <button class="review-refresh" (click)="load()" title="Refresh">
+      <span class="material-icons">refresh</span>
+    </button>
+  </div>
+
+  @if (isLoading) {
+  <div class="review-loading">
+    <div class="spinner-border text-primary"></div>
+  </div>
+  } @if (!isLoading && totalItems === 0) {
+  <div class="review-empty">
+    <span class="material-icons review-empty-icon">check_circle</span>
+    <p>No pending attendance to review.</p>
+  </div>
+  } @if (!isLoading && records.length > 0) {
+  <div class="review-grid">
+    @for (record of records; track trackById($index, record)) {
+    <div class="review-card">
+      <div class="review-card-header">
+        <div class="review-user">
+          <div class="review-user-avatar">
+            {{ record.userName.charAt(0).toUpperCase() }}
+          </div>
+          <div class="review-user-info">
+            <span class="review-user-name">{{ record.userName }}</span>
+            <span class="review-date">{{ record.attendanceDate | date : 'EEE, dd MMM yyyy' }}</span>
+          </div>
+        </div>
+        <span
+          class="review-status-badge review-status-badge--{{
+            record.statusDisplay.toLowerCase().replace(' ', '-')
+          }}"
+        >
+          {{ record.statusDisplay }}
+        </span>
+      </div>
+
+      <div class="review-card-body">
+        <div class="review-field">
+          <label class="review-field-label">Remark:</label>
+          <input
+            type="text"
+            class="review-remark"
+            placeholder="Add remark: (optional)"
+            [(ngModel)]="remarkMap[record.id]"
+          />
+        </div>
+        <div class="review-actions">
+          <app-button [config]="getRejectConfig(record)"></app-button>
+          <app-button [config]="getApproveConfig(record)"></app-button>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+
+  @if (totalItems > itemsPerPage || itemsPerPage > 5) {
+  <div class="review-pagination">
+    <app-pagination
+      [currentPage]="currentPage"
+      [totalItems]="totalItems"
+      [itemsPerPage]="itemsPerPage"
+      (pageChange)="onPageChange($event)"
+      (pageSizeChange)="onPageSizeChange($event)"
+    ></app-pagination>
+  </div>
+  } }
+</div>

@@ -1,0 +1,81 @@
+<div class="tla-wrapper">
+  <div class="tla-page-header">
+    <h2 class="tla-title">Attendance</h2>
+    <div class="tla-tabs">
+      <button
+        class="tla-tab"
+        [class.tla-tab--active]="activeTab === 'self'"
+        (click)="switchTab('self')"
+      >
+        My Attendance
+      </button>
+      <button
+        class="tla-tab"
+        [class.tla-tab--active]="activeTab === 'team'"
+        (click)="switchTab('team')"
+      >
+        Team Attendance
+      </button>
+      <button
+        class="tla-tab"
+        [class.tla-tab--active]="activeTab === 'review'"
+        (click)="switchTab('review')"
+      >
+        Review Attendance
+      </button>
+    </div>
+  </div>
+
+  @if (activeTab === 'self') {
+  <app-attendance-calendar [canFill]="true" [readonly]="false" [canEditApproved]="false"></app-attendance-calendar>
+  }
+
+  @if (activeTab === 'team') {
+  <div class="tla-team-section">
+    <div class="tla-user-filter">
+      <label class="tla-label">Employee</label>
+
+      @if (teamMembersLoading) {
+      <div class="tla-select-skeleton">
+        <span class="tla-loading-text">Loading members…</span>
+      </div>
+      } @else if (teamMembers.length === 0) {
+      <div class="tla-empty-members">
+        <span>Yet, any employee is not assigned under your team.</span>
+      </div>
+      } @else {
+      <div class="tla-select-wrapper">
+        <select
+          class="tla-select"
+          [ngModel]="selectedUserId ?? ''"
+          (ngModelChange)="onMemberSelect($event)"
+        >
+          <option value="">Select employee </option>
+          @for (member of teamMembers; track member.userId) {
+          <option [value]="member.userId">{{ member.name }}</option>
+          }
+        </select>
+        <span class="material-icons tla-select-icon">expand_more</span>
+      </div>
+      }
+    </div>
+
+    @if (selectedUserId) {
+    <app-attendance-calendar
+      [userId]="selectedUserId"
+      [canFill]="true"
+      [readonly]="false"
+      [canEditApproved]="true"
+    ></app-attendance-calendar>
+    } @else if (!teamMembersLoading && teamMembers.length > 0) {
+    <div class="tla-hint">
+      Select your team employee from above to view their attendance.
+    </div>
+    }
+  </div>
+  }
+
+  @if (activeTab === 'review') {
+  <app-attendance-review-panel></app-attendance-review-panel>
+  }
+</div>

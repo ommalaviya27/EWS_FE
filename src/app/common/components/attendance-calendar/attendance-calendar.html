@@ -1,0 +1,119 @@
+<div class="att-wrapper">
+  <div class="att-filters">
+    <div class="att-filter-group">
+      <label class="att-label">Month</label>
+      <select class="att-select" [(ngModel)]="selectedMonth">
+        @for (m of months; track $index) {
+        <option [value]="$index + 1">{{ m }}</option>
+        }
+      </select>
+    </div>
+    <div class="att-filter-group">
+      <label class="att-label">Year</label>
+      <select class="att-select" [(ngModel)]="selectedYear">
+        @for (y of years; track y) {
+        <option [value]="y">{{ y }}</option>
+        }
+      </select>
+    </div>
+    <div class="att-filter-btns">
+      <app-button [config]="searchBtnConfig"></app-button>
+      <app-button [config]="resetBtnConfig"></app-button>
+    </div>
+  </div>
+
+  @if (isLoading) {
+  <div class="att-loading"><div class="spinner-border text-primary"></div></div>
+  } @if (!isLoading && monthData) {
+
+  <div class="att-legend-row">
+    @if (isTodayApproved) {
+    <div class="att-approved-banner">
+      <span
+        >Today's attendance has been submitted by your Reporting Person. Please contact him/her for
+        any corrections.</span
+      >
+    </div>
+    }
+    <div class="att-marks">
+      <span class="att-legend-item"><span class="att-dot att-dot--present"></span>Present</span>
+      <span class="att-legend-item"><span class="att-dot att-dot--absent"></span>Absent</span>
+      <span class="att-legend-item"><span class="att-dot att-dot--halfday"></span>Half-Day</span>
+    </div>
+  </div>
+
+  <div class="att-card">
+    <div class="att-card-header">
+      <span class="att-month-label">{{ monthLabel }}</span>
+      <div class="att-summary">
+        <span class="att-summary-item">
+          Present <span class="att-badge att-badge--present">{{ monthData.presentCount }}</span>
+        </span>
+        <span class="att-summary-item">
+          Absent <span class="att-badge att-badge--absent">{{ monthData.absentCount }}</span>
+        </span>
+        <span class="att-summary-total">Total {{ workingDays }} days</span>
+      </div>
+    </div>
+
+    <div class="att-calendar-scroll">
+      <table class="att-table">
+        <thead>
+          <tr>
+            @for (day of monthData.days; track day.day) {
+            <th class="att-th" [class.att-th--muted]="day.isWeekend">
+              <div class="att-th-day">{{ day.day }}</div>
+              <div class="att-th-name">{{ day.dayName }}</div>
+            </th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            @for (day of monthData.days; track day.day) {
+            <td
+              class="att-td"
+              [class]="getDayClass(day)"
+              [class.att-td--clickable]="canEdit(day)"
+              [class.att-td--open]="openDropdownDay === day.day"
+              [attr.data-day]="day.day"
+              (click)="openDropdown($event, day)"
+            >
+              <span class="att-cell-label">{{ getDayLabel(day) }}</span>
+            </td>
+            }
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  @if (canFill && !readonly) { @if (canEditApproved) {
+  @if (editingDay !== null && pendingStatus !== null) {
+  <div class="att-footer">
+    <app-button [config]="fillBtnConfig"></app-button>
+  </div>
+  } } @else {
+  @if (isCurrentMonth() && !isTodayApproved && pendingStatus !== null) {
+  <div class="att-footer">
+    <app-button [config]="fillBtnConfig"></app-button>
+  </div>
+  } } } } @if (openDropdownDay !== null && monthData) {
+  <div
+    class="att-dropdown"
+    [style.top.px]="dropdownTop"
+    [style.left.px]="dropdownLeft"
+    (click)="$event.stopPropagation()"
+  >
+    @for (opt of statusOptions; track opt.value) {
+    <button
+      class="att-dropdown-item"
+      [class.att-dropdown-item--active]="pendingStatus === opt.value"
+      (click)="stageStatus(opt.value)"
+    >
+      {{ opt.label }}
+    </button>
+    }
+  </div>
+  }
+</div>

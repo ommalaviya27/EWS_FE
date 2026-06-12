@@ -64,4 +64,12 @@ export const API_ROUTES = {
     GET_PROJECT_PROGRESS_OVERVIEW: '/api/admin/reports/project-progress-overview',
     GET_PROJECT_PROGRESS_SUMMARY: '/api/admin/reports/project-progress-summary',
   },
+  ATTENDANCE: {
+    GET_MONTHLY: '/api/attendance/monthly',
+    GET_PENDING_ATTENDANCE: '/api/attendance/pending-review',
+    ADD: '/api/attendance',
+    ADD_ATTENDANCE_ADMIN: '/api/attendance/admin-fill',
+    EDIT: (id: number) => `/api/attendance/${id}`,
+    REVIEW_ATTENDANCE: (id: number) => `/api/attendance/${id}/review`,
+  },
 };
