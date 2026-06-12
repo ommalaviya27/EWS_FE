@@ -5,8 +5,13 @@ export const APP_CONSTANTS = {
 };
 
 export const DEFAULT_PAGINATION = {
-  currentPage:     1,
-  itemsPerPage:    10,
-  totalItems:      0,
+  currentPage: 1,
+  itemsPerPage: 10,
+  totalItems: 0,
   pageSizeOptions: [5, 10, 20, 100],
 };
+
+export const MONTHS = [
+  'January','February','March','April','May','June',
+  'July','August','September','October','November','December'
+]

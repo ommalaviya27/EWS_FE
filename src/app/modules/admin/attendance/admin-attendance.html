@@ -1,0 +1,66 @@
+<div class="adm-wrapper">
+  <div class="adm-page-header">
+    <h2 class="adm-title">Attendance Management</h2>
+    <div class="adm-tabs">
+      <button
+        class="adm-tab"
+        [class.adm-tab--active]="activeTab === 'team-leads'"
+        (click)="switchTab('team-leads')"
+      >
+        Team Leads Attendance
+      </button>
+      <button
+        class="adm-tab"
+        [class.adm-tab--active]="activeTab === 'review'"
+        (click)="switchTab('review')"
+      >
+        Review Attendance
+      </button>
+    </div>
+  </div>
+
+  @if (activeTab === 'team-leads') {
+  <div class="adm-team-section">
+    <div class="adm-user-filter">
+      <label class="adm-label">Team Lead</label>
+
+      @if (teamLeadsLoading) {
+      <div class="adm-select-skeleton">
+        <span class="adm-loading-text">Loading team leads…</span>
+      </div>
+      } @else if (teamLeads.length === 0) {
+      <div class="adm-empty-members">
+        <span>No team leads found in the organization.</span>
+      </div>
+      } @else {
+      <div class="adm-select-wrapper">
+        <select
+          class="adm-select"
+          [ngModel]="selectedUserId ?? ''"
+          (ngModelChange)="onTeamLeadSelect($event)"
+        >
+          <option value="">Select team lead</option>
+          @for (lead of teamLeads; track lead.userId) {
+          <option [value]="lead.userId">{{ lead.name }}</option>
+          }
+        </select>
+        <span class="material-icons adm-select-icon">expand_more</span>
+      </div>
+      }
+    </div>
+
+    @if (selectedUserId) {
+    <app-attendance-calendar
+      [userId]="selectedUserId"
+      [canFill]="true"
+      [readonly]="false"
+      [canEditApproved]="true"
+    ></app-attendance-calendar>
+    } @else if (!teamLeadsLoading && teamLeads.length > 0) {
+    <div class="adm-hint">Select a team lead from above to view their attendance.</div>
+    }
+  </div>
+  } @if (activeTab === 'review') {
+  <app-attendance-review-panel></app-attendance-review-panel>
+  }
+</div>

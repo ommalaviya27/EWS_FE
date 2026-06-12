@@ -23,6 +23,16 @@ export const ADMIN_ROUTES: Routes = [
         loadComponent: () => import('./employee/employee').then((m) => m.EmployeeModule),
       },
       {
+        path: ROUTES.ADMIN.ATTENDANCE,
+        loadComponent: () =>
+          import('./attendance/admin-attendance').then((m) => m.AdminAttendance),
+      },
+      {
+        path: ROUTES.ADMIN.LEAVE,
+        loadComponent: () =>
+          import('./leave/admin-leave/admin-leave').then((m) => m.AdminLeave),
+      },
+      {
         path: ROUTES.ADMIN.REPORTS,
         children: [
           {

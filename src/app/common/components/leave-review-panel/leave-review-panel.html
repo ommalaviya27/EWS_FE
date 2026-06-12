@@ -1,0 +1,79 @@
+<div class="lrp-wrapper">
+  <div class="lrp-header">
+    <div class="lrp-header-left">
+      <h3 class="lrp-title">Pending Leave Approvals</h3>
+      @if (!isLoading && totalItems > 0) {
+      <span class="lrp-count-badge">{{ totalItems }} pending</span>
+      }
+    </div>
+    <button class="lrp-refresh" (click)="load()" title="Refresh">
+      <span class="material-icons">refresh</span>
+    </button>
+  </div>
+
+  @if (isLoading) {
+  <div class="lrp-loading">
+    <div class="spinner-border text-primary"></div>
+  </div>
+  } @if (!isLoading && totalItems === 0) {
+  <div class="lrp-empty">
+    <span class="material-icons lrp-empty-icon">check_circle</span>
+    <p>No pending leave requests to review.</p>
+  </div>
+  } @if (!isLoading && records.length > 0) {
+  <div class="lrp-grid">
+    @for (record of records; track trackById($index, record)) {
+    <div class="lrp-card">
+      <div class="lrp-card-header">
+        <div class="lrp-user">
+          <div class="lrp-avatar">{{ record.userName.charAt(0).toUpperCase() }}</div>
+          <div class="lrp-user-info">
+            <span class="lrp-user-name">{{ record.userName }}</span>
+            <span class="lrp-date-range">
+              {{ formatDate(record.startDate) }}
+              @if (record.startDate !== record.endDate) { → {{ formatDate(record.endDate) }}
+              }
+            </span>
+          </div>
+        </div>
+        <div class="lrp-badges">
+          <span class="lrp-type-badge">{{ record.leaveTypeDisplay }}</span>
+          <span class="lrp-status-badge lrp-status-badge--pending">Pending</span>
+        </div>
+      </div>
+
+      <div class="lrp-reason">
+        <span class="lrp-reason-label">Reason:</span>
+        <span class="lrp-reason-text">{{ record.reason }}</span>
+      </div>
+
+      <div class="lrp-card-body">
+        <div class="lrp-remark-field">
+          <input
+            type="text"
+            class="lrp-remark"
+            placeholder="Add remark (optional)"
+            [(ngModel)]="remarkMap[record.id]"
+          />
+        </div>
+        <div class="lrp-actions">
+          <app-button [config]="getRejectConfig(record)"></app-button>
+          <app-button [config]="getApproveConfig(record)"></app-button>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+
+  @if (totalItems > itemsPerPage || itemsPerPage > 5) {
+  <div class="lrp-pagination">
+    <app-pagination
+      [currentPage]="currentPage"
+      [totalItems]="totalItems"
+      [itemsPerPage]="itemsPerPage"
+      (pageChange)="onPageChange($event)"
+      (pageSizeChange)="onPageSizeChange($event)"
+    ></app-pagination>
+  </div>
+  } }
+</div>

@@ -18,10 +18,22 @@ export const TEAM_LEAD_ROUTES: Routes = [
       },
       {
         path: ROUTES.TEAM_LEAD.TASK_MANAGEMENT,
-        loadComponent:() =>
+        loadComponent: () =>
           import('./task-management/task-management').then(
             (m) => m.TaskManagement
           ),
+      },
+      {
+        path: ROUTES.TEAM_LEAD.ATTENDANCE,
+        loadComponent: () =>
+          import('./attendance/team-lead-attendance').then(
+            (m) => m.TeamLeadAttendance
+          ),
+      },
+      {
+        path: ROUTES.TEAM_LEAD.LEAVE,
+        loadComponent: () =>
+          import('./leave/team-lead-leave/team-lead-leave').then((m) => m.TeamLeadLeave),
       },
       { path: '', redirectTo: ROUTES.TEAM_LEAD.DASHBOARD, pathMatch: 'full' },
     ],

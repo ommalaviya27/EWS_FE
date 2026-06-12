@@ -1,0 +1,27 @@
+<div class="tll-wrapper">
+  <div class="tll-page-header">
+    <h2 class="tll-title">Leave</h2>
+    <div class="tll-tabs">
+      <button
+        class="tll-tab"
+        [class.tll-tab--active]="activeTab === 'my-leaves'"
+        (click)="switchTab('my-leaves')"
+      >
+        My Leaves
+      </button>
+      <button
+        class="tll-tab"
+        [class.tll-tab--active]="activeTab === 'review'"
+        (click)="switchTab('review')"
+      >
+        Review Requests
+      </button>
+    </div>
+  </div>
+
+  @if (activeTab === 'my-leaves') {
+  <app-leave-list></app-leave-list>
+  } @if (activeTab === 'review') {
+  <app-leave-review-panel></app-leave-review-panel>
+  }
+</div>

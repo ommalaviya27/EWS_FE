@@ -1,0 +1,146 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background: #f8fafc;
+}
+
+.tla-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 10px;
+  gap: 16px;
+}
+
+.tla-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.tla-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.tla-tabs {
+  display: flex;
+  gap: 10px;
+}
+
+.tla-tab {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6c757d;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.tla-tab--active {
+  background: #8e00ed;
+  color: #fff;
+  border-color: #8e00ed;
+}
+
+.tla-team-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tla-user-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 320px;
+}
+
+.tla-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #6c757d;
+}
+
+.tla-select-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.tla-select {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 9px 36px 9px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #fff;
+  height: 48px;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.tla-select:focus {
+  border-color: #8e00ed;
+}
+
+.tla-select-icon {
+  position: absolute;
+  right: 10px;
+  font-size: 20px;
+  color: #6c757d;
+  pointer-events: none;
+}
+
+.tla-select-skeleton {
+  height: 42px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+}
+
+.tla-loading-text {
+  font-size: 13px;
+  color: #6c757d;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.tla-empty-members {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #6c757d;
+  padding: 10px 0;
+}
+
+.tla-hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 16px;
+  padding: 20px 0;
+}

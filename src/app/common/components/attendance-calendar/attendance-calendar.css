@@ -1,0 +1,335 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background-color: #f8fafc;
+}
+
+.att-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 10px 5px;
+  gap: 16px;
+}
+
+.att-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.att-filters {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.att-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.att-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #6c757d;
+}
+
+.att-select {
+  padding: 5px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 14px;
+  background: #fff;
+  cursor: pointer;
+  min-width: 100px;
+  outline: none;
+  height: 48px;
+}
+.att-select:focus {
+  border-color: #8e00ed;
+}
+.att-filter-btns {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.att-loading {
+  display: flex;
+  justify-content: center;
+  padding: 60px 0;
+}
+
+.att-legend-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 14px;
+  font-size: 13px;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  min-height: 41px;
+}
+
+.att-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.att-approved-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #dc2626;
+  flex-grow: 1;
+}
+
+.att-marks {
+  display: flex;
+  flex-direction: row;
+  gap: 14px;
+  padding-right: 14px;
+  margin-left: auto;
+}
+
+.att-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+.att-dot--present {
+  background: #bbf7d0;
+  border: 1px solid #86efac;
+}
+.att-dot--absent {
+  background: #fecaca;
+  border: 1px solid #fca5a5;
+}
+.att-dot--halfday {
+  background-color: #737cf3;
+  border: 1px solid #2563eb;
+}
+
+.att-card {
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+}
+.att-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f1f5f9;
+}
+.att-month-label {
+  font-weight: 700;
+  font-size: 14px;
+}
+.att-summary {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 13px;
+}
+.att-summary-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.att-summary-total {
+  font-size: 13px;
+}
+
+.att-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 11px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1.5px solid;
+}
+.att-badge--present {
+  background: #dcfce7;
+  color: #16a34a;
+}
+.att-badge--absent {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.att-calendar-scroll {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.att-calendar-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.att-table {
+  border-collapse: collapse;
+  min-width: 100%;
+  table-layout: fixed;
+}
+
+.att-th {
+  text-align: center;
+  padding: 8px 4px 6px;
+  border-right: 1px solid #f1f5f9;
+  min-width: 40px;
+  background: #fff;
+}
+.att-th--muted {
+  background: #fafafa;
+}
+.att-th-day {
+  font-size: 12px;
+  font-weight: 700;
+}
+.att-th-name {
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+.att-td {
+  text-align: center;
+  vertical-align: middle;
+  padding: 0;
+  border-right: 1px solid #f1f5f9;
+  border-top: 1px solid #f1f5f9;
+  min-width: 46px;
+  height: 48px;
+  position: relative;
+  user-select: none;
+  background: #fff;
+}
+.att-td--clickable {
+  cursor: pointer;
+}
+.att-td--clickable:hover {
+  filter: brightness(0.91);
+}
+.att-td--open {
+  outline: 2px solid #8e00ed;
+  outline-offset: -2px;
+  z-index: 1;
+}
+
+.day-muted {
+  background: #f1f5f9;
+} 
+
+.day-today {
+  background: #fef9c3;
+}
+
+.day-present {
+  background: #dcfce7;
+}
+.day-absent {
+  background: #fee2e2;
+}
+.day-empty {
+  background: #fff;
+}
+
+.att-cell-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: #374151;
+  display: block;
+  line-height: 48px;
+}
+.day-present .att-cell-label {
+  color: #16a34a;
+}
+.day-absent .att-cell-label {
+  color: #dc2626;
+}
+.day-half .att-cell-label {
+  color: #2563eb;
+}
+
+.att-footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.att-dropdown {
+  position: fixed;
+  z-index: 9999;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.13);
+  min-width: 220px;
+  overflow: hidden;
+  animation: ddFade 0.1s ease;
+}
+@keyframes ddFade {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.att-dropdown-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px 16px;
+  font-size: 13px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.1s;
+  border-bottom: 1px solid #f8fafc;
+}
+.att-dropdown-item:last-child {
+  border-bottom: none;
+}
+.att-dropdown-item:hover {
+  background: #f1f5f9;
+}
+.att-dropdown-item--active {
+  background: #eff6ff;
+  color: #8e00ed;
+  font-weight: 600;
+}
+
+.day-half {
+  background-color: #dbeafe;
+}
+
+@media (max-width: 768px) {
+  .att-approved-banner {
+    font-size: 11px;
+    padding: 8px 12px;
+  }
+  
+  .att-legend-row {
+    font-size: 11px;
+    min-height: 35px; 
+  }
+}

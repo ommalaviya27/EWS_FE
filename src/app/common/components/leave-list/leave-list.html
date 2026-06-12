@@ -1,0 +1,109 @@
+<div class="ll-wrapper" (click)="closeDropdown()">
+  <div class="ll-header-bar">
+    <div>
+      <h3 class="ll-page-title">My Leave Requests</h3>
+    </div>
+    <div class="ll-header-actions" (click)="$event.stopPropagation()">
+      <app-button [config]="applyBtnConfig"></app-button>
+    </div>
+  </div>
+
+  @if (isLoading) {
+  <div class="ll-center-state">
+    <div class="spinner-border text-primary"></div>
+  </div>
+  } @else if (leaves.length === 0) {
+  <div class="ll-center-state ll-empty-state">
+    <span class="material-icons">event_busy</span>
+    <h4>No Leave Requests</h4>
+    <p>You haven't applied for any leave yet.</p>
+  </div>
+  } @else {
+  <div class="ll-table-card">
+    <div class="ll-grid-scroll">
+      <div class="ll-grid-container">
+        <div class="ll-grid-row ll-grid-header">
+          <div class="ll-grid-th">Type</div>
+          <div class="ll-grid-th">From</div>
+          <div class="ll-grid-th">To</div>
+          <div class="ll-grid-th">Reason</div>
+          <div class="ll-grid-th">Status</div>
+          <div class="ll-grid-th">Remark</div>
+          <div class="ll-grid-th text-center ll-action-cell">Actions</div>
+        </div>
+
+        @for (leave of leaves; track leave.id; let i = $index) {
+        <div class="ll-grid-row">
+          <div class="ll-grid-td">
+            <span class="ll-type-badge">{{ leave.leaveTypeDisplay }}</span>
+          </div>
+          <div class="ll-grid-td">{{ formatDate(leave.startDate) }}</div>
+          <div class="ll-grid-td">{{ formatDate(leave.endDate) }}</div>
+          <div class="ll-grid-td ll-cell-truncate ll-reason-cell" [title]="leave.reason">
+            {{ leave.reason }}
+          </div>
+          <div class="ll-grid-td">
+            <span class="ll-status-badge" [attr.data-status]="leave.leaveStatus">
+              {{ statusLabels[leave.leaveStatus] }}
+            </span>
+          </div>
+          <div class="ll-grid-td ll-cell-truncate">
+            {{ leave.reviewerRemark ?? '—' }}
+          </div>
+          <div class="ll-grid-td text-center ll-action-cell">
+            @if (leave.canEdit) {
+            <div class="ll-action-container">
+              <button
+                type="button"
+                class="ll-btn-dots"
+                [class.active]="activeDropdownId === leave.id"
+                (click)="toggleDropdown($event, leave.id)"
+              >
+                <span class="material-icons">more_vert</span>
+              </button>
+
+              @if (activeDropdownId === leave.id) {
+              <div
+                class="ll-action-dropdown"
+                [class.dropdown-up]="leaves.length > 2 && i >= leaves.length - 2"
+                (click)="$event.stopPropagation()"
+              >
+                <button
+                  type="button"
+                  class="ll-dropdown-item ll-edit-item"
+                  (click)="openEditModal(leave)"
+                >
+                  <span class="material-icons">edit</span>
+                  <span>Edit</span>
+                </button>
+              </div>
+              }
+            </div>
+            } @else {
+            <span class="ll-no-action">—</span>
+            }
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+
+    <app-pagination
+      (click)="$event.stopPropagation()"
+      [currentPage]="currentPage"
+      [totalItems]="totalItems"
+      [itemsPerPage]="itemsPerPage"
+      (pageChange)="onPageChange($event)"
+      (pageSizeChange)="onPageSizeChange($event)"
+    ></app-pagination>
+  </div>
+  }
+</div>
+
+<app-leave-apply-modal
+  [visible]="showModal"
+  [isLoading]="isModalLoading"
+  [leave]="selectedLeave"
+  (save)="onSave($event)"
+  (closed)="closeModal()"
+></app-leave-apply-modal>

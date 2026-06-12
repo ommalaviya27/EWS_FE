@@ -1,0 +1,138 @@
+.lam-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 1060;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.lam-modal {
+  width: 100%;
+  max-width: 560px;
+}
+
+.lam-card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 24px 24px 22px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+}
+
+/* Header */
+.lam-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.lam-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 550;
+}
+
+.lam-close {
+  border: none;
+  background: transparent;
+  font-size: 22px;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.lam-field {
+  margin-bottom: 18px;
+}
+
+.lam-fieldset {
+  position: relative;
+  border: 1.5px solid #d1d5db;
+  border-radius: 12px;
+  height: 52px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  transition: border-color 0.15s ease;
+}
+
+.lam-fieldset--textarea {
+  height: auto;
+  align-items: flex-start;
+  padding: 18px 12px 10px;
+}
+
+.lam-fieldset:focus-within {
+  border-color: #8e00ed;
+  box-shadow: 0 0 0 0.15rem rgba(142, 0, 237, 0.12);
+}
+
+.lam-fieldset.is-invalid-wrap {
+  border-color: #dc2626;
+}
+
+.lam-legend {
+  position: absolute;
+  top: -8px;
+  left: 12px;
+  background: #fff;
+  padding: 0 4px;
+  font-size: 12px;
+  pointer-events: none;
+  transition: color 0.15s ease;
+}
+
+.lam-fieldset.has-value .lam-legend,
+.lam-fieldset:focus-within .lam-legend {
+  color: #8e00ed;
+}
+
+.lam-fieldset.is-invalid-wrap .lam-legend {
+  color: #dc2626;
+}
+
+.lam-select-input,
+.lam-date-input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 14px;
+  background: transparent;
+  font-family: inherit;
+}
+
+.lam-textarea {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 14px;
+  background: transparent;
+  resize: none;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+.lam-error {
+  margin-top: 5px;
+  font-size: 12px;
+  color: #dc2626;
+  padding-left: 4px;
+}
+
+.lam-date-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.lam-footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 6px;
+}
