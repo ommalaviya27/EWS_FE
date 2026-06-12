@@ -28,6 +28,11 @@ export const ADMIN_ROUTES: Routes = [
           import('./attendance/admin-attendance').then((m) => m.AdminAttendance),
       },
       {
+        path: ROUTES.ADMIN.LEAVE,
+        loadComponent: () =>
+          import('./leave/admin-leave/admin-leave').then((m) => m.AdminLeave),
+      },
+      {
         path: ROUTES.ADMIN.REPORTS,
         children: [
           {

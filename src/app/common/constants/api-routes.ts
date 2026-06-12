@@ -72,4 +72,12 @@ export const API_ROUTES = {
     EDIT: (id: number) => `/api/attendance/${id}`,
     REVIEW_ATTENDANCE: (id: number) => `/api/attendance/${id}/review`,
   },
+  LEAVE: {
+    GET_MY_LEAVES: '/api/leave/my-leaves',
+    GET_PENDING_REVIEW: '/api/leave/pending-review',
+    GET_BY_ID: (id: number) => `/api/leave/${id}`,
+    APPLY: '/api/leave',
+    EDIT: (id: number) => `/api/leave/${id}`,
+    REVIEW: (id: number) => `/api/leave/${id}/review`,
+  },
 };

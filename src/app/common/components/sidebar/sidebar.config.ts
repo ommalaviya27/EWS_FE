@@ -18,7 +18,7 @@ export const ROLE_SIDEBAR_CONFIGS: Record<number, SidebarConfig> = {
       { label: 'Projects', icon: 'folder', route: '/admin/project' },
       { label: 'Employees', icon: 'people', route: '/admin/employee' },
       { label: 'Attendance', icon: 'fact_check', route: '/admin/attendance' },
-      { label: 'Leave Management', icon: 'event_busy', route: '/admin/dashboard' },
+      { label: 'Leave Management', icon: 'event_busy', route: '/admin/leave' },
       {
         label: 'Reports',
         icon: 'bar_chart',
@@ -48,7 +48,7 @@ export const ROLE_SIDEBAR_CONFIGS: Record<number, SidebarConfig> = {
       { label: 'Dashboard', icon: 'dashboard', route: '/team-lead/dashboard' },
       { label: 'Projects', icon: 'assignment', route: '/team-lead/task-management' },
       { label: 'Attendance', icon: 'fact_check', route: '/team-lead/attendance' },
-      { label: 'Leave', icon: 'event_busy', route: '/team-lead/dashboard' },
+      { label: 'Leave', icon: 'event_busy', route: '/team-lead/leave' },
     ],
   },
   3: {
@@ -57,7 +57,7 @@ export const ROLE_SIDEBAR_CONFIGS: Record<number, SidebarConfig> = {
       { label: 'Dashboard', icon: 'dashboard', route: '/employee/dashboard' },
       { label: 'Projects', icon: 'task', route: '/employee/my-tasks' },
       { label: 'Attendance', icon: 'fact_check', route: '/employee/attendance' },
-      { label: 'Leave', icon: 'event_busy', route: '/employee/dashboard' },
+      { label: 'Leave', icon: 'event_busy', route: '/employee/leave' },
     ],
   },
 };

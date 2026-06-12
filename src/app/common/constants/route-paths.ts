@@ -27,6 +27,8 @@ export const ROUTES = {
     EMPLOYEE_ABSOLUTE: '/admin/employee',
     ATTENDANCE: 'attendance',
     ATTENDANCE_ABSOLUTE: '/admin/attendance',
+    LEAVE: 'leave',
+    LEAVE_ABSOLUTE: '/admin/leave',
     REPORTS: 'reports',
     REPORT_ABSOLUTE: '/admin/reports',
     EMPLOYEE_PERFORMANCE_REPORT_ABSOLUTE: '/admin/reports/employee-performance',
@@ -42,6 +44,8 @@ export const ROUTES = {
     TASK_MANAGEMENT_ABSOLUTE: '/team-lead/task-management',
     ATTENDANCE: 'attendance',
     ATTENDANCE_ABSOLUTE: '/team-lead/attendance',
+    LEAVE: 'leave',
+    LEAVE_ABSOLUTE: '/team-lead/leave',
     TEAM_LEAD_ABSOLUTE: '/team-lead',
   },
 
@@ -52,6 +56,8 @@ export const ROUTES = {
     MY_TASKS_ABSOLUTE: '/employee/my-tasks',
     ATTENDANCE: 'attendance',
     ATTENDANCE_ABSOLUTE: '/employee/attendance',
+    LEAVE: 'leave',
+    LEAVE_ABSOLUTE: '/employee/leave',
     EMPLOYEE_ABSOLUTE: '/employee',
   },
 

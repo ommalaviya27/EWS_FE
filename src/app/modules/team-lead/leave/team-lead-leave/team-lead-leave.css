@@ -1,0 +1,60 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background: #f8fafc;
+}
+
+.tll-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 10px;
+  gap: 16px;
+  overflow: hidden;
+}
+
+.tll-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.tll-title {
+  font-size: 22px;
+  font-weight: 550;
+  margin: 0;
+}
+
+.tll-tabs {
+  display: flex;
+  gap: 10px;
+}
+
+.tll-tab {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6c757d;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.tll-tab--active {
+  background: #8e00ed;
+  color: #fff;
+  border-color: #8e00ed;
+}
+
+.tll-tab:not(.tll-tab--active):hover {
+  background: #f3e8ff;
+  color: #8e00ed;
+  border-color: #e9d5ff;
+}

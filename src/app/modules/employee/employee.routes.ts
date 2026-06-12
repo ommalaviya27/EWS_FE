@@ -26,6 +26,11 @@ export const EMPLOYEE_ROUTES: Routes = [
         loadComponent: () =>
           import('./attendance/employee-attendance').then((m) => m.EmployeeAttendance),
       },
+      {
+        path: ROUTES.EMPLOYEE.LEAVE,
+        loadComponent: () =>
+          import('./leave/employee-leave/employee-leave').then((m) => m.EmployeeLeave),
+      },
       { path: '', redirectTo: ROUTES.EMPLOYEE.DASHBOARD, pathMatch: 'full' },
     ],
   },

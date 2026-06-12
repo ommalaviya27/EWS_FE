@@ -30,6 +30,11 @@ export const TEAM_LEAD_ROUTES: Routes = [
             (m) => m.TeamLeadAttendance
           ),
       },
+      {
+        path: ROUTES.TEAM_LEAD.LEAVE,
+        loadComponent: () =>
+          import('./leave/team-lead-leave/team-lead-leave').then((m) => m.TeamLeadLeave),
+      },
       { path: '', redirectTo: ROUTES.TEAM_LEAD.DASHBOARD, pathMatch: 'full' },
     ],
   },

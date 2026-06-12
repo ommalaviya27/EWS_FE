@@ -1,0 +1,32 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background: #f8fafc;
+}
+
+.al-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 10px;
+  gap: 16px;
+  overflow: hidden;
+}
+
+.al-page-header {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.al-title {
+  font-size: 22px;
+  font-weight: 550;
+  margin: 0 0 4px;
+}
+
+.al-subtitle {
+  margin: 0;
+  font-size: 13px;
+  color: #6c757d;
+}

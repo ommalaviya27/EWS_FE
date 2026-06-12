@@ -1,0 +1,67 @@
+@if (visible) {
+<div class="lam-overlay" (click)="onCancel()">
+  <div class="lam-modal" (click)="$event.stopPropagation()">
+    <div class="lam-card">
+      <div class="lam-header">
+        <h4 class="lam-title">{{ isEditMode ? 'Edit Leave Request' : 'Apply for Leave' }}</h4>
+        <button type="button" class="lam-close" (click)="onCancel()" aria-label="Close">✕</button>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+        <div class="lam-field">
+          <div class="lam-fieldset has-value" [class.is-invalid-wrap]="isInvalid('leaveType')">
+            <span class="lam-legend">Leave Type</span>
+            <select class="lam-select-input" formControlName="leaveType">
+              @for (opt of leaveTypeOptions; track opt.value) {
+              <option [value]="opt.value">{{ opt.label }}</option>
+              }
+            </select>
+          </div>
+          @if (isInvalid('leaveType')) {
+          <div class="lam-error">Leave type is required.</div>
+          }
+        </div>
+
+        <!-- Date Row -->
+        <div class="lam-date-row">
+          <div class="lam-field">
+            <div
+              class="lam-fieldset"
+              [class.is-invalid-wrap]="isInvalid('startDate')"
+              [class.has-value]="form.get('startDate')?.value"
+            >
+              <span class="lam-legend">From Date</span>
+              <input type="date" class="lam-date-input" formControlName="startDate" />
+            </div>
+            @if (isInvalid('startDate')) {
+            <div class="lam-error">Start date is required.</div>
+            }
+          </div>
+
+          <div class="lam-field">
+            <div
+              class="lam-fieldset"
+              [class.is-invalid-wrap]="isInvalid('endDate')"
+              [class.has-value]="form.get('endDate')?.value"
+            >
+              <span class="lam-legend">To Date</span>
+              <input type="date" class="lam-date-input" formControlName="endDate" />
+            </div>
+            @if (isInvalid('endDate')) {
+            <div class="lam-error">End date is required.</div>
+            }
+          </div>
+        </div>
+
+        <!-- Reason -->
+        <app-description-field [config]="descriptionField"></app-description-field>
+
+        <div class="lam-footer">
+          <app-button [config]="cancelBtnConfig"></app-button>
+          <app-button [config]="submitBtnConfig"></app-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+}
