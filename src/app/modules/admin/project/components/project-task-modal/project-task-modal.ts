@@ -87,7 +87,7 @@ export class ProjectTasksModal implements OnChanges {
           this.isLoading = false;
         },
         error: (err) => {
-          this.toastr.error(this.getErrorMessage(err));
+          this.toastr.error(err?.error?.message);
           this.isLoading = false;
         },
       });
@@ -150,11 +150,5 @@ export class ProjectTasksModal implements OnChanges {
       task.taskStatus !== TaskStatuses.Completed &&
       new Date(task.dueDate) < new Date()
     );
-  }
-
-  private getErrorMessage(err: any): string {
-    const body = err?.error;
-    if (body?.errorMessages?.length) return body.errorMessages.join(' ');
-    return body?.message ?? 'An error occurred.';
   }
 }

@@ -107,6 +107,7 @@
 
 .lrp-user {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 10px;
 }
@@ -141,14 +142,6 @@
   color: #6c757d;
 }
 
-.lrp-badges {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
-  flex-shrink: 0;
-}
-
 .lrp-type-badge {
   background: #f3e8ff;
   color: #8e00ed;
@@ -157,19 +150,6 @@
   font-weight: 600;
   padding: 3px 8px;
   white-space: nowrap;
-}
-
-.lrp-status-badge {
-  border-radius: 6px;
-  font-size: 11px;
-  font-weight: 600;
-  padding: 3px 8px;
-  white-space: nowrap;
-}
-
-.lrp-status-badge--pending {
-  background: #fff7ed;
-  color: #c2410c;
 }
 
 .lrp-reason {

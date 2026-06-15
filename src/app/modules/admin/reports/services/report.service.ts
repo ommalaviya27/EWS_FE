@@ -3,15 +3,7 @@ import { Observable } from 'rxjs';
 import { ApiService } from '../../../../common/services/api.service';
 import { ApiResponse } from '../../../../common/models/api-response.model';
 import { API_ROUTES } from '../../../../common/constants/api-routes';
-import {
-  EmployeePerformanceReport,
-  EmployeeSummaryReport,
-  ReportFilter,
-  TaskCompletionOverview,
-  TaskCompletionSummaryReport,
-  ProjectProgressOverview,
-  ProjectProgressSummaryReport,
-} from '../models/report.model';
+import { EmployeePerformanceReport, EmployeeSummaryReport, ReportFilter, TaskCompletionOverview, TaskCompletionSummaryReport, ProjectProgressOverview, ProjectProgressSummaryReport } from '../models/report.model';
 
 @Injectable({ providedIn: 'root' })
 export class ReportService {
@@ -24,11 +16,7 @@ export class ReportService {
     );
   }
 
-  getEmployeeSummary(
-    pageNumber: number,
-    pageSize: number,
-    search: string
-  ): Observable<ApiResponse<EmployeeSummaryReport>> {
+  getEmployeeSummary( pageNumber: number, pageSize: number, search: string ): Observable<ApiResponse<EmployeeSummaryReport>> {
     const params: Record<string, string> = {
       pageNumber: String(pageNumber),
       pageSize: String(pageSize),
@@ -44,11 +32,7 @@ export class ReportService {
     );
   }
 
-  getTaskCompletionSummary(
-    pageNumber: number,
-    pageSize: number,
-    search: string
-  ): Observable<ApiResponse<TaskCompletionSummaryReport>> {
+  getTaskCompletionSummary( pageNumber: number, pageSize: number, search: string ): Observable<ApiResponse<TaskCompletionSummaryReport>> {
     const params: Record<string, string> = {
       pageNumber: String(pageNumber),
       pageSize: String(pageSize),
@@ -66,11 +50,7 @@ export class ReportService {
     );
   }
 
-  getProjectProgressSummary(
-    pageNumber: number,
-    pageSize: number,
-    search: string
-  ): Observable<ApiResponse<ProjectProgressSummaryReport>> {
+  getProjectProgressSummary( pageNumber: number, pageSize: number, search: string ): Observable<ApiResponse<ProjectProgressSummaryReport>> {
     const params: Record<string, string> = {
       pageNumber: String(pageNumber),
       pageSize: String(pageSize),

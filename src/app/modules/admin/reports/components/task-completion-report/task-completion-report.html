@@ -21,9 +21,7 @@
     </div>
   </div>
 
-  <!-- Pie Charts Row -->
   <div class="tcr-charts-row">
-    <!-- Task Status Distribution -->
     <div class="tcr-card tcr-card--pie">
       <div class="tcr-card-head">
         <h4 class="tcr-card-title">Tasks by Status — Overall</h4>
@@ -60,7 +58,6 @@
       }
     </div>
 
-    <!-- Task Priority Distribution -->
     <div class="tcr-card tcr-card--pie">
       <div class="tcr-card-head">
         <h4 class="tcr-card-title">Tasks by Priority — Overall</h4>
@@ -94,8 +91,7 @@
     </div>
   </div>
 
-  <!-- Summary Grid -->
-  <div class="tcr-card">
+  <div class="tcr-card tcr-card--grid">
     <div class="tcr-card-head">
       <h4 class="tcr-card-title">Task Summary</h4>
       <app-search-bar
@@ -112,49 +108,46 @@
       {{ searchQuery ? 'No results for "' + searchQuery + '".' : 'No task data available.' }}
     </div>
     } @else {
-    <div class="tcr-table-wrap">
-      <table class="tcr-table">
-        <thead>
-          <tr>
-            <th>Task</th>
-            <th class="hide-sm">Project</th>
-            <th>Assigned To</th>
-            <th class="center">Priority</th>
-            <th class="center">Status</th>
-            <th class="center hide-sm">Due Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (task of pagedTasks; track task.taskId) {
-          <tr>
-            <td>
-              <span class="task-title">{{ task.title }}</span>
-            </td>
-            <td class="hide-sm">
-              <span>{{ task.projectName }}</span>
-            </td>
-            <td>
-              <div class="assignee-cell">
-                <span>{{ task.assignedTo }}</span>
-              </div>
-            </td>
-            <td class="center">
-              <span class="badge" [ngClass]="getPriorityBadgeClass(task.priority)">
-                {{ task.priority }}
-              </span>
-            </td>
-            <td class="center">
-              <span class="badge" [ngClass]="getStatusBadgeClass(task.status)">
-                {{ formatStatus(task.status) }}
-              </span>
-            </td>
-            <td class="center hide-sm">
-              <span>{{ task.dueDate | date : 'MMM d, y' }}</span>
-            </td>
-          </tr>
-          }
-        </tbody>
-      </table>
+    <div class="grid-scroll">
+      <div class="grid-container">
+        <div class="grid-row grid-header">
+          <div class="grid-th">Task</div>
+          <div class="grid-th">Project</div>
+          <div class="grid-th">Assigned To</div>
+          <div class="grid-th text-center">Priority</div>
+          <div class="grid-th text-center">Status</div>
+          <div class="grid-th text-center">Due Date</div>
+        </div>
+
+        @for (task of pagedTasks; track task.taskId) {
+        <div class="grid-row">
+          <div class="grid-td">
+            <span class="task-title">{{ task.title }}</span>
+          </div>
+          <div class="grid-td">
+            <span>{{ task.projectName }}</span>
+          </div>
+          <div class="grid-td">
+            <div class="assignee-cell">
+              <span>{{ task.assignedTo }}</span>
+            </div>
+          </div>
+          <div class="grid-td text-center">
+            <span class="badge" [ngClass]="getPriorityBadgeClass(task.priority)">
+              {{ task.priority }}
+            </span>
+          </div>
+          <div class="grid-td text-center">
+            <span class="badge" [ngClass]="getStatusBadgeClass(task.status)">
+              {{ formatStatus(task.status) }}
+            </span>
+          </div>
+          <div class="grid-td text-center">
+            <span>{{ task.dueDate | date : 'MMM d, y' }}</span>
+          </div>
+        </div>
+        }
+      </div>
     </div>
 
     <app-pagination

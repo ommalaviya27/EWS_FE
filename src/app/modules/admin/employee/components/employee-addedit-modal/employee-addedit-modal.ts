@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Employee, TeamLead, EMPLOYEE_ROLE_LIST, EmployeeRole, CreateEmployeeRequest, UpdateEmployeeRequest } from '../../models/employee.model';
+import { Employee, Role, TeamLead, EmployeeRole, CreateEmployeeRequest, UpdateEmployeeRequest } from '../../models/employee.model';
 import { NameFieldConfig, Name, EmailInputConfig, Email, MobileNumberConfig, MobileNumber, PasswordInputConfig, Password, Button, ButtonInputConfig } from '@common';
 import { EmployeeService } from '../../services/employee.service';
 
@@ -30,7 +30,7 @@ export class EmployeeAddeditModal implements OnInit, OnChanges {
   submitBtnConfig!: ButtonInputConfig;
 
   form!: FormGroup;
-  roleList = EMPLOYEE_ROLE_LIST;
+  roleList: Role[] = [];
   teamLeads: TeamLead[] = [];
   readonly EmployeeRole = EmployeeRole;
 
@@ -49,6 +49,7 @@ export class EmployeeAddeditModal implements OnInit, OnChanges {
   ngOnInit(): void {
     this.buildForm();
     this.initConfigs();
+    this.loadRoles();
     this.loadTeamLeads();
     this.initButtonConfigs();
   }
@@ -56,10 +57,22 @@ export class EmployeeAddeditModal implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['visible'] && this.visible) {
       this.buildForm();
+      this.loadRoles();
       this.loadTeamLeads();
     }
-    
+
     this.initButtonConfigs();
+  }
+
+  private loadRoles(): void {
+    this.employeeService.getRoles().subscribe({
+      next: (res) => {
+        this.roleList = res.data ?? [];
+      },
+      error: () => {
+        this.roleList = [];
+      },
+    });
   }
 
   private loadTeamLeads(): void {

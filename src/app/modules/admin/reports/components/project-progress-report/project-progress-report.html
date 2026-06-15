@@ -3,7 +3,6 @@
     <h2 class="ppr-title">Project Progress Report</h2>
   </div>
 
-  <!-- Pie Chart Card -->
   <div class="ppr-card ppr-card--pie">
     <div class="ppr-card-head">
       <h4 class="ppr-card-title">Projects by Status — Overall</h4>
@@ -36,7 +35,6 @@
     }
   </div>
 
-  <!-- Active Projects Grid -->
   <div class="ppr-card ppr-card--grid">
     <div class="ppr-card-head">
       <h4 class="ppr-card-title">Active Projects Summary</h4>
@@ -54,58 +52,55 @@
       {{ searchQuery ? 'No results for "' + searchQuery + '".' : 'No active projects found.' }}
     </div>
     } @else {
-    <div class="ppr-table-wrap">
-      <table class="ppr-table">
-        <thead>
-          <tr>
-            <th>Project</th>
-            <th class="center">Total</th>
-            <th class="center">Completed</th>
-            <th class="center hide-sm">In Progress</th>
-            <th class="center hide-sm">Pending</th>
-            <th class="center hide-sm">On Hold</th>
-            <th class="rate-col">Progress</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (project of pagedProjects; track project.projectId) {
-          <tr>
-            <td>
-              <div class="proj-cell">
-                <span class="proj-name">{{ project.projectName }}</span>
+    <div class="grid-scroll">
+      <div class="grid-container">
+        <div class="grid-row grid-header">
+          <div class="grid-th">Project</div>
+          <div class="grid-th text-center">Total</div>
+          <div class="grid-th text-center">Completed</div>
+          <div class="grid-th text-center">In Progress</div>
+          <div class="grid-th text-center">Pending</div>
+          <div class="grid-th text-center">On Hold</div>
+          <div class="grid-th">Progress</div>
+        </div>
+
+        @for (project of pagedProjects; track project.projectId) {
+        <div class="grid-row">
+          <div class="grid-td">
+            <div class="proj-cell">
+              <span class="proj-name">{{ project.projectName }}</span>
+            </div>
+          </div>
+          <div class="grid-td text-center">
+            <span class="badge badge--total">{{ project.totalTasks }}</span>
+          </div>
+          <div class="grid-td text-center">
+            <span class="badge badge--done">{{ project.completedTasks }}</span>
+          </div>
+          <div class="grid-td text-center">
+            <span class="badge badge--progress">{{ project.inProgressTasks }}</span>
+          </div>
+          <div class="grid-td text-center">
+            <span class="badge badge--pending">{{ project.pendingTasks }}</span>
+          </div>
+          <div class="grid-td text-center">
+            <span class="badge badge--hold">{{ project.onHoldTasks }}</span>
+          </div>
+          <div class="grid-td">
+            <div class="rate-wrap">
+              <div class="rate-track">
+                <div
+                  class="rate-fill"
+                  [style.width.%]="project.progressPercentage"
+                  [style.background]="getBarColor(project.progressPercentage)"
+                ></div>
               </div>
-            </td>
-            <td class="center">
-              <span class="badge badge--total">{{ project.totalTasks }}</span>
-            </td>
-            <td class="center">
-              <span class="badge badge--done">{{ project.completedTasks }}</span>
-            </td>
-            <td class="center hide-sm">
-              <span class="badge badge--progress">{{ project.inProgressTasks }}</span>
-            </td>
-            <td class="center hide-sm">
-              <span class="badge badge--pending">{{ project.pendingTasks }}</span>
-            </td>
-            <td class="center hide-sm">
-              <span class="badge badge--hold">{{ project.onHoldTasks }}</span>
-            </td>
-            <td class="rate-col">
-              <div class="rate-wrap">
-                <div class="rate-track">
-                  <div
-                    class="rate-fill"
-                    [style.width.%]="project.progressPercentage"
-                    [style.background]="getBarColor(project.progressPercentage)"
-                  ></div>
-                </div>
-                <span class="rate-pct">{{ project.progressPercentage }}%</span>
-              </div>
-            </td>
-          </tr>
-          }
-        </tbody>
-      </table>
+              <span class="rate-pct">{{ project.progressPercentage }}%</span>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
     </div>
 
     <app-pagination

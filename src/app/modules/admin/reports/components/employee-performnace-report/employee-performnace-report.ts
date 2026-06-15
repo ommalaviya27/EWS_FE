@@ -33,10 +33,10 @@ export class EmployeePerformnaceReport implements OnInit, OnDestroy {
   isGridLoading = false;
 
   private readonly BAR_COLORS = {
-    completed: '#7c3aed',
-    inProgress: '#3b82f6',
-    onHold: '#f59e0b',
-    pending: '#d1d5db',
+    pending: '#93c5fd',
+    inProgress: '#6ee7b7',
+    completed: '#22c55e',
+    onHold: '#fef08a',
   };
 
   ngOnInit(): void {
@@ -93,7 +93,7 @@ export class EmployeePerformnaceReport implements OnInit, OnDestroy {
           setTimeout(() => this.drawChart(), 80);
         },
         error: (err) => {
-          this.toastr.error(this.extractError(err));
+          this.toastr.error(err?.error?.message);
           this.isChartLoading = false;
         },
       });
@@ -111,7 +111,7 @@ export class EmployeePerformnaceReport implements OnInit, OnDestroy {
           this.isGridLoading = false;
         },
         error: (err) => {
-          this.toastr.error(this.extractError(err));
+          this.toastr.error(err?.error?.message);
           this.isGridLoading = false;
         },
       });
@@ -223,10 +223,5 @@ export class EmployeePerformnaceReport implements OnInit, OnDestroy {
     ctx.arcTo(x, y + h, x, y, bl);
     ctx.arcTo(x, y, x + w, y, tl);
     ctx.closePath();
-  }
-
-  private extractError(err: unknown): string {
-    const b = (err as any)?.error;
-    return b?.errorMessages?.length ? b.errorMessages.join(' ') : (b?.message ?? 'Something went wrong.');
   }
 }

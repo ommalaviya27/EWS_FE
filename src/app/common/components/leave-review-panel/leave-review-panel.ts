@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { LeaveService } from '../../services/leave.service';
 import { LeaveResponse, ApprovalStatus, ReviewLeaveRequest } from '../../models/leave.model';
-import { PaginationResponse } from '../pagination/pagination.model';
 import { PaginationComponent, Button, ButtonInputConfig } from '@common';
 import { DEFAULT_PAGINATION } from '../../constants/app.constants';
 
@@ -51,7 +50,7 @@ export class LeaveReviewPanel implements OnInit {
         this.isLoading = false;
       },
       error: (err) => {
-        this.toastr.error(this.getErrorMessage(err));
+        this.toastr.error(err?.error?.getErrorMessage);
         this.isLoading = false;
       },
     });
@@ -76,7 +75,7 @@ export class LeaveReviewPanel implements OnInit {
         delete this.remarkMap[id];
         this.fetchPage();
       },
-      error: (err) => this.toastr.error(this.getErrorMessage(err)),
+      error: (err) => this.toastr.error(err?.error?.getErrorMessage),
     });
   }
 
@@ -110,11 +109,5 @@ export class LeaveReviewPanel implements OnInit {
 
   trackById(_: number, item: LeaveResponse): number {
     return item.id;
-  }
-
-  private getErrorMessage(err: any): string {
-    const body = err?.error;
-    if (body?.errorMessages?.length) return body.errorMessages.join(' ');
-    return body?.message ?? 'Something went wrong.';
   }
 }

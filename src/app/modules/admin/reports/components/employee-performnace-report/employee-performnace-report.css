@@ -9,8 +9,8 @@
 .epr-wrap {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 5px;
+  gap: 10px;
+  padding: 10px;
   overflow-y: auto;
   flex: 1;
   scrollbar-width: none;
@@ -25,21 +25,21 @@
 }
 
 .epr-title {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: 550;
   margin: 0;
 }
 
 .epr-filter-group {
   display: flex;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #e2e8f0;
   border-radius: 8px;
   overflow: hidden;
 }
 
 .epr-filter-btn {
   padding: 7px 20px;
-  font-size: 0.8125rem;
+  font-size: 13px;
   font-weight: 500;
   background: #fff;
   border: none;
@@ -54,8 +54,8 @@
 .epr-card {
   background: #fff;
   border-radius: 16px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05), 0 4px 20px rgba(0, 0, 0, 0.07);
-  flex-shrink: 0; 
+  flex-shrink: 0;
+  border: 1px solid #e2e8f0;
 }
 
 .epr-card-head {
@@ -70,9 +70,8 @@
 }
 
 .epr-card-title {
-  font-size: 0.9375rem;
-  font-weight: 600;
-  color: #111827;
+  font-size: 16px;
+  font-weight: 550;
   margin: 0;
   white-space: nowrap;
 }
@@ -81,8 +80,8 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 0.75rem;
-  color: #6b7280;
+  font-size: 13px;
+  color: #6c757d;
   flex-wrap: wrap;
 }
 
@@ -94,16 +93,16 @@
 }
 
 .dot--completed {
-  background: #7c3aed;
+  background: #22c55e;
 }
 .dot--progress {
-  background: #3b82f6;
+  background: #6ee7b7;
 }
 .dot--hold {
-  background: #f59e0b;
+  background: #fef08a;
 }
 .dot--pending {
-  background: #d1d5db;
+  background: #93c5fd;
   outline: 1px solid #9ca3af;
 }
 
@@ -117,50 +116,59 @@
   display: block;
 }
 
-.epr-table-wrap {
+.epr-card--grid {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.grid-scroll {
+  flex: 0 1 auto;
+  overflow-y: auto;
   overflow-x: auto;
-  max-height: 720px;
+  min-height: 0;
   scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-.epr-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.8125rem;
+.grid-container {
+  min-width: 820px;
 }
 
-.epr-table th {
+.grid-row {
+  display: grid;
+  grid-template-columns: 2fr 0.8fr 1fr 1fr 0.9fr 0.9fr 1.6fr;
+  align-items: center;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.grid-header {
   position: sticky;
   top: 0;
-  z-index: 1;
-  background: #fafafa;
-  padding: 10px 14px;
-  text-align: left;
+  z-index: 5;
+  background: #fff;
+  height: 48px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.grid-th {
+  padding: 12px 14px;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 550;
   color: #6c757d;
   text-transform: uppercase;
-  letter-spacing: 0.03rem;
-  height: 30px;
-  border-bottom: 1px solid #e5e7eb;
 }
 
-.epr-table td {
-  padding: 12px 14px;
-  border-top: 1px solid #e5e7eb;
-  color: #111827;
-  vertical-align: middle;
+.grid-td {
+  padding: 13px 14px;
+  font-size: 13.5px;
 }
 
-.epr-table tbody tr:hover {
-  background: #fafbff;
+.text-center {
+  text-align: center;
 }
 
-.emp-cell {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+/* ── Employee cell ── */
 
 .emp-info {
   display: flex;
@@ -174,8 +182,8 @@
 }
 
 .emp-email {
-  font-size: 0.72rem;
-  color: #6b7280;
+  font-size: 11px;
+  color: #6c757d;
   white-space: nowrap;
 }
 
@@ -183,32 +191,32 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 32px;
-  padding: 3px 10px;
+  min-width: 25px;
+  padding: 3px 7px;
   border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 12px;
+  font-weight: 550;
 }
 
 .badge--total {
-  background: #f3f4f6;
-  color: #111827;
+  background: #f1f5f9;
+  color: #64748b;
 }
 .badge--done {
-  background: #ede9fe;
-  color: #7c3aed;
+  background: #dcfce7;
+  color: #16a34a;
 }
 .badge--progress {
-  background: #dbeafe;
-  color: #1d4ed8;
+  background: #d1fae5;
+  color: #059669;
 }
 .badge--pending {
-  background: #e5e7eb;
-  color: #6b7280;
+  background: #dbeafe;
+  color: #3b82f6;
 }
 .badge--hold {
-  background: #fef3c7;
-  color: #b45309;
+  background: #fef9c3;
+  color: #ca8a04;
 }
 
 .rate-wrap {
@@ -220,7 +228,7 @@
 
 .rate-track {
   flex: 1;
-  min-width: 60px;
+  min-width: 50px;
   height: 7px;
   border-radius: 4px;
   background: #e5e7eb;
@@ -234,15 +242,11 @@
 }
 
 .rate-pct {
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 550;
   min-width: 38px;
   text-align: right;
   flex-shrink: 0;
-}
-
-.rate--high {
-  color: #7c3aed;
 }
 
 .epr-state {
@@ -255,7 +259,7 @@
 .epr-empty {
   text-align: center;
   padding: 36px;
-  color: #6b7280;
+  color: #6c757d;
   font-size: 0.875rem;
 }
 
@@ -264,24 +268,9 @@
     padding: 16px;
     gap: 16px;
   }
-
-  .hide-sm {
-    display: none;
-  }
-
-  .epr-card--grid {
-    min-height: 320px;
-    max-height: 460px;
-  }
 }
 
 @media (max-width: 480px) {
-  .emp-email {
-    display: none;
-  }
-  .rate-col {
-    display: none;
-  }
   .epr-filter-btn {
     padding: 6px 14px;
     font-size: 0.75rem;

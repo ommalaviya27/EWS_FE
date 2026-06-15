@@ -6,7 +6,7 @@ import { DeleteModel, PaginationComponent, Button, ButtonInputConfig, SearchBarC
 import { EmployeeAddeditModal } from './components/employee-addedit-modal/employee-addedit-modal';
 import { createDeleteConfig } from '../../../common/components/delete-model/delete-model.config';
 import { DEFAULT_PAGINATION } from '../../../common/constants/app.constants';
-import { Employee, EMPLOYEE_ROLE_LABELS, EMPLOYEE_ROLE_LIST, CreateEmployeeRequest, UpdateEmployeeRequest, UserSummary } from './models/employee.model';
+import { Employee, Role, EMPLOYEE_ROLE_LABELS, CreateEmployeeRequest, UpdateEmployeeRequest, UserSummary } from './models/employee.model';
 
 type TabType = 'all' | 'assigned' | 'unassigned';
 
@@ -27,7 +27,7 @@ export class EmployeeModule implements OnInit {
 
   activeTab: TabType = 'all';
 
-  summary: UserSummary = { totalEmployees: 0, assignedCount: 0, unassignedCount: 0 };
+  summary: UserSummary = { assignedCount: 0, unassignedCount: 0 };
 
   currentPage = DEFAULT_PAGINATION.currentPage;
   itemsPerPage = DEFAULT_PAGINATION.itemsPerPage;
@@ -55,7 +55,7 @@ export class EmployeeModule implements OnInit {
 
   ngOnInit(): void {
     this.initButtonConfigs();
-    this.initFilterConfig();
+    this.loadRolesAndInitFilter();
     this.loadEmployees();
   }
 
@@ -78,7 +78,21 @@ export class EmployeeModule implements OnInit {
     };
   }
 
-  private initFilterConfig(): void {
+  private loadRolesAndInitFilter(): void {
+    this.employeeService.getRoles().subscribe({
+      next: (res) => {
+        const roles: Role[] = res.data ?? [];
+        this.initFilterConfig(roles);
+      },
+      error: () => {
+        this.initFilterConfig([]);
+      },
+    });
+  }
+
+  private initFilterConfig(roles: Role[]): void {
+    const roleOptions = roles.map(r => ({ value: r.roleId, label: r.roleName }));
+
     this.filterConfig = {
       fields: [
         {
@@ -86,7 +100,7 @@ export class EmployeeModule implements OnInit {
           label: null,
           type: 'select',
           placeholder: 'Select Role',
-          options: EMPLOYEE_ROLE_LIST,
+          options: roleOptions,
         },
         {
           key: 'status',

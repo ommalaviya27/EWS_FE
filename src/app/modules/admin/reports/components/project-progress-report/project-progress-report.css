@@ -9,14 +9,13 @@
 .ppr-wrap {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 5px;
+  gap: 10px;
+  padding: 10px;
   overflow-y: auto;
   flex: 1;
   scrollbar-width: none;
 }
 
-/* ── Header ── */
 .ppr-header {
   display: flex;
   align-items: flex-start;
@@ -26,24 +25,24 @@
 }
 
 .ppr-title {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: 550;
   margin: 0;
 }
 
-/* ── Card ── */
 .ppr-card {
   background: #fff;
+  border: 1px solid #e2e8f0;
   border-radius: 16px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05), 0 4px 20px rgba(0, 0, 0, 0.07);
   flex-shrink: 0;
+  margin-top: 5px;
 }
 
 .ppr-card-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px;
+  padding: 12px 20px;
   border-bottom: 1px solid #e5e7eb;
   flex-wrap: wrap;
   gap: 10px;
@@ -51,20 +50,18 @@
 }
 
 .ppr-card-title {
-  font-size: 0.9375rem;
-  font-weight: 600;
-  color: #111827;
+  font-size: 16px;
+  font-weight: 550;
   margin: 0;
   white-space: nowrap;
 }
 
-/* ── Legend in header ── */
 .ppr-legend {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
-  font-size: 0.75rem;
+  font-size: 13px;
   color: #6c757d;
   flex-wrap: wrap;
 }
@@ -89,14 +86,13 @@
 }
 
 .dot--active {
-  background: #8e00ed;
+  background: #22c55e;
 }
 
 .dot--completed {
-  background: #166534;
+  background: #8B5CF6;
 }
 
-/* ── Pie card ── */
 .ppr-pie-body {
   display: flex;
   flex-direction: column;
@@ -115,52 +111,58 @@
   display: block;
 }
 
-/* ── Grid ── */
-.ppr-table-wrap {
+.ppr-card--grid {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.grid-scroll {
+  flex: 0 1 auto;
+  overflow-y: auto;
   overflow-x: auto;
-  max-height: 720px;
+  min-height: 0;
   scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-.ppr-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.8125rem;
+.grid-container {
+  min-width: 820px;
 }
 
-.ppr-table th {
+.grid-row {
+  display: grid;
+  grid-template-columns: 2fr 0.8fr 1fr 1fr 0.9fr 0.9fr 1.6fr;
+  align-items: center;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.grid-header {
   position: sticky;
   top: 0;
-  z-index: 1;
-  background: #fafafa;
-  padding: 10px 14px;
-  text-align: left;
+  z-index: 5;
+  background: #fff;
+  height: 48px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.grid-th {
+  padding: 12px 14px;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 550;
   color: #6c757d;
   text-transform: uppercase;
-  letter-spacing: 0.03rem;
-  height: 30px;
-  border-bottom: 1px solid #e5e7eb;
 }
 
-.ppr-table td {
-  padding: 12px 14px;
-  border-top: 1px solid #e5e7eb;
-  color: #111827;
-  vertical-align: middle;
+.grid-td {
+  padding: 13px 14px;
+  font-size: 13.5px;
 }
 
-.ppr-table tbody tr:hover {
-  background: #fafbff;
-}
-
-.ppr-table th.center,
-.ppr-table td.center {
+.text-center {
   text-align: center;
 }
 
-/* ── Project cell ── */
 .proj-cell {
   display: flex;
   align-items: center;
@@ -176,7 +178,6 @@
   display: block;
 }
 
-/* ── Badges ── */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -189,28 +190,24 @@
 }
 
 .badge--total {
-  background: #f3f4f6;
-  color: #111827;
+  background: #f1f5f9;
+  color: #64748b;
 }
-
 .badge--done {
-  background: #ede9fe;
-  color: #7c3aed;
+  background: #dcfce7;
+  color: #16a34a;
 }
-
 .badge--progress {
-  background: #dbeafe;
-  color: #1d4ed8;
+  background: #d1fae5;
+  color: #059669;
 }
-
 .badge--pending {
-  background: #e5e7eb;
-  color: #6b7280;
+  background: #dbeafe;
+  color: #3b82f6;
 }
-
 .badge--hold {
-  background: #fef3c7;
-  color: #b45309;
+  background: #fef9c3;
+  color: #ca8a04;
 }
 
 .rate-wrap {
@@ -243,7 +240,6 @@
   flex-shrink: 0;
 }
 
-/* ── States ── */
 .ppr-state {
   display: flex;
   justify-content: center;
@@ -258,29 +254,15 @@
   font-size: 0.875rem;
 }
 
-/* ── Responsive ── */
 @media (max-width: 768px) {
   .ppr-wrap {
     padding: 16px;
     gap: 16px;
-  }
-
-  .hide-sm {
-    display: none;
-  }
-
-  .ppr-card--grid {
-    min-height: 320px;
-    max-height: 460px;
   }
 }
 
 @media (max-width: 480px) {
   .proj-name {
     max-width: 130px;
-  }
-
-  .rate-col {
-    display: none;
   }
 }

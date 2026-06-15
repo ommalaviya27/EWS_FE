@@ -177,7 +177,7 @@ export class ProjectModule implements OnInit {
           this.isLoading = false;
         },
         error: (err) => {
-          this.toastr.error(this.getErrorMessage(err));
+          this.toastr.error(err?.error?.message);
           this.isLoading = false;
         },
       });
@@ -190,7 +190,7 @@ export class ProjectModule implements OnInit {
         this.buildFilterConfig(this.teamLeaders);
       },
       error: (err) => {
-        this.toastr.error(this.getErrorMessage(err));
+        this.toastr.error(err?.error?.message);
         this.buildFilterConfig([]);
       },
     });
@@ -271,7 +271,7 @@ export class ProjectModule implements OnInit {
         this.loadProjects();
       },
       error: (err) => {
-        this.toastr.error(this.getErrorMessage(err));
+        this.toastr.error(err?.error?.message);
         this.isModalLoading = false;
       },
     });
@@ -300,7 +300,7 @@ export class ProjectModule implements OnInit {
         this.loadProjects();
       },
       error: (err) => {
-        this.toastr.error(this.getErrorMessage(err));
+        this.toastr.error(err?.error?.message);
         this.isDeleteLoading = false;
       },
     });
@@ -321,11 +321,5 @@ export class ProjectModule implements OnInit {
       month: 'short',
       year: 'numeric',
     });
-  }
-
-  private getErrorMessage(err: any): string {
-    const body = err?.error;
-    if (body?.errorMessages?.length) return body.errorMessages.join(' ');
-    return body?.message;
   }
 }

@@ -35,8 +35,8 @@
             (change)="onRoleChange()"
           >
             <option [ngValue]="null" disabled>Select role</option>
-            @for (r of roleList; track r.value) {
-            <option [value]="r.value">{{ r.label }}</option>
+            @for (r of roleList; track r.roleId) {
+            <option [value]="r.roleId">{{ r.roleName }}</option>
             }
           </select>
           @if (isInvalid('roleId')) {

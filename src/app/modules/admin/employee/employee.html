@@ -25,11 +25,7 @@
       <span class="tab-label">Assigned Employees</span>
       <span class="tab-count">{{ summary.assignedCount }}</span>
     </button>
-    <button
-      class="tab-btn"
-      [class.active]="activeTab === 'unassigned'"
-      (click)="setTab('unassigned')"
-    >
+    <button class="tab-btn" [class.active]="activeTab === 'unassigned'" (click)="setTab('unassigned')">
       <span class="material-icons tab-icon">person_off</span>
       <span class="tab-label">Unassigned Employees</span>
       <span class="tab-count">{{ summary.unassignedCount }}</span>
@@ -78,10 +74,7 @@
             @if (employee.roleId !== 3) {
             <span class="tl-na">N/A</span>
             } @else if (employee.teamLeadName) {
-            <span class="team-lead-chip">
-              <span class="material-icons tl-icon">supervisor_account</span>
-              {{ employee.teamLeadName }}
-            </span>
+            <span>{{ employee.teamLeadName }}</span>
             } @else {
             <span class="tl-unassigned">—</span>
             }
