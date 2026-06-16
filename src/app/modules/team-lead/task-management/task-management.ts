@@ -3,9 +3,8 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { TaskManagementService } from './services/task-management.service';
-import { DeleteModel, PaginationComponent, Button, ButtonInputConfig, SearchBarComponent, TaskViewModal, ProjectList, FilterPanel, FilterPanelConfig, FilterValues } from '@common';
+import { DeleteModel, createDeleteConfig, PaginationComponent, Button, ButtonInputConfig, SearchBarComponent, TaskViewModal, ProjectList, FilterPanel, FilterPanelConfig, FilterValues } from '@common';
 import { TaskAddeditModal } from './components/task-addedit-modal/task-addedit-modal';
-import { createDeleteConfig } from '../../../common/components/delete-model/delete-model.config';
 import { DEFAULT_PAGINATION } from '../../../common/constants/app.constants';
 import { Task, TeamMember, TaskStatuses, TaskPriority, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS, TASK_STATUS_LIST, TASK_PRIORITY_LIST, CreateTaskRequest, UpdateTaskRequest } from './models/task-management.model';
 import { Project } from '../../admin/project/models/project.model';
@@ -178,7 +177,7 @@ export class TaskManagement implements OnInit {
         this.isProjectsLoading = false;
       },
       error: (err) => {
-        this.toastr.error(this.getErrorMessage(err));
+        this.toastr.error(err?.error?.message);
         this.isProjectsLoading = false;
       },
     });
@@ -254,7 +253,7 @@ export class TaskManagement implements OnInit {
           this.isLoading = false;
         },
         error: (err) => {
-          this.toastr.error(this.getErrorMessage(err));
+          this.toastr.error(err?.error?.message);
           this.isLoading = false;
         },
       });
@@ -263,7 +262,7 @@ export class TaskManagement implements OnInit {
   private loadTeamMembers(): void {
     this.taskService.getTeamMembers().subscribe({
       next: (res) => (this.teamMembers = res.data ?? []),
-      error: (err) => this.toastr.error(this.getErrorMessage(err)),
+      error: (err) => this.toastr.error(err?.error?.message),
     });
   }
 
@@ -332,7 +331,7 @@ export class TaskManagement implements OnInit {
         this.loadTasks();
       },
       error: (err) => {
-        this.toastr.error(this.getErrorMessage(err));
+        this.toastr.error(err?.error?.message);
         this.isModalLoading = false;
       },
     });
@@ -361,7 +360,7 @@ export class TaskManagement implements OnInit {
         this.loadTasks();
       },
       error: (err) => {
-        this.toastr.error(this.getErrorMessage(err));
+        this.toastr.error(err?.error?.message);
         this.isDeleteLoading = false;
       },
     });
@@ -405,11 +404,5 @@ export class TaskManagement implements OnInit {
   formatDate(dateStr: string): string {
     if (!dateStr) return '—';
     return new Date(dateStr).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
-  }
-
-  private getErrorMessage(err: any): string {
-    const body = err?.error;
-    if (body?.errorMessages?.length) return body.errorMessages.join(' ');
-    return body?.message;
   }
 }

@@ -18,17 +18,6 @@
   scrollbar-width: none;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 .tld-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -44,13 +33,14 @@
   display: flex;
   align-items: center;
   gap: 16px;
+  cursor: pointer;
 }
 
 .tld-stat:hover {
   transform: translateY(-2px);
 }
 
-.tld-stat--icon {
+.tld-stat-icon {
   width: 50px;
   height: 50px;
   border-radius: 14px;
@@ -61,15 +51,15 @@
   flex-shrink: 0;
 }
 
-.tld-stat--purple .tld-stat--icon {
+.tld-stat-purple .tld-stat-icon {
   background: #eef2ff;
   color: #6366f1;
 }
-.tld-stat--red .tld-stat--icon {
+.tld-stat-red .tld-stat-icon {
   background: #fef2f2;
   color: #f43f5e;
 }
-.tld-stat--green .tld-stat--icon {
+.tld-stat-green .tld-stat-icon {
   background: #ecfdf5;
   color: #10b981;
 }
@@ -79,17 +69,16 @@
   flex-direction: column;
 }
 
-.tld-stat--num {
+.tld-stat-num {
   font-size: 28px;
-  font-weight: 600;
+  font-weight: 550;
   line-height: 1;
-  letter-spacing: -0.02em;
 }
 
-.tld-stat--lbl {
+.tld-stat-lbl {
   font-size: 13px;
-  font-weight: 600;
-  margin-top: 4px;
+  font-weight: 550;
+  margin-top: 3px;
   color: #6c757d;
 }
 
@@ -108,23 +97,18 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  height: 380px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  height: 350px;
 }
 
-.tld-panel--head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.tld-panel-head {
   padding: 16px 20px;
-  border-bottom: 1px solid #f1f5f9;
-  background-color: #fafafa;
+  border-bottom: 1px solid #e2e8f0;
 }
 
-.tld-panel--title {
+.tld-panel-title {
   margin: 0;
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 550;
 }
 
 .tld-scroll {
@@ -137,9 +121,8 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 13px 20px;
-  border-bottom: 1px solid #f1f3f5;
-  transition: background 0.12s;
+  padding: 10px 20px;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .tld-item:last-child {
@@ -149,7 +132,7 @@
   background: #f8fafc;
 }
 
-.tld-item--info {
+.tld-item-info {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -157,15 +140,15 @@
   min-width: 0;
 }
 
-.tld-item--info label {
+.tld-item-info label {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 550;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.tld-item--info p {
+.tld-item-info p {
   margin: 0;
   font-size: 12px;
   color: #6c757d;
@@ -180,7 +163,7 @@
   gap: 8px;
 }
 
-.tld-item--end {
+.tld-item-end {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -191,7 +174,7 @@
 .over_pro_name {
   color: #f43f5e;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 550;
 }
 
 .tld-pri-badge {
@@ -231,7 +214,6 @@
   font-size: 11px;
 }
 
-/* Table */
 .tld-table-wrap {
   flex: 1;
   overflow: auto;
@@ -256,17 +238,16 @@
   z-index: 10;
 }
 
-.tld-tr:not(.tld-tr--head):hover {
+.tld-tr:not(.tld-tr-head):hover {
   background: #f8fafc;
 }
 
 .tld-th {
   padding: 12px 16px;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 550;
   color: #6c757d;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 .tld-td {
@@ -274,13 +255,11 @@
   flex-direction: column;
   padding: 12px 16px;
   font-size: 13.5px;
-  color: #334155;
 }
 
 .tld-task-name {
   margin-bottom: 2px;
-  font-weight: 600;
-  color: #1e293b;
+  font-weight: 550;
 }
 
 .tld-td b {
@@ -299,7 +278,7 @@
   font-size: 11.5px;
   font-weight: 600;
   background: #eef2ff;
-  color: #80ee;
+  color: #8e00ed;
 }
 
 .tld-overdue-badge {
@@ -356,7 +335,7 @@
 }
 
 @media (max-width: 480px) {
-  .tld-stat__num {
+  .tld-stat-num {
     font-size: 24px;
   }
   .tld-panel {
@@ -373,18 +352,18 @@
     padding: 16px;
     gap: 12px;
   }
-  .tld-stat__icon {
+  .tld-stat-icon {
     width: 40px;
     height: 40px;
     font-size: 20px;
   }
-  .tld-stat__num {
+  .tld-stat-num {
     font-size: 20px;
   }
-  .tld-panel__head {
+  .tld-panel-head {
     padding: 12px 16px;
   }
-  .tld-panel__title {
+  .tld-panel-title {
     font-size: 14px;
   }
 }

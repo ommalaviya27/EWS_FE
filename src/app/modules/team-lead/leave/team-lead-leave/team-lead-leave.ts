@@ -9,7 +9,7 @@ import { LeaveList, LeaveReviewPanel } from '@common';
   styleUrl: './team-lead-leave.css',
 })
 export class TeamLeadLeave {
-  activeTab: 'my-leaves' | 'review' = 'my-leaves';
+  activeTab: 'my-leaves' | 'review' = 'review';
 
   switchTab(tab: 'my-leaves' | 'review'): void {
     this.activeTab = tab;

@@ -1,28 +1,6 @@
-export enum TaskStatuses {
-  Pending = 1,
-  InProgress = 2,
-  Completed = 3,
-  OnHold = 4,
-}
+import { TaskStatuses, TaskPriority, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS, TASK_STATUS_LIST, TASK_PRIORITY_LIST} from '../../../team-lead/task-management/models/task-management.model';
 
-export enum TaskPriority {
-  Low = 1,
-  Medium = 2,
-  High = 3,
-}
-
-export const TASK_STATUS_LABELS: Record<TaskStatuses, string> = {
-  [TaskStatuses.Pending]: 'Pending',
-  [TaskStatuses.InProgress]: 'In Progress',
-  [TaskStatuses.Completed]: 'Completed',
-  [TaskStatuses.OnHold]: 'On Hold',
-};
-
-export const TASK_PRIORITY_LABELS: Record<TaskPriority, string> = {
-  [TaskPriority.Low]: 'Low',
-  [TaskPriority.Medium]: 'Medium',
-  [TaskPriority.High]: 'High',
-};
+export { TaskStatuses, TaskPriority, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS, TASK_STATUS_LIST, TASK_PRIORITY_LIST };
 
 export interface TaskComment {
   id: number;
@@ -52,13 +30,9 @@ export interface MyTask {
   projectName: string;
   assignedToUserId: number;
   assignedToUserName: string;
-  assignedByUserId: number;
-  assignedByUserName: string;
   taskStatus: TaskStatuses;
   priority: TaskPriority;
   dueDate: string;
-  comments: TaskComment[];
-  attachments: TaskAttachment[];
 }
 
 export interface AddCommentRequest {

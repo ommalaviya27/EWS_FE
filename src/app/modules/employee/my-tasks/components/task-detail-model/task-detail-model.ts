@@ -6,8 +6,7 @@ import { MyTask, TaskComment, TaskAttachment, TaskStatuses, TaskPriority, TASK_S
 import { MyTaskService } from '../../services/my-task.service';
 import { ConfirmationModel } from '../../../../../common/components/confirmation-model/confirmation-model';
 import { ConfirmationModelConfig } from '../../../../../common/components/confirmation-model/confirmation-model.config';
-import { Description, DescriptionFieldConfig, Button, ButtonInputConfig } from '@common';
-import { PaginationComponent } from '../../../../../common/components/pagination/pagination';
+import { Description, DescriptionFieldConfig, Button, ButtonInputConfig, PaginationComponent } from '@common';
 import { SessionService } from 'src/app/common/services';
 
 const MODAL_PAGE_SIZE = 5;
@@ -178,7 +177,7 @@ export class TaskDetailModel implements OnChanges {
       },
       error: (err) => {
         this.currentStatus = this.task?.taskStatus ?? TaskStatuses.Pending;
-        this.toastr.error(this.getError(err));
+        this.toastr.error(err?.error?.message);
         this.isUpdatingStatus = false;
       },
     });
@@ -202,7 +201,7 @@ export class TaskDetailModel implements OnChanges {
         this.isLoadingComments = false;
       },
       error: (err) => {
-        this.toastr.error(this.getError(err));
+        this.toastr.error(err?.error?.message);
         this.isLoadingComments = false;
       },
     });
@@ -231,7 +230,7 @@ export class TaskDetailModel implements OnChanges {
         this.toastr.success(res.message);
       },
       error: (err) => {
-        this.toastr.error(this.getError(err));
+        this.toastr.error(err?.error?.message);
         this.isSubmittingComment = false;
         this.postCommentConfig = { ...this.postCommentConfig, isLoading: false, disabled: false };
       },
@@ -272,7 +271,7 @@ export class TaskDetailModel implements OnChanges {
           this.toastr.success(res.message);
         },
         error: (err) => {
-          this.toastr.error(this.getError(err));
+          this.toastr.error(err?.error?.message);
           this.isSavingEdit = false;
         },
       });
@@ -290,7 +289,7 @@ export class TaskDetailModel implements OnChanges {
         this.loadComments();
       },
       error: (err) => {
-        this.toastr.error(this.getError(err));
+        this.toastr.error(err?.error?.message);
         this.deletingCommentId = null;
       },
     });
@@ -312,7 +311,7 @@ export class TaskDetailModel implements OnChanges {
           this.isLoadingAttachments = false;
         },
         error: (err) => {
-          this.toastr.error(this.getError(err));
+          this.toastr.error(err?.error?.message);
           this.isLoadingAttachments = false;
         },
       });
@@ -350,7 +349,7 @@ export class TaskDetailModel implements OnChanges {
         this.loadAttachments();
       },
       error: (err) => {
-        this.toastr.error(this.getError(err));
+        this.toastr.error(err?.error?.message);
         this.isUploadingFiles = false;
         this.uploadFilesConfig = { ...this.uploadFilesConfig, isLoading: false, disabled: false };
       },
@@ -379,7 +378,7 @@ export class TaskDetailModel implements OnChanges {
         this.loadAttachments();
       },
       error: (err) => {
-        this.toastr.error(this.getError(err));
+        this.toastr.error(err?.error?.message);
         this.deletingAttachmentId = null;
       },
     });
@@ -390,22 +389,13 @@ export class TaskDetailModel implements OnChanges {
     if (b < 1048576) return `${(b / 1024).toFixed(1)} KB`;
     return `${(b / 1048576).toFixed(1)} MB`;
   }
+
   formatDate(d: string): string {
     return d
       ? new Date(d).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })
       : '—';
   }
-  formatDateTime(d: string): string {
-    return d
-      ? new Date(d).toLocaleString('en-IN', {
-          day: '2-digit',
-          month: 'short',
-          year: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
-        })
-      : '—';
-  }
+
   getStatusLabel(s: TaskStatuses): string {
     return this.statusLabels[s] ?? '—';
   }
@@ -413,39 +403,7 @@ export class TaskDetailModel implements OnChanges {
     return this.priorityLabels[p] ?? '—';
   }
 
-  getFileIcon(name: string): string {
-    const ext = name.split('.').pop()?.toLowerCase();
-    return (
-      (
-        {
-          pdf: 'picture_as_pdf',
-          doc: 'description',
-          docx: 'description',
-          xls: 'table_chart',
-          xlsx: 'table_chart',
-          jpg: 'image',
-          jpeg: 'image',
-          png: 'image',
-          txt: 'text_snippet',
-        } as any
-      )[ext ?? ''] ?? 'insert_drive_file'
-    );
-  }
-  getFileColorClass(name: string): string {
-    const ext = name.split('.').pop()?.toLowerCase();
-    if (ext === 'pdf') return 'icon-pdf';
-    if (['doc', 'docx'].includes(ext ?? '')) return 'icon-doc';
-    if (['xls', 'xlsx'].includes(ext ?? '')) return 'icon-xls';
-    if (['jpg', 'jpeg', 'png'].includes(ext ?? '')) return 'icon-img';
-    return 'icon-default';
-  }
-
   onClose(): void {
     this.closed.emit();
-  }
-  private getError(err: any): string {
-    const b = err?.error;
-    if (b?.errorMessages?.length) return b.errorMessages.join(' ');
-    return b?.message ?? 'Something went wrong.';
   }
 }

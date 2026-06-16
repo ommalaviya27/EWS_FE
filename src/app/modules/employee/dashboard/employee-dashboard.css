@@ -18,17 +18,6 @@
   scrollbar-width: none;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 .ed-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -44,13 +33,14 @@
   display: flex;
   align-items: center;
   gap: 16px;
+  cursor: pointer;
 }
 
 .ed-stat:hover {
   transform: translateY(-3px);
 }
 
-.ed-stat--icon {
+.ed-stat-icon {
   width: 50px;
   height: 50px;
   border-radius: 14px;
@@ -61,15 +51,15 @@
   flex-shrink: 0;
 }
 
-.ed-stat--purple .ed-stat--icon {
+.ed-stat-purple .ed-stat-icon {
   background: #eef2ff;
   color: #6366f1;
 }
-.ed-stat--green .ed-stat--icon {
+.ed-stat-green .ed-stat-icon {
   background: #ecfdf5;
   color: #10b981;
 }
-.ed-stat--orange .ed-stat--icon {
+.ed-stat-orange .ed-stat-icon {
   background: #fffbeb;
   color: #f59e0b;
 }
@@ -79,21 +69,19 @@
   flex-direction: column;
 }
 
-.ed-stat--num {
+.ed-stat-num {
   font-size: 28px;
-  font-weight: 800;
+  font-weight: 550;
   line-height: 1;
-  letter-spacing: -0.02em;
 }
 
-.ed-stat--lbl {
+.ed-stat-lbl {
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 550;
   margin-top: 4px;
   color: #6c757d;
 }
 
-/* Panel Grid */
 .ed-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -109,23 +97,18 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  height: 380px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  height: 350px;
 }
 
-.ed-panel--head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+.ed-panel-head {
   padding: 16px 20px;
-  border-bottom: 1px solid #f1f5f9;
-  background-color: #fafafa;
+  border-bottom: 2px solid #e2e8f0;
 }
 
-.ed-panel--title {
+.ed-panel-title {
   margin: 0;
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 550;
 }
 
 .ed-scroll {
@@ -134,15 +117,11 @@
   scrollbar-width: none;
 }
 
-/* Items */
 .ed-item {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 20px;
-  border-bottom: 1px solid #f1f5f9;
-  cursor: pointer;
-  transition: all 0.15s ease;
+  align-items: center; 
+  padding: 10px 20px;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .ed-item:last-child {
@@ -152,7 +131,7 @@
   background: #f8fafc;
 }
 
-.ed-item--info {
+.ed-item-info {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -160,17 +139,16 @@
   min-width: 0;
 }
 
-.ed-item--info label {
+.ed-item-info label {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 550;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  cursor: pointer;
 }
 
-.ed-item--info p {
-  margin-top: 4px;
+.ed-item-info p {
+  margin: 0;
   font-size: 12px;
   color: #6c757d;
   white-space: nowrap;
@@ -178,20 +156,18 @@
   text-overflow: ellipsis;
 }
 
-.ed-item--end {
+.ed-item-end {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 6px;
+  gap: 2px;
   flex-shrink: 0;
 }
 
-/* Table */
 .ed-table-wrap {
   flex: 1;
   overflow: auto;
-  scrollbar-width: thin;
-  scrollbar-color: #e2e8f0 transparent;
+  scrollbar-width: none;
 }
 
 .ed-table {
@@ -202,48 +178,40 @@
   display: grid;
   grid-template-columns: 2.5fr 1.1fr 1.2fr 1fr;
   align-items: center;
-  border-bottom: 1px solid #f1f5f9;
-  transition: background 0.1s;
+  border-bottom: 1px solid #e2e8f0;
 }
 
-.ed-tr--head {
-  background: #f8fafc;
+.ed-tr-head {
   position: sticky;
   top: 0;
   z-index: 10;
 }
 
-.ed-tr:not(.ed-tr--head) {
-  cursor: pointer;
-}
-.ed-tr:not(.ed-tr--head):hover {
+.ed-tr:not(.ed-tr-head):hover {
   background: #f8fafc;
 }
 
 .ed-th {
-  padding: 12px 16px;
-  font-size: 11px;
-  font-weight: 700;
-  color: #64748b;
+  padding: 15px 16px;
+  font-size: 13px;
+  font-weight: 550;
+  color: #6c757d;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
 }
 
 .ed-td {
-  padding: 12px 16px;
-  font-size: 13.5px;
-  color: #334155;
+  padding: 13px 16px;
+  font-size: 13px;
 }
 
 .ed-task-title {
-  font-weight: 600;
-  color: #1e293b;
+  font-weight: 550;
 }
 
 .ed-date {
   font-size: 12px;
   font-weight: 600;
-  color: #475569;
+  color: #6c757d;
 }
 
 /* Badges */

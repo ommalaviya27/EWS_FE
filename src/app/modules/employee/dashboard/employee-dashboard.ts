@@ -3,12 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { MyTaskService } from '../my-tasks/services/my-task.service';
-import {
-  EmployeeDashboard,
-  MyTask,
-  TaskPriority,
-  TASK_PRIORITY_LABELS,
-} from '../my-tasks/models/my-task.model';
+import { EmployeeDashboard, MyTask, TaskPriority, TASK_PRIORITY_LABELS } from '../my-tasks/models/my-task.model';
 import { TaskDetailModel } from '../my-tasks/components/task-detail-model/task-detail-model';
 
 @Component({

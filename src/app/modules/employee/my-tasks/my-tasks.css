@@ -27,8 +27,7 @@
 .mt-page-title {
   margin: 0 0 4px;
   font-size: 20px;
-  font-weight: 700;
-  color: #1a1a2e;
+  font-weight: 550;
 }
 
 .mt-header-actions {
@@ -46,10 +45,9 @@
   border: 1px solid #8e00ed;
   border-radius: 8px;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 550;
   color: #8e00ed;
   cursor: pointer;
-  transition: background 0.18s, color 0.18s;
   width: 150px;
   justify-content: center;
   gap: 6px;
@@ -63,15 +61,13 @@
   flex: 1;
   overflow-y: auto;
   min-height: 0;
-  scrollbar-width: thin;
-  scrollbar-color: #e5e7eb transparent;
-  padding: 4px 2px 8px;
+  scrollbar-width: none;
 }
 
 .mt-table-card {
   background: #fff;
   border-radius: 12px;
-  border: 1px solid #e9ecef;
+  border: 1px solid #e2e8f0;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -89,20 +85,16 @@
 }
 
 .mt-grid-container {
-  min-width: 680px;
+  min-width: 800px;
 }
 
 .mt-grid-row {
   display: grid;
   grid-template-columns: 2.5fr 1.2fr 1fr 1.3fr 1fr;
   align-items: center;
-  border-bottom: 1px solid #f1f3f5;
+  border-bottom: 1px solid #e2e8f0;
   padding: 12px 14px;
   cursor: pointer;
-}
-
-.mt-grid-row:hover{
-  transform: translateY(-4px);
 }
 
 .mt-grid-header {
@@ -111,55 +103,54 @@
   z-index: 5;
   background: #fff;
   height: 30px;
-  border-bottom: 2px solid #e9ecef;
+  border-bottom: 2px solid #e2e8f0;
 }
 
 .mt-grid-th {
-  padding: 12px 14px;
+  padding: 0 14px;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 550;
   color: #6c757d;
   text-transform: uppercase;
-  letter-spacing: 0.03rem;
+  align-items: center;
 }
 
-.mt-action-cell {
-  justify-content: center;
-}
-
-.mt-task-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: #111827;
-  white-space: nowrap;
+.mt-grid-td {
+  font-size: 13px;
   overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.mt-task-desc {
-  font-size: 12px;
-  color: #6c757d;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: clip;
-  cursor: pointer;
-}
-
-.mt-grid-td:first-child {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 2px;
-  min-width: 0; 
 }
 
 .mt-task-cell {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 2px;
-  min-width: 0;
   overflow: hidden;
+  max-width: 100%;
+}
+
+.mt-task-title {
+  font-size: 14px;
+  font-weight: 550;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+
+.mt-task-desc {
+  color: #6c757d;
+  font-size: 12px;
+  margin-top: 2px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mt-cell-truncate {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .mt-view-btn {
@@ -174,8 +165,6 @@
   font-weight: 600;
   color: #8e00ed;
   cursor: pointer;
-  transition: background 0.18s, color 0.18s;
-  white-space: nowrap;
 }
 .mt-view-btn:hover {
   background: #8e00ed;
@@ -184,15 +173,14 @@
 
 .mt-overdue {
   color: #b91c1c;
-  font-weight: 600;
+  font-weight: 550;
 }
 .mt-due-soon {
   color: #a16207;
-  font-weight: 600;
+  font-weight: 550;
 }
 
-.status-badge,
-.priority-badge {
+.badge {
   display: inline-flex;
   padding: 4px 10px;
   border-radius: 8px;
@@ -201,31 +189,31 @@
   align-items: center;
   white-space: nowrap;
 }
-.status-badge[data-status='1'] {
+.badge[data-status='1'] {
   background: #dcfce7;
   color: #15803d;
 }
-.status-badge[data-status='2'] {
+.badge[data-status='2'] {
   background: #dbeafe;
   color: #1d4ed8;
 }
-.status-badge[data-status='3'] {
+.badge[data-status='3'] {
   background: #dcfce7;
   color: #15803d;
 }
-.status-badge[data-status='4'] {
+.badge[data-status='4'] {
   background: #fef9c3;
   color: #a16207;
 }
-.priority-badge[data-priority='1'] {
+.badge[data-priority='1'] {
   background: #dcfce7;
   color: #15803d;
 }
-.priority-badge[data-priority='2'] {
+.badge[data-priority='2'] {
   background: #ffedd5;
   color: #c2410c;
 }
-.priority-badge[data-priority='3'] {
+.badge[data-priority='3'] {
   background: #fee2e2;
   color: #b91c1c;
 }
@@ -255,19 +243,15 @@
   color: #9ca3af;
 }
 
-.desc-tooltip {
+.mt-desc-tooltip {
   position: fixed;
   z-index: 99999;
   background: #6c757d;
   color: #f1f5f9;
   padding: 10px 14px;
   border-radius: 8px;
+  font-weight: 550;
   font-size: 13px;
-  line-height: 1.6;
   max-width: 360px;
-  white-space: normal;
-  word-break: break-word;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
-  pointer-events: none;
   transform: translate(12px, 16px);
 }

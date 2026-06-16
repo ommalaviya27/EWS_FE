@@ -8,7 +8,6 @@ export interface FilterFieldConfig {
   label: string | null;
   type:
     | 'select'
-    | 'number-range'
     | 'text'
     | 'date'
     | 'time'
@@ -16,12 +15,6 @@ export interface FilterFieldConfig {
 
   options?: FilterOption[];
   placeholder?: string;
-
-  min?: number;
-  max?: number;
-  prefix?: string;
-  step?: number;
-
   suffix?: string;
   icon?: string;
   defaultValue?: number | string | boolean | null;

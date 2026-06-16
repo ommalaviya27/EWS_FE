@@ -3,37 +3,34 @@
   <div class="ed-center"><div class="spinner-border text-primary"></div></div>
   } @else if (dashboard) {
  
-  <!-- Stat Cards -->
   <div class="ed-stats">
-    <div class="ed-stat ed-stat--purple">
-      <span class="ed-stat--icon material-icons">assignment</span>
+    <div class="ed-stat ed-stat-purple">
+      <span class="ed-stat-icon material-icons">assignment</span>
       <div class="ed-col">
-        <span class="ed-stat--num">{{ dashboard.assignedTaskCount }}</span>
-        <span class="ed-stat--lbl">Assigned Tasks</span>
+        <span class="ed-stat-num">{{ dashboard.assignedTaskCount }}</span>
+        <span class="ed-stat-lbl">Assigned Tasks</span>
       </div>
     </div>
-    <div class="ed-stat ed-stat--green">
-      <span class="ed-stat--icon material-icons">task_alt</span>
+    <div class="ed-stat ed-stat-green">
+      <span class="ed-stat-icon material-icons">task_alt</span>
       <div class="ed-col">
-        <span class="ed-stat--num">{{ dashboard.completedTaskCount }}</span>
-        <span class="ed-stat--lbl">Completed Tasks</span>
+        <span class="ed-stat-num">{{ dashboard.completedTaskCount }}</span>
+        <span class="ed-stat-lbl">Completed Tasks</span>
       </div>
     </div>
-    <div class="ed-stat ed-stat--orange">
-      <span class="ed-stat--icon material-icons">schedule</span>
+    <div class="ed-stat ed-stat-orange">
+      <span class="ed-stat-icon material-icons">schedule</span>
       <div class="ed-col">
-        <span class="ed-stat--num">{{ dashboard.upcomingDeadlineCount }}</span>
-        <span class="ed-stat--lbl">Upcoming Deadlines (In next 5 days)</span>
+        <span class="ed-stat-num">{{ dashboard.upcomingDeadlineCount }}</span>
+        <span class="ed-stat-lbl">Upcoming Deadlines (In next 5 days)</span>
       </div>
     </div>
   </div>
  
-  <!-- Upcoming Deadlines + On Hold -->
   <div class="ed-grid">
-    <!-- Upcoming Deadlines -->
     <div class="ed-panel">
-      <div class="ed-panel--head">
-        <h4 class="ed-panel--title">Upcoming Deadlines</h4>
+      <div class="ed-panel-head">
+        <h4 class="ed-panel-title">Upcoming Deadlines</h4>
       </div>
       @if (dashboard.upcomingDeadlines.length === 0) {
       <div class="ed-empty">
@@ -43,11 +40,11 @@
       <div class="ed-scroll">
         @for (task of dashboard.upcomingDeadlines; track task.id) {
         <div class="ed-item" (click)="openTaskDetail(task)">
-          <div class="ed-item--info">
+          <div class="ed-item-info">
             <label>{{ task.title }}</label>
             <p>{{ task.projectName }}</p>
           </div>
-          <div class="ed-item--end">
+          <div class="ed-item-end">
             <span class="ed-pri-badge" [attr.data-p]="task.priority">{{getPriorityLabel(task.priority)}}</span>
             <span class="ed-date">{{ formatDate(task.dueDate) }}</span>
           </div>
@@ -56,11 +53,10 @@
       </div>
       }
     </div>
- 
-    <!-- On Hold -->
+
     <div class="ed-panel">
-      <div class="ed-panel--head">
-        <h4 class="ed-panel--title">On Hold Tasks</h4>
+      <div class="ed-panel-head">
+        <h4 class="ed-panel-title">On Hold Tasks</h4>
       </div>
       @if (dashboard.onHoldTasks.length === 0) {
       <div class="ed-empty">
@@ -70,11 +66,11 @@
       <div class="ed-scroll">
         @for (task of dashboard.onHoldTasks; track task.id) {
         <div class="ed-item" (click)="openTaskDetail(task)">
-          <div class="ed-item--info">
+          <div class="ed-item-info">
             <label>{{ task.title }}</label>
             <p>{{ task.projectName }}</p>
           </div>
-          <div class="ed-item--end">
+          <div class="ed-item-end">
             <span class="ed-pri-badge" [attr.data-p]="task.priority">{{
               getPriorityLabel(task.priority)
             }}</span>
@@ -85,11 +81,10 @@
       </div>
       }
     </div>
- 
-    <!-- Overdue Tasks -->
+
     <div class="ed-panel">
-      <div class="ed-panel--head">
-        <h4 class="ed-panel--title">Overdue Tasks</h4>
+      <div class="ed-panel-head">
+        <h4 class="ed-panel-title">Overdue Tasks</h4>
       </div>
       @if (!dashboard.overdueTasks || dashboard.overdueTasks.length === 0) {
       <div class="ed-empty">
@@ -99,11 +94,11 @@
       <div class="ed-scroll">
         @for (task of dashboard.overdueTasks; track task.id) {
         <div class="ed-item ed-item--overdue" (click)="openTaskDetail(task)">
-          <div class="ed-item--info">
+          <div class="ed-item-info">
             <label>{{ task.title }}</label>
             <p>{{ task.projectName }}</p>
           </div>
-          <div class="ed-item--end">
+          <div class="ed-item-end">
             <span class="ed-pri-badge" [attr.data-p]="task.priority">
               {{ getPriorityLabel(task.priority) }}
             </span>
@@ -114,11 +109,10 @@
       </div>
       }
     </div>
- 
-    <!-- Completed Tasks -->
+
     <div class="ed-panel">
-      <div class="ed-panel--head">
-        <h4 class="ed-panel--title">Recently Completed Tasks</h4>
+      <div class="ed-panel-head">
+        <h4 class="ed-panel-title">Recently Completed Tasks</h4>
       </div>
       @if (dashboard.completedTasks.length === 0) {
       <div class="ed-empty">
@@ -127,7 +121,7 @@
       } @else {
       <div class="ed-table-wrap">
         <div class="ed-table">
-          <div class="ed-tr ed-tr--head">
+          <div class="ed-tr ed-tr-head">
             <div class="ed-th">Task Name</div>
             <div class="ed-th">Project</div>
             <div class="ed-th">Priority</div>
