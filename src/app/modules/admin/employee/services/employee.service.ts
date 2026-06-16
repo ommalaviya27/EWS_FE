@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { ApiService } from '../../../../common/services/api.service';
 import { API_ROUTES } from '../../../../common/constants/api-routes';
 import { ApiResponse } from '../../../../common/models/api-response.model';
-import { Employee, TeamLead, CreateEmployeeRequest, UpdateEmployeeRequest, UserPaginationRequest, UserPagedResponse } from '../models/employee.model';
+import { Employee, Role, TeamLead, CreateEmployeeRequest, UpdateEmployeeRequest, UserPaginationRequest, UserPagedResponse } from '../models/employee.model';
 
 @Injectable({ providedIn: 'root' })
 export class EmployeeService {
@@ -36,6 +36,10 @@ export class EmployeeService {
 
   getById(id: number): Observable<ApiResponse<Employee>> {
     return this.apiService.get<Employee>(API_ROUTES.EMPLOYEE.GET_BY_ID(id));
+  }
+
+  getRoles(): Observable<ApiResponse<Role[]>> {
+    return this.apiService.get<Role[]>(API_ROUTES.EMPLOYEE.GET_ROLES);
   }
 
   getTeamLeads(): Observable<ApiResponse<TeamLead[]>> {

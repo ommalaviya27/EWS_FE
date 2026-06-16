@@ -2,44 +2,36 @@
 <div class="td-overlay" (click)="onClose()">
   <div class="td-modal" (click)="$event.stopPropagation()">
 
-    <!-- HEADER -->
     <div class="td-header">
-      <div>
+      <div class="td-title-pro">
         <h4 class="td-title">{{ task.title }}</h4>
         <small class="td-project-name">{{ task.projectName }}</small>
       </div>
       <button class="td-close" (click)="onClose()">✕</button>
     </div>
 
-    <!-- TABS -->
     <div class="td-tabs">
       <button class="td-nav-link" [class.active]="activeTab === 'details'" (click)="setTab('details')">
-        <i class="bi bi-info-circle"></i>
         <span>Details</span>
       </button>
       <button class="td-nav-link" [class.active]="activeTab === 'comments'" (click)="setTab('comments')">
-        <i class="bi bi-chat"></i>
         <span>Comments @if (commentTotalItems > 0) {
           <span class="td-tab-badge">{{ commentTotalItems }}</span>
         }</span>
       </button>
       <button class="td-nav-link" [class.active]="activeTab === 'attachments'" (click)="setTab('attachments')">
-        <i class="bi bi-paperclip"></i>
         <span>Attachments @if (attachmentTotalItems > 0) {
           <span class="td-tab-badge">{{ attachmentTotalItems }}</span>
         }</span>
       </button>
     </div>
 
-    <!-- BODY -->
     <div class="td-body" (click)="closeMenu()">
 
-      <!-- DETAILS TAB -->
       @if (activeTab === 'details') {
       <div class="td-details-grid">
         <div class="td-meta-row">
-          <div class="td-field">
-            <div class="td-fieldset has-value">
+            <div class="td-fieldset">
               <span class="td-legend">Status</span>
               <select
                 class="td-select-input"
@@ -56,42 +48,25 @@
               <span class="td-spinner"></span>
               }
             </div>
-          </div>
-          <div class="td-field">
-            <div class="td-fieldset has-value">
+            <div class="td-fieldset">
               <span class="td-legend">Priority</span>
-              <span class="td-select-input td-priority-badge" [attr.data-priority]="task.priority">
+              <span class="td-select-input" [attr.data-priority]="task.priority">
                 {{ getPriorityLabel(task.priority) }}
               </span>
             </div>
-          </div>
-        </div>
-
-        <div class="td-field">
-          <div class="td-fieldset td-fieldset-text has-value">
-            <span class="td-legend">Description</span>
-            <p class="td-description">{{ task.description }}</p>
-          </div>
-        </div>
-
-        <div class="td-meta-row">
-          <div class="td-field">
-            <div class="td-fieldset has-value">
+            <div class="td-fieldset">
               <span class="td-legend">Due Date</span>
               <p class="td-meta-text">{{ formatDate(task.dueDate) }}</p>
             </div>
-          </div>
-          <div class="td-field">
-            <div class="td-fieldset has-value">
-              <span class="td-legend">Assigned By</span>
-              <p class="td-meta-text">{{ task.assignedByUserName }}</p>
-            </div>
-          </div>
+        </div>
+
+        <div class="td-fieldset">
+          <span class="td-legend">Description</span>
+          <p class="td-description">{{ task.description }}</p>
         </div>
       </div>
       }
 
-      <!-- COMMENTS TAB -->
       @if (activeTab === 'comments') {
       <div class="td-tab-content">
         <div class="td-comments-list">
@@ -107,7 +82,7 @@
             @for (c of comments; track c.id) {
               @if (editingCommentId === c.id) {
               <div class="td-comment-item td-comment-edit-item">
-                <div class="td-edit-field-wrap">
+                <div>
                   <app-description-field [formGroup]="editCommentForm" [config]="editCommentConfig"></app-description-field>
                 </div>
                 <div class="td-edit-actions">
@@ -158,8 +133,8 @@
         </div>
         }
 
-        <div class="td-compose">
-          <div class="td-compose-field">
+        <div class="td-add-comment">
+          <div class="td-comment-field">
             <app-description-field [formGroup]="commentForm" [config]="addCommentConfig"></app-description-field>
           </div>
           <app-button [config]="postCommentConfig"></app-button>
@@ -167,7 +142,6 @@
       </div>
       }
 
-      <!-- ATTACHMENTS TAB -->
       @if (activeTab === 'attachments') {
       <div class="td-tab-content">
         <div class="td-attach-grid">

@@ -18,8 +18,7 @@
           <div class="pm-field">
             <app-description-field [config]="descriptionConfig"></app-description-field>
           </div>
-  
-          <!-- Project — always locked, comes from parent context -->
+
           <div class="pm-field">
             <div class="pm-fieldset has-value">
               <span class="pm-legend">Project</span>
@@ -28,7 +27,6 @@
             </div>
           </div>
   
-          <!-- Assign To -->
           <div class="pm-field">
             <div class="pm-fieldset"
               [class.is-invalid-wrap]="isInvalid('assignedToUserId')"
@@ -45,8 +43,7 @@
               <div class="pm-error">Assignee is required.</div>
             }
           </div>
-  
-          <!-- Due Date + Priority -->
+
           <div class="pm-date-row">
             <div class="pm-field">
               <div class="pm-fieldset"
@@ -72,7 +69,6 @@
             </div>
           </div>
   
-          <!-- Status -->
           <div class="pm-field">
             <div class="pm-fieldset has-value">
               <span class="pm-legend">Status</span>

@@ -26,25 +26,23 @@
     <div class="lrp-card">
       <div class="lrp-card-header">
         <div class="lrp-user">
-          <div class="lrp-avatar">{{ record.userName.charAt(0).toUpperCase() }}</div>
+          <div class="lrp-avatar">{{ (record.userName || '?').charAt(0).toUpperCase() }}</div>
           <div class="lrp-user-info">
             <span class="lrp-user-name">{{ record.userName }}</span>
             <span class="lrp-date-range">
-              {{ formatDate(record.startDate) }}
-              @if (record.startDate !== record.endDate) { → {{ formatDate(record.endDate) }}
-              }
+              {{ formatDate(record.startDate) }} - @if (record.startDate !== record.endDate)
+              {{{ formatDate(record.endDate) }}}
             </span>
           </div>
         </div>
-        <div class="lrp-badges">
+        <div>
           <span class="lrp-type-badge">{{ record.leaveTypeDisplay }}</span>
-          <span class="lrp-status-badge lrp-status-badge--pending">Pending</span>
         </div>
       </div>
 
       <div class="lrp-reason">
         <span class="lrp-reason-label">Reason:</span>
-        <span class="lrp-reason-text">{{ record.reason }}</span>
+        <span class="lrp-reason-text">{{ record.reason || '—' }}</span>
       </div>
 
       <div class="lrp-card-body">

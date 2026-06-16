@@ -6,7 +6,7 @@
         <h4 class="pm-title">
           {{ isEditMode ? 'Edit Project' : 'Create New Project' }}
         </h4>
-        <button type="button" class="pm-close" (click)="onCancel()" aria-label="Close">✕</button>
+        <button type="button" class="pm-close" (click)="onCancel()">✕</button>
       </div>
 
       <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
@@ -19,7 +19,6 @@
           <app-description-field [config]="descriptionConfig"></app-description-field>
         </div>
 
-        <!-- Team Lead -->
         <div class="pm-field">
           <div class="pm-fieldset"
             [class.is-invalid-wrap]="isInvalid('userId')"
@@ -36,7 +35,6 @@
           }
         </div>
 
-        <!-- Dates -->
         <div class="pm-date-row">
           <div class="pm-field">
             <div class="pm-fieldset"
@@ -63,7 +61,6 @@
           </div>
         </div>
 
-        <!-- Status -->
         <div class="pm-field">
           <div class="pm-fieldset has-value">
             <span class="pm-legend">Status</span>

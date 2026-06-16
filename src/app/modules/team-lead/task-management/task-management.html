@@ -1,5 +1,4 @@
 <div class="task-wrapper" (click)="closeDropdown()">
-  <!-- ===== PROJECTS VIEW ===== -->
   @if (view === 'projects') {
 
   <div class="header-bar">
@@ -21,12 +20,13 @@
   </div>
   } @else if (projectCards.length === 0) {
   <div class="center-state empty-state">
-    <span class="material-icons">{{ projectSearchTerm ? 'search_off' : 'folder_open' }}</span>
-    <h4>{{ projectSearchTerm ? 'No results for "' + projectSearchTerm + '"' : 'No Projects Found' }}</h4>
+    <h4>
+      {{ projectSearchTerm ? 'No results for "' + projectSearchTerm + '"' : 'No Projects Found' }}
+    </h4>
     @if (projectSearchTerm) {
-    <p>Try a different name or clear the search.</p>
+    <p class="empty-hint">Try a different project name or clear the search.</p>
     } @else {
-    <p>You have no projects assigned to you yet.</p>
+    <p class="empty-hint">Yet, no project is assigned to you.</p>
     }
   </div>
   } @else {
@@ -75,12 +75,11 @@
   </div>
   } @else if (tasks.length === 0) {
   <div class="center-state empty-state">
-    <span class="material-icons">{{ searchTerm ? 'search_off' : 'assignment' }}</span>
     <h4>{{ searchTerm ? 'No results for "' + searchTerm + '"' : 'No Tasks Found' }}</h4>
     @if (searchTerm) {
-    <p class="empty-hint">Try a different title or clear the search.</p>
+    <p class="empty-hint">Try a different task title or clear the search.</p>
     } @else {
-    <p>No tasks have been created for this project yet.</p>
+    <p class="empty-hint">Yet, no task for this project is created.</p>
     }
   </div>
   } @else {
@@ -113,22 +112,21 @@
           <div class="grid-td cell-truncate">{{ task.assignedToUserName }}</div>
 
           <div class="grid-td">
-            <span class="status-badge" [attr.data-status]="task.taskStatus">
+            <span class="badge" [attr.data-status]="task.taskStatus">
               {{ getStatusLabel(task.taskStatus) }}
             </span>
           </div>
 
           <div class="grid-td">
-            <span class="priority-badge" [attr.data-priority]="task.priority">
+            <span class="badge" [attr.data-priority]="task.priority">
               {{ getPriorityLabel(task.priority) }}
             </span>
           </div>
 
           <div class="grid-td">
             <span
-            [class.mt-overdue]="task.taskStatus !== TaskStatuses.Completed && isOverdue(task.dueDate)"
-            [class.mt-due-soon]="task.taskStatus !== TaskStatuses.Completed && !isOverdue(task.dueDate) && isDueSoon(task.dueDate)"
-            >
+              [class.mt-overdue]= "task.taskStatus !== TaskStatuses.Completed && isOverdue(task.dueDate)"
+              [class.mt-due-soon]= "task.taskStatus !== TaskStatuses.Completed && !isOverdue(task.dueDate) && isDueSoon(task.dueDate)">
               {{ formatDate(task.dueDate) }}
             </span>
           </div>

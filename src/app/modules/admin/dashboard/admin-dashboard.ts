@@ -2,11 +2,10 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { AdminDashboardService } from './services/admin-dashboard.service';
-import { AdminDashboard, TaskPriority, TaskStatuses, TASK_PRIORITY_LABELS, TASK_STATUS_LABELS } from './models/admin-dashboard.model';
+import { AdminDashboard, TaskPriority, TASK_PRIORITY_LABELS } from './models/admin-dashboard.model';
 
 @Component({
   selector: 'app-admin-dashboard',
-  standalone: true,
   imports: [CommonModule],
   templateUrl: './admin-dashboard.html',
   styleUrls: ['./admin-dashboard.css'],
@@ -18,9 +17,7 @@ export class AdminDashboardComponent implements OnInit {
   dashboard: AdminDashboard | null = null;
   isLoading = false;
 
-  readonly TaskStatuses = TaskStatuses;
   readonly priorityLabels = TASK_PRIORITY_LABELS;
-  readonly statusLabels = TASK_STATUS_LABELS;
 
   ngOnInit(): void {
     this.loadDashboard();
@@ -34,7 +31,7 @@ export class AdminDashboardComponent implements OnInit {
         this.isLoading = false;
       },
       error: (err) => {
-        this.toastr.error(this.getError(err));
+        this.toastr.error(err?.error?.message);
         this.isLoading = false;
       },
     });
@@ -56,12 +53,5 @@ export class AdminDashboardComponent implements OnInit {
   getDaysOverdue(dateStr: string): number {
     const diff = Date.now() - new Date(dateStr).getTime();
     return Math.floor(diff / (1000 * 60 * 60 * 24));
-  }
-
-  private getError(err: any): string {
-    const b = err?.error;
-    return b?.errorMessages?.length
-      ? b.errorMessages.join(' ')
-      : b?.message ?? 'Something went wrong.';
   }
 }

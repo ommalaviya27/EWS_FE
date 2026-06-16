@@ -36,7 +36,7 @@ export class TaskCompletionReport implements OnInit, OnDestroy {
   private readonly STATUS_COLORS = {
     pending: '#93c5fd',
     inProgress: '#6ee7b7',
-    completed: '#166534',
+    completed: '#22c55e',
     onHold: '#fef08a',
   };
 
@@ -129,7 +129,7 @@ export class TaskCompletionReport implements OnInit, OnDestroy {
           }, 80);
         },
         error: (err) => {
-          this.toastr.error(this.extractError(err));
+          this.toastr.error(err?.error?.message);
           this.isChartLoading = false;
         },
       });
@@ -147,7 +147,7 @@ export class TaskCompletionReport implements OnInit, OnDestroy {
           this.isGridLoading = false;
         },
         error: (err) => {
-          this.toastr.error(this.extractError(err));
+          this.toastr.error(err?.error?.message);
           this.isGridLoading = false;
         },
       });
@@ -232,12 +232,5 @@ export class TaskCompletionReport implements OnInit, OnDestroy {
     ctx.fillStyle = '#6b7280';
     ctx.font = `${Math.round(size * 0.09)}px Inter,system-ui,sans-serif`;
     ctx.fillText('Total', cx, cy + size * 0.1);
-  }
-
-  private extractError(err: unknown): string {
-    const b = (err as any)?.error;
-    return b?.errorMessages?.length
-      ? b.errorMessages.join(' ')
-      : b?.message ?? 'Something went wrong.';
   }
 }

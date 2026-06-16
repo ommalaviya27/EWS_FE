@@ -21,11 +21,9 @@ export class ProjectProgressReport implements OnInit, OnDestroy {
 
   @ViewChild('statusPieCanvas') private statusPieCanvas!: ElementRef<HTMLCanvasElement>;
 
-  // Pie (overview) 
   overview: ProjectProgressOverview | null = null;
   isChartLoading = false;
 
-  // Grid (paged summary) 
   pagedProjects: ProjectProgressSummaryItem[] = [];
   searchQuery = '';
   currentPage = DEFAULT_PAGINATION.currentPage;
@@ -34,8 +32,8 @@ export class ProjectProgressReport implements OnInit, OnDestroy {
   isGridLoading = false;
 
   private readonly STATUS_COLORS = {
-    active: '#8e00ed',
-    completed: '#166534',
+    active: '#8B5CF6',
+    completed: '#22c55e',
   };
 
   ngOnInit(): void {
@@ -86,7 +84,7 @@ export class ProjectProgressReport implements OnInit, OnDestroy {
           setTimeout(() => this.drawStatusPie(), 80);
         },
         error: (err) => {
-          this.toastr.error(this.extractError(err));
+          this.toastr.error(err?.error?.message);
           this.isChartLoading = false;
         },
       });
@@ -104,7 +102,7 @@ export class ProjectProgressReport implements OnInit, OnDestroy {
           this.isGridLoading = false;
         },
         error: (err) => {
-          this.toastr.error(this.extractError(err));
+          this.toastr.error(err?.error?.message);
           this.isGridLoading = false;
         },
       });
@@ -174,12 +172,5 @@ export class ProjectProgressReport implements OnInit, OnDestroy {
     ctx.fillStyle = '#6b7280';
     ctx.font = `${Math.round(size * 0.09)}px Inter,system-ui,sans-serif`;
     ctx.fillText('Total', cx, cy + size * 0.1);
-  }
-
-  private extractError(err: unknown): string {
-    const b = (err as any)?.error;
-    return b?.errorMessages?.length
-      ? b.errorMessages.join(' ')
-      : b?.message ?? 'Something went wrong.';
   }
 }

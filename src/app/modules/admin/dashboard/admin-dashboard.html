@@ -5,40 +5,39 @@
 
   <div class="tld-stats">
     <div class="tld-stat tld-stat--purple">
-      <span class="tld-stat__icon material-icons">people</span>
+      <span class="tld-stat-icon material-icons">people</span>
       <div class="tld-col">
-        <span class="tld-stat--num">{{ dashboard.totalEmployees }}</span>
-        <span class="tld-stat--lbl">Total Employees</span>
+        <span class="tld-stat-num">{{ dashboard.totalEmployees }}</span>
+        <span class="tld-stat-lbl">Total Employees</span>
       </div>
     </div>
     <div class="tld-stat tld-stat--blue">
-      <span class="tld-stat__icon material-icons">folder_open</span>
+      <span class="tld-stat-icon material-icons">folder_open</span>
       <div class="tld-col">
-        <span class="tld-stat--num">{{ dashboard.totalProjects }}</span>
-        <span class="tld-stat--lbl">Total Projects</span>
+        <span class="tld-stat-num">{{ dashboard.totalProjects }}</span>
+        <span class="tld-stat-lbl">Total Projects</span>
       </div>
     </div>
     <div class="tld-stat tld-stat--green">
-      <span class="tld-stat__icon material-icons">task_alt</span>
+      <span class="tld-stat-icon material-icons">task_alt</span>
       <div class="tld-col">
-        <span class="tld-stat--num">{{ dashboard.completedTasks }}</span>
-        <span class="tld-stat--lbl">Completed Tasks</span>
+        <span class="tld-stat-num">{{ dashboard.completedTasks }}</span>
+        <span class="tld-stat-lbl">Completed Tasks</span>
       </div>
     </div>
     <div class="tld-stat tld-stat--red">
-      <span class="tld-stat__icon material-icons">pending_actions</span>
+      <span class="tld-stat-icon material-icons">pending_actions</span>
       <div class="tld-col">
-        <span class="tld-stat--num">{{ dashboard.pendingTasks }}</span>
-        <span class="tld-stat--lbl">Pending Tasks</span>
+        <span class="tld-stat-num">{{ dashboard.pendingTasks }}</span>
+        <span class="tld-stat-lbl">Pending Tasks</span>
       </div>
     </div>
   </div>
 
   <div class="tld-grid">
-    <!-- Overdue Projects -->
     <div class="tld-panel">
-      <div class="tld-panel--head">
-        <h4 class="tld-panel--title">Overdue Projects</h4>
+      <div class="tld-panel-head">
+        <h4 class="tld-panel-title">Overdue Projects</h4>
       </div>
       @if (dashboard.overdueProjects.length === 0) {
       <div class="tld-empty">
@@ -48,16 +47,16 @@
       <div class="tld-scroll">
         @for (project of dashboard.overdueProjects; track project.id) {
         <div class="tld-item">
-          <div class="tld-item--info">
+          <div class="tld-item-info">
             <label>{{ project.name }}</label>
             <p>{{ project.description }}</p>
           </div>
-          <div class="tld-item--end">
+          <div class="tld-item-end">
             <span class="mp_date tld-date">
               Due: {{ formatDate(project.endDate) }}
             </span>
             <span class="tld-overdue-badge">
-              {{ getDaysOverdue(project.endDate) }}d overdue
+              {{ getDaysOverdue(project.endDate) }} day overdue
             </span>
           </div>
         </div>
@@ -66,10 +65,9 @@
       }
     </div>
 
-    <!-- Recently Completed Projects -->
     <div class="tld-panel">
-      <div class="tld-panel--head">
-        <h4 class="tld-panel--title">Recently Completed Projects</h4>
+      <div class="tld-panel-head">
+        <h4 class="tld-panel-title">Recently Completed Projects</h4>
       </div>
       @if (dashboard.recentCompletedProjects.length === 0) {
       <div class="tld-empty">
@@ -79,11 +77,11 @@
       <div class="tld-scroll">
         @for (project of dashboard.recentCompletedProjects; track project.id) {
         <div class="tld-item">
-          <div class="tld-item--info">
+          <div class="tld-item-info">
             <label>{{ project.name }}</label>
             <p>{{ project.description }}</p>
           </div>
-          <div class="tld-item--end">
+          <div class="tld-item-end">
             <span class="mp_date">
               {{ formatDate(project.startDate) }} – {{ formatDate(project.endDate) }}
             </span>
@@ -94,10 +92,9 @@
       }
     </div>
 
-    <!-- Overdue Tasks -->
     <div class="tld-panel tld-panel--wide">
-      <div class="tld-panel--head">
-        <h4 class="tld-panel--title">Overdue Tasks</h4>
+      <div class="tld-panel-head">
+        <h4 class="tld-panel-title">Overdue Tasks</h4>
       </div>
       @if (dashboard.overdueTasks.length === 0) {
       <div class="tld-empty">
@@ -106,7 +103,7 @@
       } @else {
       <div class="tld-table-wrap">
         <div class="tld-table">
-          <div class="tld-tr tld-tr--head">
+          <div class="tld-tr tld-tr-head">
             <div class="tld-th">Task Name</div>
             <div class="tld-th">Project</div>
             <div class="tld-th">Assigned To</div>

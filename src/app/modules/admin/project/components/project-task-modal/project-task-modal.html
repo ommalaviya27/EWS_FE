@@ -1,7 +1,6 @@
 @if (visible && project) {
 <div class="ptm-overlay" (click)="onClose()">
   <div class="ptm-modal" (click)="$event.stopPropagation()">
-    <!-- HEADER -->
     <div class="ptm-header">
       <h4 class="ptm-title">{{ project.name }}</h4>
       <button class="ptm-close" (click)="onClose()">✕</button>
@@ -32,14 +31,12 @@
           <div class="ptm-grid-row ptm-grid-header">
             <div class="ptm-th">Title</div>
             <div class="ptm-th">Assigned To</div>
-            <div class="ptm-th">Assigned By</div>
             <div class="ptm-th">Priority</div>
             <div class="ptm-th">Status</div>
             <div class="ptm-th">Due Date</div>
             <div class="ptm-th text-center">Details</div>
           </div>
 
-          <!-- DATA ROWS -->
           @for (task of tasks; track task.id; let i = $index) {
           <div class="ptm-grid-row" [class.ptm-row-overdue]="isOverdue(task)">
             <div class="ptm-td ptm-task-title">
@@ -61,7 +58,6 @@
             </div>
 
             <div class="ptm-td ptm-truncate">{{ task.assignedToUserName }}</div>
-            <div class="ptm-td ptm-truncate">{{ task.assignedByUserName }}</div>
 
             <div class="ptm-td">
               <span class="ptm-priority-badge" [attr.data-priority]="task.priority">

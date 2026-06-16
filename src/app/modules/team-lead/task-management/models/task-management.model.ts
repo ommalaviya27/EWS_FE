@@ -1,5 +1,3 @@
-import { TaskAttachment, TaskComment } from "../../../employee/my-tasks/models/my-task.model";
-
 export enum TaskStatuses {
   Pending = 1,
   InProgress = 2,
@@ -47,13 +45,9 @@ export interface Task {
   projectName: string;
   assignedToUserId: number;
   assignedToUserName: string;
-  assignedByUserId: number;
-  assignedByUserName: string;
   taskStatus: TaskStatuses;
   priority: TaskPriority;
   dueDate: string;
-  comments: TaskComment[];
-  attachments: TaskAttachment[];
 }
 
 export interface TeamMember {

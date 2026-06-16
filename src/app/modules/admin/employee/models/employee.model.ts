@@ -10,11 +10,10 @@ export const EMPLOYEE_ROLE_LABELS: Record<number, string> = {
   [EmployeeRole.Employee]: 'Employee',
 };
 
-export const EMPLOYEE_ROLE_LIST = [
-  { value: EmployeeRole.Admin, label: 'Admin' },
-  { value: EmployeeRole.TeamLead, label: 'Team Lead' },
-  { value: EmployeeRole.Employee, label: 'Employee' },
-];
+export interface Role {
+  roleId: number;
+  roleName: string;
+}
 
 export interface Employee {
   userId: number;
@@ -57,7 +56,6 @@ export interface UpdateEmployeeRequest {
 }
 
 export interface UserSummary {
-  totalEmployees: number;
   assignedCount: number;
   unassignedCount: number;
 }

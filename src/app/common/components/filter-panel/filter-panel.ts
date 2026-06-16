@@ -60,10 +60,7 @@ export class FilterPanel implements OnChanges {
     const next: Record<string, number | string | boolean | null> = {};
 
     for (const field of this.config.fields) {
-      if (field.type === 'number-range') {
-        next[`${field.key}_min`] = source?.[`${field.key}_min`] ?? field.min ?? 0;
-        next[`${field.key}_max`] = source?.[`${field.key}_max`] ?? field.max ?? 1000;
-      } else if (field.type === 'select') {
+      if (field.type === 'select') {
         const raw = source?.[field.key] ?? field.defaultValue ?? '';
         next[field.key] = raw === true ? 'true' : raw === false ? 'false' : raw;
       } else {
@@ -73,83 +70,19 @@ export class FilterPanel implements OnChanges {
     this.fieldValues = next;
   }
 
-  getMin(field: FilterFieldConfig): number {
-    return field.min ?? 0;
-  }
-
-  getMax(field: FilterFieldConfig): number {
-    return field.max ?? 1000;
-  }
-
-  getMinVal(field: FilterFieldConfig): number {
-    return (this.fieldValues[`${field.key}_min`] as number) ?? this.getMin(field);
-  }
-
-  getMaxVal(field: FilterFieldConfig): number {
-    return (this.fieldValues[`${field.key}_max`] as number) ?? this.getMax(field);
-  }
-
-  getPrefix(field: FilterFieldConfig): string {
-    return field.prefix ?? '';
-  }
-
-  onMinInput(field: FilterFieldConfig, e: Event): void {
-    const val = +(e.target as HTMLInputElement).value;
-    const max = this.getMaxVal(field);
-    const clamped = val > max ? max : val;
-    (e.target as HTMLInputElement).value = String(clamped);
-    this.fieldValues = {
-      ...this.fieldValues,
-      [`${field.key}_min`]: clamped,
-    };
-  }
-
-  onMaxInput(field: FilterFieldConfig, e: Event): void {
-    const val = +(e.target as HTMLInputElement).value;
-    const min = this.getMinVal(field);
-    const clamped = val < min ? min : val;
-    (e.target as HTMLInputElement).value = String(clamped);
-    this.fieldValues = {
-      ...this.fieldValues,
-      [`${field.key}_max`]: clamped,
-    };
-  }
-
-  fillPercent(field: FilterFieldConfig): number {
-    const range = this.getMax(field) - this.getMin(field);
-    return range > 0 ? ((this.getMinVal(field) - this.getMin(field)) / range) * 100 : 0;
-  }
-
-  emptyPercent(field: FilterFieldConfig): number {
-    const range = this.getMax(field) - this.getMin(field);
-    return range > 0 ? 100 - ((this.getMaxVal(field) - this.getMin(field)) / range) * 100 : 0;
-  }
-
-  emptyStartPercent(field: FilterFieldConfig): number {
-    const range = this.getMax(field) - this.getMin(field);
-    return range > 0 ? ((this.getMaxVal(field) - this.getMin(field)) / range) * 100 : 100;
-  }
-
   applyFilter(): void {
     const values: FilterValues = {};
 
     for (const field of this.config.fields) {
-      if (field.type === 'number-range') {
-        const min = this.getMinVal(field);
-        const max = this.getMaxVal(field);
-        values[`${field.key}_min`] = min > (field.min ?? 0) ? min : null;
-        values[`${field.key}_max`] = max < (field.max ?? 1000) ? max : null;
+      const raw = this.fieldValues[field.key];
+      if (raw === '' || raw === null || raw === undefined) {
+        values[field.key] = null;
+      } else if (raw === 'true') {
+        values[field.key] = true;
+      } else if (raw === 'false') {
+        values[field.key] = false;
       } else {
-        const raw = this.fieldValues[field.key];
-        if (raw === '' || raw === null || raw === undefined) {
-          values[field.key] = null;
-        } else if (raw === 'true') {
-          values[field.key] = true;
-        } else if (raw === 'false') {
-          values[field.key] = false;
-        } else {
-          values[field.key] = raw;
-        }
+        values[field.key] = raw;
       }
     }
 

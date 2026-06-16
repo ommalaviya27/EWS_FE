@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { MyTaskService } from './services/my-task.service';
-import { MyTask, TaskStatuses, TaskPriority, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS, MyTaskFilterParams } from './models/my-task.model';
-import { TASK_STATUS_LIST, TASK_PRIORITY_LIST } from '../../team-lead/task-management/models/task-management.model';
+import { MyTask, TaskStatuses, TaskPriority, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS, MyTaskFilterParams, TASK_STATUS_LIST, TASK_PRIORITY_LIST } from './models/my-task.model';
 import { TaskDetailModel } from './components/task-detail-model/task-detail-model';
 import { PaginationComponent, ProjectList, SearchBarComponent, FilterPanel, FilterPanelConfig, FilterValues, Button, ButtonInputConfig } from '@common';
 import { DEFAULT_PAGINATION } from '../../../common/constants/app.constants';
@@ -52,7 +51,6 @@ export class MyTasks implements OnInit {
 
   tooltip = { visible: false, text: '', x: 0, y: 0 };
 
-  // Filter panel
   isFilterOpen = false;
   activeFilterValues: FilterValues | null = null;
   filterConfig!: FilterPanelConfig;
@@ -181,7 +179,7 @@ export class MyTasks implements OnInit {
         this.isProjectsLoading = false;
       },
       error: (err) => {
-        this.toastr.error(this.getError(err));
+        this.toastr.error(err?.error?.message);
         this.isProjectsLoading = false;
       },
     });
@@ -216,7 +214,7 @@ export class MyTasks implements OnInit {
         this.isLoading  = false;
       },
       error: (err) => {
-        this.toastr.error(this.getError(err));
+        this.toastr.error(err?.error?.message);
         this.isLoading = false;
       },
     });
@@ -305,11 +303,5 @@ export class MyTasks implements OnInit {
   }
   hideTooltip(): void {
     this.tooltip.visible = false;
-  }
-
-  private getError(err: any): string {
-    const body = err?.error;
-    if (body?.errorMessages?.length) return body.errorMessages.join(' ');
-    return body?.message ?? 'Something went wrong.';
   }
 }

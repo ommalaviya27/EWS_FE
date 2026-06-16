@@ -1,5 +1,4 @@
 <div class="mt-wrapper">
-  <!-- ===== PROJECTS VIEW ===== -->
   @if (view === 'projects') {
   <div class="mt-header-bar">
     <div>
@@ -90,17 +89,15 @@
           <div class="mt-grid-th">Status</div>
           <div class="mt-grid-th">Priority</div>
           <div class="mt-grid-th">Due Date</div>
-          <div class="mt-grid-th text-center mt-action-cell">Details</div>
+          <div class="mt-grid-th">Details</div>
         </div>
 
-        <!-- Rows -->
         @for (task of tasks; track task.id) {
         <div class="mt-grid-row" (click)="openTaskDetail(task)">
-          <!-- Title + description -->
           <div class="mt-grid-td mt-task-cell">
             <div class="mt-task-title">{{ task.title }}</div>
             <div
-              class="mt-task-desc"
+              class="mt-task-desc mt-cell-truncate"
               (mouseenter)="showTooltip($event, task.description)"
               (mousemove)="moveTooltip($event)"
               (mouseleave)="hideTooltip()"
@@ -109,22 +106,19 @@
             </div>
           </div>
 
-          <!-- Status -->
           <div class="mt-grid-td">
-            <span class="status-badge" [attr.data-status]="task.taskStatus">
+            <span class="badge" [attr.data-status]="task.taskStatus">
               {{ getStatusLabel(task.taskStatus) }}
             </span>
           </div>
 
-          <!-- Priority -->
           <div class="mt-grid-td">
-            <span class="priority-badge" [attr.data-priority]="task.priority">
+            <span class="badge" [attr.data-priority]="task.priority">
               {{ getPriorityLabel(task.priority) }}
             </span>
           </div>
 
-          <!-- Due date -->
-          <div class="mt-grid-td">
+          <div class="mt-grid-td mt-cell-truncate">
             <span
               [class.mt-overdue]="
                 task.taskStatus !== TaskStatuses.Completed && isOverdue(task.dueDate)
@@ -139,8 +133,7 @@
             </span>
           </div>
 
-          <!-- View action -->
-          <div class="mt-grid-td text-center mt-action-cell">
+          <div class="mt-grid-td text-center">
             <button type="button" class="mt-view-btn" (click)="openTaskDetail(task)">
               <span class="material-icons" style="font-size: 16px">visibility</span>
               View
@@ -163,7 +156,7 @@
 </div>
 
 @if (tooltip.visible) {
-<div class="desc-tooltip" [style.top.px]="tooltip.y" [style.left.px]="tooltip.x">
+<div class="mt-desc-tooltip" [style.top.px]="tooltip.y" [style.left.px]="tooltip.x">
   {{ tooltip.text }}
 </div>
 }

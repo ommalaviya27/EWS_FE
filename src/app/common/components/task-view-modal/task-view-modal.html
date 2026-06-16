@@ -1,7 +1,6 @@
 @if (visible && task) {
   <div class="tvm-overlay" (click)="onClose()">
     <div class="tvm-modal" (click)="$event.stopPropagation()">
-      <!-- HEADER -->
       <div class="tvm-header">
         <div class="tvm-header-info">
           <h4 class="tvm-title">{{ task.title }}</h4>
@@ -10,7 +9,6 @@
         <button class="tvm-close" (click)="onClose()">✕</button>
       </div>
   
-      <!-- META ROW -->
       <div class="tvm-meta-bar">
         <span class="tvm-status-badge" [attr.data-status]="task.taskStatus">
           {{ statusLabels[task.taskStatus] }}
@@ -27,8 +25,7 @@
           {{ formatDate(task.dueDate) }}
         </span>
       </div>
-  
-      <!-- TABS -->
+
       <div class="tvm-tabs">
         <button
           class="tvm-tab-btn"
@@ -52,9 +49,7 @@
         </button>
       </div>
   
-      <!-- BODY -->
       <div class="tvm-body">
-        <!-- COMMENTS TAB -->
         @if (activeTab === 'comments') { @if (isLoadingComments) {
         <div class="tvm-loading-state">
           <span class="tvm-spinner"></span>
@@ -86,8 +81,7 @@
           ></app-pagination>
         </div>
         } } }
-  
-        <!-- ATTACHMENTS TAB -->
+        
         @if (activeTab === 'attachments') { @if (isLoadingAttachments) {
         <div class="tvm-loading-state">
           <span class="tvm-spinner"></span>

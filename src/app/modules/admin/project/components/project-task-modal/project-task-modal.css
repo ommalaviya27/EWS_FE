@@ -7,58 +7,34 @@
   align-items: center;
   justify-content: center;
   padding: 16px;
-  animation: ptm-fade-in 0.15s ease;
-}
-
-@keyframes ptm-fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
 }
 
 .ptm-modal {
   background: #fff;
   border-radius: 14px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.22);
   width: 100%;
   max-width: 980px;
   max-height: 88vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  animation: ptm-slide-up 0.18s ease;
-}
-
-@keyframes ptm-slide-up {
-  from {
-    transform: translateY(18px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
 }
 
 .ptm-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  padding: 20px 24px 16px;
-  border-bottom: 1px solid #e9ecef;
+  padding: 20px 15px 10px;
+  border-bottom: 1px solid #e2e8f0;
   flex-shrink: 0;
 }
 
 .ptm-title {
   margin: 0;
   font-size: 17px;
-  font-weight: 700;
+  font-weight: 550;
   display: flex;
   align-items: center;
-  gap: 8px;
 }
 
 .ptm-close {
@@ -76,15 +52,20 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 12px 24px;
+  padding: 8px 15px;
   border-bottom: 1px solid #e9ecef;
   flex-shrink: 0;
 }
 
 .ptm-count {
-  font-size: 12.5px;
+  display: inline-flex;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 550;
+  background: #dbeafe;
+  color: #1d4ed8;
   white-space: nowrap;
-  flex-shrink: 0;
 }
 
 .ptm-body {
@@ -106,15 +87,15 @@
 .ptm-empty {
   flex-direction: column;
   gap: 10px;
-  color: #6b7280;
+  color: #6c757d;
   text-align: center;
 }
 
 .ptm-empty h5 {
   margin: 0;
   font-size: 15px;
-  font-weight: 600;
-  color: #374151;
+  font-weight: 550;
+  color: #6c757d;
 }
 
 .ptm-table-wrap {
@@ -125,23 +106,15 @@
   -ms-overflow-style: none;
 }
 
-.ptm-table-wrap::-webkit-scrollbar {
-  display: none;
-}
-
 .ptm-grid {
   min-width: 820px;
 }
 
 .ptm-grid-row {
   display: grid;
-  grid-template-columns: 2.2fr 1fr 1fr 0.9fr 1fr 1fr 0.6fr;
+  grid-template-columns: 2.5fr 1fr 1fr 1fr 1fr 0.6fr;
   align-items: center;
-  border-bottom: 1px solid #f1f3f5;
-}
-
-.ptm-grid-row:last-of-type {
-  border-bottom: none;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .ptm-grid-header {
@@ -149,20 +122,19 @@
   top: 0;
   background: #fff;
   z-index: 5;
-  border-bottom: 2px solid #e9ecef;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .ptm-th {
   padding: 11px 12px;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 550;
   color: #6c757d;
   text-transform: uppercase;
-  letter-spacing: 0.03rem;
 }
 
 .ptm-td {
-  padding: 12px 12px;
+  padding: 10px 12px;
   font-size: 13px;
   overflow: hidden;
   white-space: nowrap;
@@ -191,12 +163,12 @@
 }
 
 .ptm-desc-text {
-  font-size: 11.5px;
-  color: #6b7280;
+  font-size: 12px;
+  color: #6c757d;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  cursor: default;
+  cursor: pointer;
 }
 
 .ptm-desc-tooltip {
@@ -207,12 +179,9 @@
   padding: 10px 14px;
   border-radius: 8px;
   font-size: 13px;
-  line-height: 1.6;
   max-width: 360px;
   white-space: normal;
   word-break: break-word;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
-  pointer-events: none;
   transform: translate(12px, 16px);
 }
 
@@ -238,37 +207,37 @@
 
 .ptm-overdue-text {
   color: #b91c1c;
-  font-weight: 600;
+  font-weight: 550;
 }
 
 .ptm-due-date {
-  font-size: 12.5px;
+  font-size: 13px;
 }
 
 .ptm-status-badge {
   display: inline-flex;
   padding: 3px 9px;
   border-radius: 8px;
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 600;
   white-space: nowrap;
 }
 
 .ptm-status-badge[data-status='1'] {
-  background: #fff3cd;
-  color: #92400e;
+  background: #dbeafe;
+  color: #2563eb;
 }
 .ptm-status-badge[data-status='2'] {
-  background: #dbeafe;
-  color: #1d4ed8;
+  background: #d1fae5;
+  color: #059669;
 }
 .ptm-status-badge[data-status='3'] {
   background: #dcfce7;
   color: #15803d;
 }
 .ptm-status-badge[data-status='4'] {
-  background: #f3f4f6;
-  color: #4b5563;
+  background: #fef9c3;
+  color: #ca8a04;
 }
 
 .ptm-priority-badge {
@@ -304,7 +273,6 @@
   justify-content: center;
   color: #2563eb;
   cursor: pointer;
-  transition: background 0.15s;
 }
 
 .ptm-view-btn:hover {
