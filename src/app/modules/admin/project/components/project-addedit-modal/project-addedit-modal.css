@@ -60,7 +60,7 @@
 }
 
 .pm-fieldset:focus-within {
-  border-color: #8e00ed;
+  border-color: #0066FF;
   box-shadow: 0 0 0 0.15rem rgba(91, 61, 245, 0.15);
 }
 
@@ -80,7 +80,7 @@
 
 .pm-fieldset.has-value .pm-legend,
 .pm-fieldset:focus-within .pm-legend {
-  color: #8e00ed;
+  color: #0066FF;
 }
 
 .pm-date-input,

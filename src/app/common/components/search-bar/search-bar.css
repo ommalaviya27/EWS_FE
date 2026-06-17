@@ -9,18 +9,15 @@
   height: 40px;
   min-width: 220px;
   max-width: 320px;
-  transition: border-color 0.2s, box-shadow 0.2s, width 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 .search-bar-wrapper:focus-within {
-  border-color: #4f46e5;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+  border-color: #0066ff;
 }
 
 .search-icon {
   font-size: 18px;
-  color: #94a3b8;
+  color: #6c757d;
   flex-shrink: 0;
   pointer-events: none;
   user-select: none;
@@ -32,14 +29,13 @@
   outline: none;
   background: transparent;
   font-size: 14px;
-  color: #1e293b;
   padding: 0 8px;
   min-width: 0;
-  display: block; /* Always visible on desktop */
+  display: block;
 }
 
 .search-input::placeholder {
-  color: #94a3b8;
+  color: #6c757d;
   font-size: 13.5px;
 }
 
@@ -51,15 +47,14 @@
   background: transparent;
   cursor: pointer;
   padding: 2px;
-  color: #94a3b8;
+  color: #6c757d;
   border-radius: 50%;
-  transition: color 0.15s, background 0.15s;
   flex-shrink: 0;
 }
 
 .clear-btn:hover {
-  color: #4f46e5;
-  background: #f1f0fe;
+  color: #0066ff;
+  background: #f5f7ff;
 }
 
 .clear-btn .material-icons {
@@ -76,7 +71,6 @@
   padding: 0;
 }
 
-/* Responsive Styles */
 @media (max-width: 950px) {
   .search-bar-wrapper {
     min-width: 40px;

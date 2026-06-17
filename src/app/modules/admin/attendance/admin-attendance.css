@@ -49,9 +49,9 @@
   background: #f1f5f9;
 }
 .adm-tab--active {
-  background: #8e00ed;
+  background: #0066FF;
   color: #fff;
-  border-color: #8e00ed;
+  border-color: #0066FF;
 }
 
 .adm-team-section {
@@ -84,17 +84,16 @@
   appearance: none;
   -webkit-appearance: none;
   padding: 9px 36px 9px 12px;
-  border: 1px solid #cbd5e1;
+  border: 1px solid #e2e8f0;
   border-radius: 8px;
   font-size: 14px;
   background: #fff;
   height: 48px;
   cursor: pointer;
-  transition: border-color 0.15s, box-shadow 0.15s;
 }
 
 .adm-select:focus {
-  border-color: #8e00ed;
+  border-color: #0066FF;
   outline: none;
 }
 

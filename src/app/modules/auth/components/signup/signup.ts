@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Email, Password, Name, MobileNumber, EmailInputConfig, PasswordInputConfig, NameFieldConfig, MobileNumberConfig } from '@common';
+import { Email, Password, Name, MobileNumber, EmailInputConfig, PasswordInputConfig, NameFieldConfig, MobileNumberConfig, Button, ButtonInputConfig } from '@common';
 import { AppValidators } from '../../../../common/validators/app.validators';
 import { AuthService } from '../../services/auth.service';
 import { ROUTES } from '../../../../common/constants/route-paths';
@@ -12,8 +12,7 @@ import { SignupResponse } from '../../models/auth.model';
 
 @Component({
   selector: 'app-signup',
-  standalone: true,
-  imports: [ CommonModule, ReactiveFormsModule, Email, Password, Name, MobileNumber ],
+  imports: [ CommonModule, ReactiveFormsModule, Email, Password, Name, MobileNumber, Button ],
   templateUrl: './signup.html',
   styleUrls: ['./signup.css'],
 })
@@ -29,6 +28,7 @@ export class Signup implements OnInit {
   passwordConfig!: PasswordInputConfig;
   confirmPasswordConfig!: PasswordInputConfig;
   mobileConfig!: MobileNumberConfig;
+  submitBtnConfig!: ButtonInputConfig;
   isLoading = false;
 
   ngOnInit(): void {
@@ -55,6 +55,7 @@ export class Signup implements OnInit {
     this.mobileConfig = { formControlName: 'mobileNumber', placeholder: 'Mobile Number', floating: true };
     this.passwordConfig = { formControlName: 'password', placeholder: 'Password', floating: true };
     this.confirmPasswordConfig = { formControlName: 'confirmPassword', placeholder: 'Confirm Password', floating: true };
+    this.submitBtnConfig = { variant: 'save', type: 'submit', text: 'Create Account', onClick: () => this.onSubmit() };
   }
 
   onSubmit(): void {

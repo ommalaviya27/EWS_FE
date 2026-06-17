@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AttendanceCalendar } from '../../../common/components/attendance-calendar/attendance-calendar';
+import { AttendanceCalendar } from '@common';
 
 @Component({
   selector: 'app-attendance',

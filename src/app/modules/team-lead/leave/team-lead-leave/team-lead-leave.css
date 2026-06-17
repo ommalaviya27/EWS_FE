@@ -48,13 +48,13 @@
 }
 
 .tll-tab--active {
-  background: #8e00ed;
+  background: #0066FF;
   color: #fff;
-  border-color: #8e00ed;
+  border-color: #0066FF;
 }
 
 .tll-tab:not(.tll-tab--active):hover {
   background: #f3e8ff;
-  color: #8e00ed;
+  color: #0066FF;
   border-color: #e9d5ff;
 }

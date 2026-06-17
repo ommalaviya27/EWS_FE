@@ -7,21 +7,19 @@
   width: 100%;
   min-height: 70px;
   padding: 20px 14px 10px 14px;
-  border: 1.5px solid #d0d0d0;
+  border: 1.5px solid #e2e8f0;
   border-radius: 8px;
   box-sizing: border-box;
   font-size: 15px;
-  color: #222;
   background: #fff;
   outline: none;
   box-shadow: none;
   resize: vertical;
-  transition: border-color 0.2s, box-shadow 0.2s;
   scrollbar-width: none;
 }
 
 .custom-textarea.form-control:focus {
-  border-color: #8e00ed;
+  border-color: #0066FF;
   box-shadow: 0 0 0 3px rgba(142, 0, 237, 0.08);
 }
 
@@ -35,7 +33,7 @@
   left: 12px;
   top: 20px;
   font-size: 14px;
-  color: #888;
+  color: #6c757d;
   transition: all 0.18s ease;
   background-color: #fff;
   padding: 0 4px;
@@ -48,7 +46,7 @@
   top: 0;
   transform: translateY(-50%);
   font-size: 11px;
-  color: #8e00ed;
+  color: #0066FF;
   font-weight: 600;
 }
 

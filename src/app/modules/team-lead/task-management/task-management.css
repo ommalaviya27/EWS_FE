@@ -35,18 +35,18 @@
   align-items: center;
   padding: 6px 14px;
   background: none;
-  border: 1px solid #8e00ed;
+  border: 1px solid #0066FF;
   border-radius: 8px;
   font-size: 13px;
   font-weight: 550;
-  color: #8e00ed;
+  color: #0066FF;
   cursor: pointer;
   width: 150px;
   justify-content: center;
   gap: 6px;
 }
 .btn-back:hover {
-  background: #8e00ed;
+  background: #0066FF;
   color: #fff;
 }
 

@@ -80,14 +80,14 @@
 }
 
 .td-nav-link.active {
-  color: #8e00ed;
-  border-bottom-color: #8e00ed;
+  color: #0066FF;
+  border-bottom-color: #0066FF;
   font-weight: 700;
 }
 
 .td-tab-badge {
   background: #ede9fe;
-  color: #8e00ed;
+  color: #0066FF;
   font-size: 12px;
   font-weight: 550;
   padding: 1px 7px;
@@ -133,7 +133,7 @@
   padding: 0 4px;
   font-size: 12px;
   font-weight: 550;
-  color: #8e00ed;
+  color: #0066FF;
 }
 
 .td-select-input {
@@ -276,7 +276,7 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  background-color: #8e00ed;
+  background-color: #0066FF;
   color: #fff;
   border: none;
   height: 48px;
@@ -291,7 +291,7 @@
   display: inline-block;
   width: 18px;
   height: 18px;
-  border-top-color: #8e00ed;
+  border-top-color: #0066FF;
   border-radius: 50%;
   animation: td-spin 0.65s linear infinite;
   flex-shrink: 0;

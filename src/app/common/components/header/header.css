@@ -9,7 +9,7 @@
 /* Sidebar Brand */
 .sidebar-brand {
   width: 220px;
-  background: #8e00ed;
+  background: #0066FF;
   color: #fff;
   padding: 20px;
   display: flex;
@@ -120,7 +120,7 @@
 .avatar {
   width: 42px;
   height: 42px;
-  background: #8e00ed;
+  background: #0066FF;
   color: #fff;
   border-radius: 50%;
   display: flex;

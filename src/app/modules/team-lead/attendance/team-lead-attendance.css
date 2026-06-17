@@ -46,9 +46,9 @@
   transition: all 0.15s;
 }
 .tla-tab--active {
-  background: #8e00ed;
+  background: #0066FF;
   color: #fff;
-  border-color: #8e00ed;
+  border-color: #0066FF;
 }
 
 .tla-team-section {
@@ -91,7 +91,7 @@
 }
 
 .tla-select:focus {
-  border-color: #8e00ed;
+  border-color: #0066FF;
 }
 
 .tla-select-icon {

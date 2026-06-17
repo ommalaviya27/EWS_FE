@@ -244,6 +244,8 @@ export class AttendanceCalendar implements OnInit, OnChanges {
   getDayClass(day: AttendanceDayResponse): string {
     if (day.isWeekend) return 'day-muted';
 
+    if (day.isAutoAbsent) return 'day-absent';
+
     const isCurrMonth = this.isCurrentMonth();
 
     if (day.isToday && isCurrMonth) {
@@ -296,6 +298,8 @@ export class AttendanceCalendar implements OnInit, OnChanges {
 
   getDayLabel(day: AttendanceDayResponse): string {
     if (day.isWeekend) return '';
+
+    if (day.isAutoAbsent) return 'A';
 
     if (day.isToday && this.isCurrentMonth()) {
       if (day.approvalStatus === ApprovalStatus.Approved) {

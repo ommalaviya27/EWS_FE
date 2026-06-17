@@ -68,7 +68,7 @@
 }
 
 .lam-fieldset:focus-within {
-  border-color: #8e00ed;
+  border-color: #0066FF;
   box-shadow: 0 0 0 0.15rem rgba(142, 0, 237, 0.12);
 }
 
@@ -89,7 +89,7 @@
 
 .lam-fieldset.has-value .lam-legend,
 .lam-fieldset:focus-within .lam-legend {
-  color: #8e00ed;
+  color: #0066FF;
 }
 
 .lam-fieldset.is-invalid-wrap .lam-legend {
