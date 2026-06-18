@@ -42,18 +42,18 @@
   align-items: center;
   padding: 6px 14px;
   background: none;
-  border: 1px solid #8e00ed;
+  border: 1px solid #0066FF;
   border-radius: 8px;
   font-size: 13px;
   font-weight: 550;
-  color: #8e00ed;
+  color: #0066FF;
   cursor: pointer;
   width: 150px;
   justify-content: center;
   gap: 6px;
 }
 .mt-btn-back:hover {
-  background: #8e00ed;
+  background: #0066FF;
   color: #fff;
 }
 
@@ -159,15 +159,15 @@
   gap: 4px;
   padding: 5px 12px;
   background: none;
-  border: 1px solid #8e00ed;
+  border: 1px solid #0066FF;
   border-radius: 8px;
   font-size: 12px;
   font-weight: 600;
-  color: #8e00ed;
+  color: #0066FF;
   cursor: pointer;
 }
 .mt-view-btn:hover {
-  background: #8e00ed;
+  background: #0066FF;
   color: #fff;
 }
 

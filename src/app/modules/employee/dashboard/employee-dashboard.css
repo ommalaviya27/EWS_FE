@@ -237,7 +237,6 @@
   color: #ef4444;
 }
 
-/* States */
 .ed-empty {
   flex: 1;
   display: flex;
@@ -245,8 +244,9 @@
   justify-content: center;
   padding: 32px;
   font-size: 14px;
-  color: #94a3b8;
+  color: #6c757d;
   text-align: center;
+  font-weight: 550;
 }
 
 .ed-center {
@@ -260,10 +260,9 @@
 .ed-center--col {
   flex-direction: column;
   gap: 12px;
-  color: #64748b;
+  color: #6c757d;
 }
 
-/* Responsive */
 @media (max-width: 1024px) {
   .ed-stats {
     grid-template-columns: repeat(2, 1fr);

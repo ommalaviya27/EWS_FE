@@ -29,10 +29,7 @@
   <div class="att-legend-row">
     @if (isTodayApproved) {
     <div class="att-approved-banner">
-      <span
-        >Today's attendance has been submitted by your Reporting Person. Please contact him/her for
-        any corrections.</span
-      >
+      <span>Today's attendance has been submitted by your Reporting Person. Please contact him/her forany corrections.</span>
     </div>
     }
     <div class="att-marks">
@@ -44,7 +41,7 @@
 
   <div class="att-card">
     <div class="att-card-header">
-      <span class="att-month-label">{{ monthLabel }}</span>
+      <span class="att-month-label">{{ monthData.monthLabel }}</span>
       <div class="att-summary">
         <span class="att-summary-item">
           Present <span class="att-badge att-badge--present">{{ monthData.presentCount }}</span>
@@ -52,7 +49,7 @@
         <span class="att-summary-item">
           Absent <span class="att-badge att-badge--absent">{{ monthData.absentCount }}</span>
         </span>
-        <span class="att-summary-total">Total {{ workingDays }} days</span>
+        <span>Total {{ workingDays }} days</span>
       </div>
     </div>
 
@@ -74,10 +71,10 @@
             <td
               class="att-td"
               [class]="getDayClass(day)"
-              [class.att-td--clickable]="canEdit(day)"
+              [class.att-td--clickable]="!readonly && canFill && day.canEdit"
               [class.att-td--open]="openDropdownDay === day.day"
               [attr.data-day]="day.day"
-              (click)="openDropdown($event, day)"
+              (click)="(!readonly && canFill && day.canEdit) && openDropdown($event, day)"
             >
               <span class="att-cell-label">{{ getDayLabel(day) }}</span>
             </td>

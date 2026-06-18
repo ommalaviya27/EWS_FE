@@ -22,3 +22,5 @@ export * from './filter-panel/filter-panel';
 export * from './filter-panel/filter-panel.config';
 export * from './leave-list/leave-list';
 export * from './leave-review-panel/leave-review-panel';
+export * from './attendance-calendar/attendance-calendar';
+export * from './attendance-review-panel/attendance-review-panel';

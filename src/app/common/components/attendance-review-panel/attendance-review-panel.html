@@ -17,7 +17,6 @@
   </div>
   } @if (!isLoading && totalItems === 0) {
   <div class="review-empty">
-    <span class="material-icons review-empty-icon">check_circle</span>
     <p>No pending attendance to review.</p>
   </div>
   } @if (!isLoading && records.length > 0) {
@@ -63,7 +62,7 @@
   </div>
 
   @if (totalItems > itemsPerPage || itemsPerPage > 5) {
-  <div class="review-pagination">
+  <div>
     <app-pagination
       [currentPage]="currentPage"
       [totalItems]="totalItems"

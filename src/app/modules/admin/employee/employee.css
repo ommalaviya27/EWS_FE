@@ -68,13 +68,13 @@
 
 .tab-btn:hover {
   background: #f8f9ff;
-  color: #8e00ed;
+  color: #0066FF;
 }
 
 .tab-btn.active {
-  color: #8e00ed;
+  color: #0066FF;
   background: #f0f0ff;
-  border-bottom-color: #8e00ed;
+  border-bottom-color: #0066FF;
   font-weight: 550;
 }
 
@@ -103,7 +103,7 @@
 
 .tab-btn.active .tab-count {
   background: #ddd8ff;
-  color: #8e00ed;
+  color: #0066FF;
 }
 
 .table-card {

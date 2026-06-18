@@ -2,7 +2,7 @@
   width: 260px;
   height: 100%;
   background: #fff;
-  border-right: 1px solid #f0f0f0;
+  border-right: 1px solid #e2e8f0;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
@@ -32,8 +32,6 @@
   margin-bottom: 5px;
   color: #6c757d;
   font-size: 0.875rem;
-  font-weight: 500;
-  transition: background 0.15s, color 0.15s;
   width: 100%;
   background: none;
   border: none;
@@ -43,14 +41,14 @@
 }
 
 .nav-item:hover {
-  background: #f9f5ff;
-  color: #8e00ed;
+  background: #f5f7ff;
+  color: #0066FF;
 }
 
 .nav-item.active {
-  background: #f0e6ff;
-  color: #8e00ed;
-  font-weight: 600;
+  background: #f5f7ff;
+  color: #0066FF;
+  font-weight: 550;
 }
 
 .nav-group__arrow {

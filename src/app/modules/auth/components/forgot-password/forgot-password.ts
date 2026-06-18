@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Email, EmailInputConfig} from '@common';
+import { Email, EmailInputConfig, Button, ButtonInputConfig} from '@common';
 import { AppValidators } from '../../../../common/validators/app.validators';
 import { AuthService } from '../../services/auth.service';
 import { ROUTES } from '../../../../common/constants/route-paths';
@@ -11,8 +11,7 @@ import { ApiResponse } from '../../../../common/models/api-response.model';
 
 @Component({
   selector: 'app-forgot-password',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, Email],
+  imports: [CommonModule, ReactiveFormsModule, Email, Button],
   templateUrl: './forgot-password.html',
   styleUrls: ['./forgot-password.css'],
 })
@@ -24,6 +23,8 @@ export class ForgotPassword implements OnInit {
 
   forgotForm!: FormGroup;
   emailConfig!: EmailInputConfig;
+  submitBtnConfig!: ButtonInputConfig;
+  resendBtnConfig!: ButtonInputConfig;
   isLoading = false;
   emailSent = false;
 
@@ -32,6 +33,8 @@ export class ForgotPassword implements OnInit {
       email: ['', [Validators.required, AppValidators.email]],
     });
     this.emailConfig = { formControlName: 'email', placeholder: 'Enter Email', floating:true };
+    this.submitBtnConfig = { variant: 'save', type: 'submit', text: 'Send Reset Link', onClick: () => this.onSubmit() };
+    this.resendBtnConfig = { variant: 'close', text: 'Back to Login', onClick: () => this.goToLogin() };
   }
 
   onSubmit(): void {

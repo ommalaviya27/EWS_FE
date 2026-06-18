@@ -30,8 +30,7 @@
           <div class="lrp-user-info">
             <span class="lrp-user-name">{{ record.userName }}</span>
             <span class="lrp-date-range">
-              {{ formatDate(record.startDate) }} - @if (record.startDate !== record.endDate)
-              {{{ formatDate(record.endDate) }}}
+              {{ formatDate(record.startDate) }} - {{ formatDate(record.endDate) }}
             </span>
           </div>
         </div>
@@ -40,24 +39,23 @@
         </div>
       </div>
 
-      <div class="lrp-reason">
-        <span class="lrp-reason-label">Reason:</span>
-        <span class="lrp-reason-text">{{ record.reason || '—' }}</span>
+      <div class="lrp-fieldset" [class.has-value]="record.reason">
+        <span class="lrp-legend">Reason</span>
+        <span class="lrp-reason-text">{{ record.reason }}</span>
       </div>
 
-      <div class="lrp-card-body">
-        <div class="lrp-remark-field">
-          <input
-            type="text"
-            class="lrp-remark"
-            placeholder="Add remark (optional)"
-            [(ngModel)]="remarkMap[record.id]"
-          />
-        </div>
-        <div class="lrp-actions">
-          <app-button [config]="getRejectConfig(record)"></app-button>
-          <app-button [config]="getApproveConfig(record)"></app-button>
-        </div>
+      <div class="lrp-fieldset" [class.has-value]="remarkMap[record.id]?.trim()">
+        <span class="lrp-legend">Remark</span>
+        <input
+          type="text"
+          class="lrp-reason-text"
+          placeholder="(Optional)"
+          [(ngModel)]="remarkMap[record.id]"
+        />
+      </div>
+      <div class="lrp-actions">
+        <app-button [config]="getRejectConfig(record)"></app-button>
+        <app-button [config]="getApproveConfig(record)"></app-button>
       </div>
     </div>
     }

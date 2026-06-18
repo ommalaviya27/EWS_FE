@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Email, Password, EmailInputConfig, PasswordInputConfig } from '@common';
+import { Email, Password, EmailInputConfig, PasswordInputConfig, Button, ButtonInputConfig } from '@common';
 import { AppValidators } from '../../../../common/validators/app.validators';
 import { AuthService } from '../../services/auth.service';
 import { SessionService } from '../../../../common/services/session.service';
@@ -13,8 +13,7 @@ import { LoginResponse } from '../../models/auth.model';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, Email, Password],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, Email, Password, Button],
   templateUrl: './login.html',
   styleUrls: ['./login.css'],
 })
@@ -28,6 +27,7 @@ export class Login implements OnInit {
   loginForm!: FormGroup;
   emailConfig!: EmailInputConfig;
   passwordConfig!: PasswordInputConfig;
+  submitBtnConfig!: ButtonInputConfig;
   isLoading = false;
 
   ngOnInit(): void {
@@ -49,6 +49,7 @@ export class Login implements OnInit {
   private initConfigs(): void {
     this.emailConfig = { formControlName: 'email', placeholder: 'Email', floating:true };
     this.passwordConfig = { formControlName: 'password', placeholder: 'Password', floating:true };
+    this.submitBtnConfig = { variant: 'save', type: 'submit', text: 'Sign In', onClick: () => this.onSubmit() };
   }
 
   onSubmit(): void {

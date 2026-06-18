@@ -18,7 +18,6 @@
   background: #ffffff;
   border-radius: 18px;
   padding: 24px 24px 22px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
 }
 
 .pm-header {
@@ -31,22 +30,17 @@
 .pm-title {
   margin: 0;
   font-size: 30px;
-  font-weight: 700;
-  color: #111827;
+  font-weight: 7550;
 }
 
 .pm-close {
   border: none;
   background: transparent;
   font-size: 22px;
-  color: #9ca3af;
+  color: #6c757d;
   cursor: pointer;
   padding: 0;
   line-height: 1;
-}
-
-.pm-close:hover {
-  color: #374151;
 }
 
 .pm-field {
@@ -60,31 +54,30 @@
   width: 100%;
   border-radius: 12px;
   padding-left: 10px;
-  border: 1px solid #babbbd;
+  border: 1px solid #e2e8f0;
   font-size: 15px;
   box-shadow: none;
 }
 
 .form-control:focus,
 .form-select:focus {
-  border-color: #5b3df5;
+  border-color: #0066ff;
   box-shadow: 0 0 0 0.15rem rgba(91, 61, 245, 0.15);
 }
 
 .pm-fieldset {
   position: relative;
-  border: 1.5px solid #d1d5db;
+  border: 1.5px solid #e2e8f0;
   border-radius: 12px;
   height: 52px;
   background: #fff;
   display: flex;
   align-items: center;
   padding: 0 12px;
-  transition: border-color 0.15s ease;
 }
 
 .pm-fieldset:focus-within {
-  border-color: #5b3df5;
+  border-color: #0066ff;
   box-shadow: 0 0 0 0.15rem rgba(91, 61, 245, 0.15);
 }
 
@@ -94,13 +87,13 @@
 
 .pm-legend {
   position: absolute;
-  top: -10px;
+  top: -7px;
   left: 12px;
   background: #fff;
   padding: 0 4px;
   font-size: 12px;
   font-weight: 600;
-  color: #9ca3af;
+  color: #6c757d;
   line-height: 1;
   pointer-events: none;
   transition: color 0.15s ease;
@@ -108,7 +101,7 @@
 
 .pm-fieldset.has-value .pm-legend,
 .pm-fieldset:focus-within .pm-legend {
-  color: #8e00ed;
+  color: #0066FF;
 }
 
 .pm-fieldset.is-invalid-wrap .pm-legend {
@@ -121,7 +114,6 @@
   width: 100%;
   height: 100%;
   font-size: 15px;
-  color: #111827;
   background: transparent;
   box-shadow: none;
   appearance: auto;
@@ -168,7 +160,6 @@
   }
 }
 
-/* Team Lead field extras */
 .pm-required {
   color: #dc3545;
   margin-left: 2px;
@@ -188,18 +179,18 @@
 }
 
 .pm-field-disabled .pm-label {
-  color: #9ca3af;
+  color: #6c757d;
 }
 
 .pm-field-disabled .form-select,
 .pm-field-disabled .pm-input {
   background: #f3f4f6;
-  color: #9ca3af;
+  color: #6c757d;
   cursor: not-allowed;
   pointer-events: none;
 }
 
 .pm-hint-muted {
-  color: #9ca3af;
+  color: #6c757d;
   font-style: italic;
 }

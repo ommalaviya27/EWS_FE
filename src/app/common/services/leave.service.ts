@@ -33,4 +33,8 @@ export class LeaveService {
   review(id: number, request: ReviewLeaveRequest): Observable<ApiResponse<LeaveResponse>> {
     return this.api.put<LeaveResponse>(API_ROUTES.LEAVE.REVIEW(id), request);
   }
+
+  delete(id: number): Observable<ApiResponse<void>> {
+    return this.api.delete<void>(API_ROUTES.LEAVE.DELETE(id));
+  }
 }

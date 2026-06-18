@@ -60,11 +60,6 @@ export class ProjectModule implements OnInit {
     this.tooltip = { visible: true, text, x: event.clientX, y: event.clientY };
   }
 
-  moveTooltip(event: MouseEvent): void {
-    this.tooltip.x = event.clientX;
-    this.tooltip.y = event.clientY;
-  }
-
   hideTooltip(): void {
     this.tooltip.visible = false;
   }

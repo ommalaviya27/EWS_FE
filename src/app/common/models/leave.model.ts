@@ -36,11 +36,10 @@ export interface LeaveResponse {
   reason: string;
   leaveStatus: ApprovalStatus;
   leaveStatusDisplay: string;
-  reviewerId: number | null;
-  reviewerName: string | null;
   reviewerRemark: string | null;
   reviewedAt: string | null;
   canEdit: boolean;
+  canDelete: boolean;
 }
 
 export interface ApplyLeaveRequest {

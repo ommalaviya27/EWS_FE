@@ -151,17 +151,17 @@
   font-size: 16px;
 }
 .tvm-tab-btn.active {
-  color: #8e00ed;
-  border-bottom-color: #8e00ed;
+  color: #0066FF;
+  border-bottom-color: #0066FF;
   font-weight: 600;
 }
 
 .tvm-tab-count {
-  background: #e0e7ff;
-  color: #8e00ed;
+  background: #f5f7ff;
+  color: #0066FF;
   font-size: 12px;
   font-weight: 550;
-  padding: 1px 6px;
+  padding: 2px 6px;
   border-radius: 10px;
 }
 
@@ -188,7 +188,7 @@
   width: 24px;
   height: 24px;
   border: 2.5px solid rgba(79, 70, 229, 0.2);
-  border-top-color: #8e00ed;
+  border-top-color: #0066FF;
   border-radius: 50%;
   animation: tvm-spin 0.65s linear infinite;
 }

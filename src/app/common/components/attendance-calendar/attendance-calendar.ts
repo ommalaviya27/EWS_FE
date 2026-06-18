@@ -1,10 +1,26 @@
-import { Component, inject, Input, Output, EventEmitter, OnChanges, SimpleChanges, HostListener, OnInit } from '@angular/core';
+import {
+  Component,
+  inject,
+  Input,
+  Output,
+  EventEmitter,
+  OnChanges,
+  SimpleChanges,
+  HostListener,
+  OnInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Button, ButtonInputConfig } from '@common';
 import { AttendanceService } from '../../services/attendance.service';
-import { AttendanceDayResponse, AttendanceMonthResponse, AttendanceStatus, ApprovalStatus, ATTENDANCE_STATUS_OPTIONS } from '../../models/attendance.model';
+import {
+  AttendanceDayResponse,
+  AttendanceMonthResponse,
+  AttendanceStatus,
+  ApprovalStatus,
+  ATTENDANCE_STATUS_OPTIONS,
+} from '../../models/attendance.model';
 import { MONTHS } from '../../constants/app.constants';
 
 @Component({
@@ -112,12 +128,6 @@ export class AttendanceCalendar implements OnInit, OnChanges {
     this.load();
   }
 
-  get monthLabel(): string {
-    return this.monthData
-      ? this.monthData.monthLabel
-      : `${MONTHS[this.selectedMonth - 1]}-${this.selectedYear}`;
-  }
-
   get isTodayApproved(): boolean {
     if (this.canEditApproved) return false;
     if (!this.monthData || !this.isCurrentMonth()) return false;
@@ -125,30 +135,8 @@ export class AttendanceCalendar implements OnInit, OnChanges {
     return todayEntry?.approvalStatus === ApprovalStatus.Approved;
   }
 
-  canEdit(day: AttendanceDayResponse): boolean {
-    if (this.readonly) return false;
-    if (!this.canFill) return false;
-    if (day.isWeekend) return false;
-
-    if (this.canEditApproved) {
-      const cellDate = new Date(this.selectedYear, this.selectedMonth - 1, day.day);
-      const todayMidnight = new Date(
-        this.today.getFullYear(),
-        this.today.getMonth(),
-        this.today.getDate()
-      );
-      return cellDate < todayMidnight;
-    }
-
-    if (day.approvalStatus === ApprovalStatus.Approved) return false;
-    const isCurrMonth =
-      this.selectedMonth === this.today.getMonth() + 1 &&
-      this.selectedYear === this.today.getFullYear();
-    return isCurrMonth && day.isToday;
-  }
-
   openDropdown(event: MouseEvent, day: AttendanceDayResponse): void {
-    if (!this.canEdit(day)) return;
+    if (this.readonly || !this.canFill || !day.canEdit) return;
     event.stopPropagation();
     const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
     this.dropdownTop = rect.bottom + window.scrollY + 4;
@@ -244,6 +232,8 @@ export class AttendanceCalendar implements OnInit, OnChanges {
   getDayClass(day: AttendanceDayResponse): string {
     if (day.isWeekend) return 'day-muted';
 
+    if (day.isAutoAbsent) return 'day-absent';
+
     const isCurrMonth = this.isCurrentMonth();
 
     if (day.isToday && isCurrMonth) {
@@ -296,6 +286,8 @@ export class AttendanceCalendar implements OnInit, OnChanges {
 
   getDayLabel(day: AttendanceDayResponse): string {
     if (day.isWeekend) return '';
+
+    if (day.isAutoAbsent) return 'A';
 
     if (day.isToday && this.isCurrentMonth()) {
       if (day.approvalStatus === ApprovalStatus.Approved) {

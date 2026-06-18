@@ -100,12 +100,8 @@
 }
 
 .cm-btn-confirm {
-  background: #ef4444;
+  background: #0066ff;
   color: #ffffff;
-}
-
-.cm-btn-confirm:hover {
-  background: #dc2626;
 }
 
 @media (max-width: 480px) {

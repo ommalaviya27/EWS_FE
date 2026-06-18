@@ -1,4 +1,3 @@
-/* ── Auth page shell ─────────────────────────────────────── */
 .auth-page {
   display: flex;
   min-height: 100vh;
@@ -9,18 +8,15 @@
   box-sizing: border-box;
 }
 
-/* ── Card ────────────────────────────────────────────────── */
 .auth-card {
   width: 100%;
   max-width: 500px;
   background: #ffffff;
   border-radius: 24px;
   padding: 40px 40px 36px;
-  box-shadow: 0 4px 40px rgba(0, 0, 0, 0.08);
   box-sizing: border-box;
 }
 
-/* ── Brand ───────────────────────────────────────────────── */
 .brand {
   display: flex;
   flex-direction: column;
@@ -43,20 +39,18 @@
 
 .brand-title {
   font-size: 24px;
-  font-weight: 700;
-  color: #111827;
+  font-weight: 550;
   margin: 0 0 5px;
   text-align: center;
 }
 
 .brand-subtitle {
   font-size: 13px;
-  color: #6b7280;
+  color: #6c757d;
   margin: 0;
   text-align: center;
 }
 
-/* ── Form ────────────────────────────────────────────────── */
 .auth-form {
   display: flex;
   flex-direction: column;
@@ -72,10 +66,9 @@
   margin-bottom: 15px;
   font-size: 13px;
   font-weight: 500;
-  color: #374151;
+  color: #6c757d;
 }
 
-/* ── Errors ──────────────────────────────────────────────── */
 .mismatch-error {
   font-size: 12px;
   color: #ef4444;
@@ -84,44 +77,6 @@
   padding-left: 4px;
 }
 
-/* ── Button ──────────────────────────────────────────────── */
-.btn-primary {
-  width: 100%;
-  padding: 14px;
-  background: #4f46e5;
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
-  font-family: inherit;
-  margin-bottom: 18px;
-  box-sizing: border-box;
-}
-
-.btn-primary:hover:not(:disabled) {
-  background: #4338ca;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(79, 70, 229, 0.38);
-}
-
-.btn-primary:active:not(:disabled) {
-  transform: translateY(0);
-}
-
-.btn-primary:disabled {
-  opacity: 0.65;
-  cursor: not-allowed;
-}
-
-/* ── Spinner ─────────────────────────────────────────────── */
 .spinner {
   width: 16px;
   height: 16px;
@@ -138,7 +93,6 @@
   }
 }
 
-/* ── Login link ──────────────────────────────────────────── */
 .login-row {
   display: flex;
   align-items: center;
@@ -146,116 +100,21 @@
   gap: 6px;
   font-size: 13.5px;
   flex-wrap: wrap;
+  margin-top: 20px;
 }
 
 .login-text {
-  color: #6b7280;
+  color: #6c757d;
 }
 
 .login-link {
-  color: #4f46e5;
+  color: #0066ff;
   font-weight: 600;
   cursor: pointer;
   transition: color 0.2s;
 }
 
 .login-link:hover {
-  color: #4338ca;
+  color: #0066ff;
   text-decoration: underline;
-}
-
-/* ── Responsive: tablet ──────────────────────────────────── */
-@media (max-width: 540px) {
-  .auth-card {
-    padding: 32px 24px 28px;
-    border-radius: 20px;
-  }
-
-  .brand-icon {
-    width: 56px;
-    height: 56px;
-  }
-
-  .brand-title {
-    font-size: 22px;
-  }
-}
-
-/* ── Responsive: mobile ──────────────────────────────────── */
-@media (max-width: 420px) {
-  .auth-page {
-    padding: 16px 12px;
-    align-items: flex-start;
-    padding-top: 32px;
-  }
-
-  .auth-card {
-    padding: 28px 20px 24px;
-    border-radius: 18px;
-  }
-
-  /* Stack the 2-column grid to single column */
-  .form-row {
-    grid-template-columns: 1fr;
-    gap: 0;
-  }
-
-  .brand {
-    margin-bottom: 24px;
-  }
-
-  .brand-icon {
-    width: 52px;
-    height: 52px;
-    margin-bottom: 12px;
-  }
-
-  .brand-title {
-    font-size: 20px;
-  }
-
-  .brand-subtitle {
-    font-size: 12.5px;
-  }
-
-  .btn-primary {
-    padding: 13px;
-    font-size: 14px;
-  }
-}
-
-/* ── Responsive: 320px ───────────────────────────────────── */
-@media (max-width: 360px) {
-  .auth-page {
-    padding: 12px 8px;
-    padding-top: 24px;
-  }
-
-  .auth-card {
-    padding: 24px 16px 20px;
-    border-radius: 16px;
-  }
-
-  .brand-icon {
-    width: 48px;
-    height: 48px;
-  }
-
-  .brand-title {
-    font-size: 19px;
-  }
-
-  .brand-subtitle {
-    font-size: 12px;
-  }
-
-  .btn-primary {
-    padding: 12px;
-    font-size: 14px;
-    border-radius: 9px;
-  }
-
-  .login-row {
-    font-size: 13px;
-  }
 }

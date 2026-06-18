@@ -28,7 +28,7 @@
 .ll-table-card {
   background: #fff;
   border-radius: 12px;
-  border: 1px solid #e9ecef;
+  border: 1px solid #e2e8f0;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -49,7 +49,7 @@
   display: grid;
   grid-template-columns: 0.9fr 0.9fr 0.9fr 2fr 0.9fr 1fr 0.7fr;
   align-items: center;
-  border-bottom: 1px solid #f1f3f5;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .ll-grid-header {
@@ -58,21 +58,20 @@
   z-index: 5;
   background: #fff;
   height: 50px;
-  border-bottom: 2px solid #e9ecef;
+  border-bottom: 2px solid #e2e8f0;
 }
 
 .ll-grid-th {
   padding: 12px 14px;
-  font-size: 12px;
+  font-size: 14px;
   color: #6c757d;
   text-transform: uppercase;
-  letter-spacing: 0.03rem;
-  font-weight: 600;
+  font-weight: 550;
 }
 
 .ll-grid-td {
   padding: 12px 14px;
-  font-size: 13.5px;
+  font-size: 14px;
   overflow: hidden;
 }
 
@@ -82,19 +81,29 @@
   text-overflow: ellipsis;
 }
 
-.ll-reason-cell {
-  cursor: default;
-  color: #6c757d;
+.desc-tooltip {
+  position: fixed;
+  z-index: 99999;
+  background: #6c757d;
+  color: #f1f5f9;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  max-width: 360px;
+  white-space: normal;
+  word-break: break-word;
+  pointer-events: none;
+  transform: translateY(8px);
 }
 
 .ll-type-badge {
   display: inline-flex;
   padding: 3px 9px;
   border-radius: 6px;
-  font-size: 11.5px;
-  font-weight: 600;
-  background: #f3e8ff;
-  color: #8e00ed;
+  font-size: 12px;
+  font-weight: 550;
+  background: #f5f7ff;
+  color: #0066FF;
   white-space: nowrap;
 }
 
@@ -103,7 +112,7 @@
   padding: 4px 10px;
   border-radius: 8px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 550;
   white-space: nowrap;
 }
 .ll-status-badge[data-status='1'] {
@@ -131,6 +140,7 @@
   flex-direction: column;
   color: #6c757d;
   text-align: center;
+  font-weight: 550;
 }
 
 .ll-empty-state .material-icons {
@@ -165,8 +175,8 @@
 
 .ll-btn-dots:hover,
 .ll-btn-dots.active {
-  background: #f3e8ff;
-  color: #8e00ed;
+  background: #f5f7ff;
+  color: #0066FF;
 }
 
 .ll-action-dropdown {
@@ -175,15 +185,15 @@
   top: 100%;
   margin-top: 4px;
   background: #ffffff;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #e2e8f0;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
   z-index: 50;
   min-width: 110px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   padding: 4px 0;
+  transform: translateX(-20px);
 }
 
 .ll-action-dropdown.dropdown-up {
@@ -212,9 +222,9 @@
   background: #f9fafb;
 }
 
-.ll-edit-item:hover {
-  background: #f3e8ff;
-  color: #8e00ed;
+.ll-item:hover {
+  background: #f5f7ff;
+  color: #0066FF;
 }
 
 .ll-dropdown-item .material-icons {
@@ -222,6 +232,8 @@
 }
 
 .ll-no-action {
-  color: #d1d5db;
+  color: #6c757d;
   font-size: 14px;
+  padding-left: 10px;
+  font-weight: 550;
 }
