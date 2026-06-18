@@ -35,6 +35,7 @@ export interface AttendanceDayResponse {
   approvalStatus: ApprovalStatus | null;
   approvalStatusDisplay: string | null;
   isAutoAbsent: boolean;
+  canEdit: boolean;
 }
 
 export interface AttendanceMonthResponse {
@@ -58,12 +59,6 @@ export interface AttendanceResponse {
   statusDisplay: string;
   approvalStatus: ApprovalStatus;
   approvalStatusDisplay: string;
-  reviewerId: number | null;
-  reviewerName: string | null;
-  reviewerRemark: string | null;
-  reviewedAt: string | null;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface AddAttendanceRequest {

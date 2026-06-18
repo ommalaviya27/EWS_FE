@@ -21,7 +21,6 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
 }
 
-/* Header */
 .lam-header {
   display: flex;
   align-items: center;
@@ -51,29 +50,18 @@
 
 .lam-fieldset {
   position: relative;
-  border: 1.5px solid #d1d5db;
+  border: 1.5px solid #e2e8f0;
   border-radius: 12px;
-  height: 52px;
+  height: 60px;
   background: #fff;
   display: flex;
   align-items: center;
   padding: 0 12px;
-  transition: border-color 0.15s ease;
-}
-
-.lam-fieldset--textarea {
-  height: auto;
-  align-items: flex-start;
-  padding: 18px 12px 10px;
 }
 
 .lam-fieldset:focus-within {
   border-color: #0066FF;
   box-shadow: 0 0 0 0.15rem rgba(142, 0, 237, 0.12);
-}
-
-.lam-fieldset.is-invalid-wrap {
-  border-color: #dc2626;
 }
 
 .lam-legend {
@@ -82,18 +70,14 @@
   left: 12px;
   background: #fff;
   padding: 0 4px;
-  font-size: 12px;
-  pointer-events: none;
-  transition: color 0.15s ease;
+  font-size: 13px;
+  color: #6c757d;
 }
 
 .lam-fieldset.has-value .lam-legend,
 .lam-fieldset:focus-within .lam-legend {
   color: #0066FF;
-}
-
-.lam-fieldset.is-invalid-wrap .lam-legend {
-  color: #dc2626;
+  font-weight: 550;
 }
 
 .lam-select-input,
@@ -101,25 +85,23 @@
   border: none;
   outline: none;
   width: 100%;
-  font-size: 14px;
+  height: 100%;
+  font-size: 15px;
   background: transparent;
-  font-family: inherit;
+  box-shadow: none;
+  appearance: auto;
 }
 
-.lam-textarea {
+.lam-date-input:focus,
+.lam-select-input:focus {
   border: none;
   outline: none;
-  width: 100%;
-  font-size: 14px;
-  background: transparent;
-  resize: none;
-  font-family: inherit;
-  line-height: 1.5;
+  box-shadow: none;
 }
 
 .lam-error {
   margin-top: 5px;
-  font-size: 12px;
+  font-size: 13px;
   color: #dc2626;
   padding-left: 4px;
 }
@@ -134,5 +116,5 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-  margin-top: 6px;
+  margin-top: 10px;
 }

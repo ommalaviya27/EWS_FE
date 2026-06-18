@@ -7,11 +7,12 @@
         <button type="button" class="lam-close" (click)="onCancel()" aria-label="Close">✕</button>
       </div>
 
-      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="lam-field">
-          <div class="lam-fieldset has-value" [class.is-invalid-wrap]="isInvalid('leaveType')">
+          <div class="lam-fieldset">
             <span class="lam-legend">Leave Type</span>
             <select class="lam-select-input" formControlName="leaveType">
+              <option [value]="null" disabled hidden>Select leave type</option>
               @for (opt of leaveTypeOptions; track opt.value) {
               <option [value]="opt.value">{{ opt.label }}</option>
               }
@@ -22,16 +23,14 @@
           }
         </div>
 
-        <!-- Date Row -->
         <div class="lam-date-row">
           <div class="lam-field">
             <div
               class="lam-fieldset"
-              [class.is-invalid-wrap]="isInvalid('startDate')"
               [class.has-value]="form.get('startDate')?.value"
             >
-              <span class="lam-legend">From Date</span>
-              <input type="date" class="lam-date-input" formControlName="startDate" />
+              <span class="lam-legend">Start Date</span>
+              <input type="date" class="lam-date-input" id="startDate" formControlName="startDate" />
             </div>
             @if (isInvalid('startDate')) {
             <div class="lam-error">Start date is required.</div>
@@ -41,11 +40,10 @@
           <div class="lam-field">
             <div
               class="lam-fieldset"
-              [class.is-invalid-wrap]="isInvalid('endDate')"
               [class.has-value]="form.get('endDate')?.value"
             >
-              <span class="lam-legend">To Date</span>
-              <input type="date" class="lam-date-input" formControlName="endDate" />
+              <span class="lam-legend">End Date</span>
+              <input type="date" class="lam-date-input" id="endDate" formControlName="endDate" />
             </div>
             @if (isInvalid('endDate')) {
             <div class="lam-error">End date is required.</div>
@@ -53,7 +51,6 @@
           </div>
         </div>
 
-        <!-- Reason -->
         <app-description-field [config]="descriptionField"></app-description-field>
 
         <div class="lam-footer">

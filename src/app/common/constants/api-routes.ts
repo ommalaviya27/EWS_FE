@@ -79,5 +79,6 @@ export const API_ROUTES = {
     APPLY: '/api/leave',
     EDIT: (id: number) => `/api/leave/${id}`,
     REVIEW: (id: number) => `/api/leave/${id}/review`,
+    DELETE: (id: number) => `/api/leave/${id}`,
   },
 };

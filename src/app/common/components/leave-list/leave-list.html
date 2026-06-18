@@ -15,7 +15,6 @@
   } @else if (leaves.length === 0) {
   <div class="ll-center-state ll-empty-state">
     <span class="material-icons">event_busy</span>
-    <h4>No Leave Requests</h4>
     <p>You haven't applied for any leave yet.</p>
   </div>
   } @else {
@@ -39,7 +38,9 @@
           </div>
           <div class="ll-grid-td">{{ formatDate(leave.startDate) }}</div>
           <div class="ll-grid-td">{{ formatDate(leave.endDate) }}</div>
-          <div class="ll-grid-td ll-cell-truncate ll-reason-cell" [title]="leave.reason">
+          <div class="ll-grid-td ll-cell-truncate"
+          (mouseenter)="showTooltip($event, leave.reason)"
+          (mouseleave)="hideTooltip()">
             {{ leave.reason }}
           </div>
           <div class="ll-grid-td">
@@ -51,7 +52,7 @@
             {{ leave.reviewerRemark ?? '—' }}
           </div>
           <div class="ll-grid-td text-center ll-action-cell">
-            @if (leave.canEdit) {
+            @if (leave.canEdit || leave.canDelete) {
             <div class="ll-action-container">
               <button
                 type="button"
@@ -63,19 +64,19 @@
               </button>
 
               @if (activeDropdownId === leave.id) {
-              <div
-                class="ll-action-dropdown"
-                [class.dropdown-up]="leaves.length > 2 && i >= leaves.length - 2"
-                (click)="$event.stopPropagation()"
-              >
-                <button
-                  type="button"
-                  class="ll-dropdown-item ll-edit-item"
-                  (click)="openEditModal(leave)"
-                >
+              <div class="ll-action-dropdown" [class.dropdown-up]="leaves.length > 2 && i >= leaves.length - 2" (click)="$event.stopPropagation()">
+                @if (leave.canEdit) {
+                <button type="button" class="ll-dropdown-item ll-item" (click)="openEditModal(leave)">
                   <span class="material-icons">edit</span>
                   <span>Edit</span>
                 </button>
+                }
+                @if (leave.canDelete) {
+                <button type="button" class="ll-dropdown-item ll-item" (click)="openDeleteConfirm(leave)">
+                  <span class="material-icons">delete</span>
+                  <span>Delete</span>
+                </button>
+                }
               </div>
               }
             </div>
@@ -100,6 +101,12 @@
   }
 </div>
 
+@if (tooltip.visible) {
+  <div class="desc-tooltip" [style.top.px]="tooltip.y" [style.left.px]="tooltip.x">
+    {{ tooltip.text }}
+  </div>
+  }
+
 <app-leave-apply-modal
   [visible]="showModal"
   [isLoading]="isModalLoading"
@@ -107,3 +114,10 @@
   (save)="onSave($event)"
   (closed)="closeModal()"
 ></app-leave-apply-modal>
+
+<app-confirmation-model
+  [visible]="showDeleteConfirm"
+  [config]="deleteConfirmConfig"
+  (confirm)="confirmDelete()"
+  (closed)="cancelDelete()"
+></app-confirmation-model>

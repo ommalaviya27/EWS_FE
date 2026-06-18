@@ -41,7 +41,7 @@
 
   <div class="att-card">
     <div class="att-card-header">
-      <span class="att-month-label">{{ monthLabel }}</span>
+      <span class="att-month-label">{{ monthData.monthLabel }}</span>
       <div class="att-summary">
         <span class="att-summary-item">
           Present <span class="att-badge att-badge--present">{{ monthData.presentCount }}</span>
@@ -71,10 +71,10 @@
             <td
               class="att-td"
               [class]="getDayClass(day)"
-              [class.att-td--clickable]="canEdit(day)"
+              [class.att-td--clickable]="!readonly && canFill && day.canEdit"
               [class.att-td--open]="openDropdownDay === day.day"
               [attr.data-day]="day.day"
-              (click)="openDropdown($event, day)"
+              (click)="(!readonly && canFill && day.canEdit) && openDropdown($event, day)"
             >
               <span class="att-cell-label">{{ getDayLabel(day) }}</span>
             </td>

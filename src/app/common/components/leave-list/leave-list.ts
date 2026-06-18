@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { LeaveService } from '../../services/leave.service';
 import { LeaveResponse, ApprovalStatus, ApplyLeaveRequest, EditLeaveRequest, LEAVE_STATUS_LABELS } from '../../models/leave.model';
-import { PaginationComponent, Button, ButtonInputConfig } from '@common';
+import { PaginationComponent, Button, ButtonInputConfig, ConfirmationModel, ConfirmationModelConfig } from '@common';
 import { LeaveApplyModal } from './component/leave-apply-modal/leave-apply-modal';
 import { DEFAULT_PAGINATION } from '../../constants/app.constants';
 
 @Component({
   selector: 'app-leave-list',
-  imports: [CommonModule, PaginationComponent, Button, LeaveApplyModal],
+  imports: [CommonModule, PaginationComponent, Button, LeaveApplyModal, ConfirmationModel],
   templateUrl: './leave-list.html',
   styleUrl: './leave-list.css',
 })
@@ -31,6 +31,26 @@ export class LeaveList implements OnInit {
   showModal = false;
   selectedLeave: LeaveResponse | null = null;
   activeDropdownId: number | null = null;
+
+  tooltip = { visible: false, text: '', x: 0, y: 0 };
+
+  showDeleteConfirm = false;
+  leaveToDelete: LeaveResponse | null = null;
+  isDeleting = false;
+  deleteConfirmConfig: ConfirmationModelConfig = {
+    title: 'Delete Leave Request',
+    message: '',
+    cancelText: 'Cancel',
+    confirmText: 'Delete',
+  };
+
+  showTooltip(event: MouseEvent, text: string): void {
+    this.tooltip = { visible: true, text, x: event.clientX, y: event.clientY };
+  }
+
+  hideTooltip(): void {
+    this.tooltip.visible = false;
+  }
 
   applyBtnConfig!: ButtonInputConfig;
 
@@ -106,6 +126,46 @@ export class LeaveList implements OnInit {
 
   closeDropdown(): void {
     this.activeDropdownId = null;
+  }
+
+  openDeleteConfirm(leave: LeaveResponse): void {
+    this.leaveToDelete = leave;
+    this.deleteConfirmConfig = {
+      title: 'Delete Leave Request',
+      message: `Are you sure you want to delete this ${leave.leaveTypeDisplay} leave request from ${this.formatDate(leave.startDate)} to ${this.formatDate(leave.endDate)}?`,
+      cancelText: 'Cancel',
+      confirmText: 'Delete',
+    };
+    this.showDeleteConfirm = true;
+    this.activeDropdownId = null;
+  }
+
+  cancelDelete(): void {
+    this.showDeleteConfirm = false;
+    this.leaveToDelete = null;
+  }
+
+  confirmDelete(): void {
+    if (!this.leaveToDelete) return;
+    this.isDeleting = true;
+    this.svc.delete(this.leaveToDelete.id).subscribe({
+      next: (res) => {
+        this.toastr.success(res.message);
+        this.isDeleting = false;
+        this.showDeleteConfirm = false;
+        this.leaveToDelete = null;
+        const remaining = this.totalItems - 1;
+        const maxPage = Math.max(1, Math.ceil(remaining / this.itemsPerPage));
+        if (this.currentPage > maxPage) this.currentPage = maxPage;
+        this.loadLeaves();
+      },
+      error: (err) => {
+        this.toastr.error(this.getErrorMessage(err));
+        this.isDeleting = false;
+        this.showDeleteConfirm = false;
+        this.leaveToDelete = null;
+      },
+    });
   }
 
   onPageChange(page: number): void {

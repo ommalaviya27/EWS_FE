@@ -300,6 +300,8 @@
   font-size: 14px;
   color: #6c757d;
   text-align: center;
+  gap: 6px;
+  font-weight: 550;
 }
 
 .tld-center {

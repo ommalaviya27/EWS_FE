@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Button, ButtonInputConfig, Description, DescriptionFieldConfig } from '@common';
-import { LeaveResponse, LeaveType, LEAVE_TYPE_OPTIONS, ApplyLeaveRequest, EditLeaveRequest } from '../../../../models/leave.model';
+import { LeaveResponse, LEAVE_TYPE_OPTIONS, ApplyLeaveRequest, EditLeaveRequest } from '../../../../models/leave.model';
 
 @Component({
   selector: 'app-leave-apply-modal',
@@ -45,11 +45,10 @@ export class LeaveApplyModal implements OnInit, OnChanges {
   }
 
   private buildForm(): void {
-    const today = new Date().toISOString().split('T')[0];
     this.form = this.fb.group({
-      leaveType: [this.leave?.leaveType ?? LeaveType.FullDay, Validators.required],
-      startDate: [this.leave ? this.leave.startDate.split('T')[0] : today, Validators.required],
-      endDate: [this.leave ? this.leave.endDate.split('T')[0] : today, Validators.required],
+      leaveType: [this.leave ? this.leave.leaveType : null, Validators.required],
+      startDate: [this.leave ? this.leave.startDate.split('T')[0] : '', Validators.required],
+      endDate: [this.leave ? this.leave.endDate.split('T')[0] : '', Validators.required],
       reason: [
         this.leave?.reason ?? '',
         [Validators.required, Validators.minLength(5), Validators.maxLength(500)],
@@ -92,8 +91,8 @@ export class LeaveApplyModal implements OnInit, OnChanges {
     const val = this.form.value;
     this.save.emit({
       leaveType: +val.leaveType,
-      startDate: val.startDate,
-      endDate: val.endDate,
+      startDate: new Date(val.startDate).toISOString(),
+      endDate: new Date(val.endDate).toISOString(),
       reason: val.reason.trim(),
     });
   }
