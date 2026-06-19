@@ -4,6 +4,7 @@
       <h3 class="ll-page-title">My Leave Requests</h3>
     </div>
     <div class="ll-header-actions" (click)="$event.stopPropagation()">
+      <app-button [config]="getPublicHolidayConfig"></app-button>
       <app-button [config]="applyBtnConfig"></app-button>
     </div>
   </div>

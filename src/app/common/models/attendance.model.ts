@@ -36,6 +36,8 @@ export interface AttendanceDayResponse {
   approvalStatusDisplay: string | null;
   isAutoAbsent: boolean;
   canEdit: boolean;
+  isPublicHoliday: boolean;
+  holidayName?: string;
 }
 
 export interface AttendanceMonthResponse {

@@ -1,15 +1,3 @@
-@if (isToggle) {
-<div class="form-check form-switch mb-2 mt-2  ">
-  <input
-    class="form-check-input btn-toggle"
-    type="checkbox"
-    role="switch"
-    [checked]="config.checked"
-    [disabled]="config.disabled"
-    (change)="handleToggle($event)"
-  />
-</div>
-} @else {
 <button
   [type]="config.type || 'button'"
   [ngClass]="['btn', variantClass]"
@@ -40,4 +28,3 @@
   }
   {{ config.text || variantText }}
 </button>
-}

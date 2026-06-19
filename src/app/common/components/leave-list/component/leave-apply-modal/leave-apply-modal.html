@@ -25,12 +25,9 @@
 
         <div class="lam-date-row">
           <div class="lam-field">
-            <div
-              class="lam-fieldset"
-              [class.has-value]="form.get('startDate')?.value"
-            >
+            <div class="lam-fieldset" [class.has-value]="form.get('startDate')?.value">
               <span class="lam-legend">Start Date</span>
-              <input type="date" class="lam-date-input" id="startDate" formControlName="startDate" />
+              <input  type="date" class="lam-date-input" id="startDate" formControlName="startDate" [min]="today"/>
             </div>
             @if (isInvalid('startDate')) {
             <div class="lam-error">Start date is required.</div>
@@ -38,12 +35,9 @@
           </div>
 
           <div class="lam-field">
-            <div
-              class="lam-fieldset"
-              [class.has-value]="form.get('endDate')?.value"
-            >
+            <div class="lam-fieldset" [class.has-value]="form.get('endDate')?.value">
               <span class="lam-legend">End Date</span>
-              <input type="date" class="lam-date-input" id="endDate" formControlName="endDate" />
+              <input  type="date" class="lam-date-input" id="endDate" formControlName="endDate" [min]="minEndDate"/>
             </div>
             @if (isInvalid('endDate')) {
             <div class="lam-error">End date is required.</div>

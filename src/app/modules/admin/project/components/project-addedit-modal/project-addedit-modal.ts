@@ -93,9 +93,16 @@ export class ProjectAddeditModal implements OnInit, OnChanges {
     });
   }
 
+  today: string = new Date().toISOString().split('T')[0];
+
   private toDateInput(dateStr: string): string {
     if (!dateStr) return '';
     return new Date(dateStr).toISOString().substring(0, 10);
+  }
+
+  get minEndDate(): string {
+    const startDate = this.form?.get('startDate')?.value;
+    return startDate ? startDate : this.today;
   }
 
   onSubmit(): void {

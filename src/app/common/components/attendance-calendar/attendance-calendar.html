@@ -74,6 +74,7 @@
               [class.att-td--clickable]="!readonly && canFill && day.canEdit"
               [class.att-td--open]="openDropdownDay === day.day"
               [attr.data-day]="day.day"
+              [title]="day.isPublicHoliday ? day.holidayName : ''"
               (click)="(!readonly && canFill && day.canEdit) && openDropdown($event, day)"
             >
               <span class="att-cell-label">{{ getDayLabel(day) }}</span>

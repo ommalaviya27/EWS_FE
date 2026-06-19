@@ -53,12 +53,17 @@ export class LeaveList implements OnInit {
   }
 
   applyBtnConfig!: ButtonInputConfig;
+  getPublicHolidayConfig!: ButtonInputConfig;
 
   ngOnInit(): void {
     this.applyBtnConfig = {
       variant: 'add',
       text: '+ Apply',
       onClick: () => this.openAddModal(),
+    };
+    this.getPublicHolidayConfig = {
+      variant: 'save',
+      text: 'Holidays List',
     };
     this.loadLeaves();
   }

@@ -233,6 +233,10 @@
 .day-absent {
   background: #fee2e2;
 }
+.day-holiday {
+  background: #f3e1ff;
+  cursor: pointer;
+}
 .day-empty {
   background: #fff;
 }

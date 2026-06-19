@@ -60,3 +60,9 @@ export interface ReviewLeaveRequest {
   leaveStatus: ApprovalStatus;
   reviewerRemark?: string | null;
 }
+
+export interface HolidayResponse {
+  id: number;
+  name: string;
+  date: string;
+}
