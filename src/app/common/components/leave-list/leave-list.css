@@ -13,6 +13,11 @@
   flex-wrap: wrap;
 }
 
+.ll-tabs {
+  display: flex;
+  gap: 8px;
+}
+
 .ll-header-actions {
   display: flex;
   align-items: center;

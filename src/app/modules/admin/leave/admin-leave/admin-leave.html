@@ -1,7 +1,18 @@
 <div class="al-wrapper">
   <div class="al-page-header">
-    <h2 class="al-title">Leave Management</h2>
-    <p class="al-subtitle">Review and action leave requests from team leads.</p>
+    <div>
+      <h2 class="al-title">Leave Management</h2>
+    </div>
+    <div class="al-tabs">
+      <app-button [config]="leaveRequestsTabConfig"></app-button>
+      <app-button [config]="publicHolidaysTabConfig"></app-button>
+    </div>
   </div>
-  <app-leave-review-panel></app-leave-review-panel>
+
+  @if (activeTab === 'leave-requests') {
+    <app-leave-review-panel></app-leave-review-panel>
+  }
+  @if (activeTab === 'public-holidays') {
+    <app-public-holiday></app-public-holiday>
+  }
 </div>

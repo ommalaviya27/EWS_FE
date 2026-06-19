@@ -1,0 +1,153 @@
+.ph-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ph-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-items: flex-start;
+  flex-shrink: 0;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.ph-page-title {
+  margin: 0 0 4px;
+  font-size: 17px;
+  font-weight: 550;
+}
+
+.ph-table-card {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.ph-grid-scroll {
+  flex: 0 1 auto;
+  overflow-y: auto;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.ph-grid-container {
+  min-width: 600px;
+}
+
+.ph-grid-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 0.8fr;
+  align-items: center;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.ph-grid-header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: #fff;
+  height: 50px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.ph-grid-th {
+  padding: 12px 14px;
+  font-size: 14px;
+  color: #6c757d;
+  text-transform: uppercase;
+  font-weight: 550;
+}
+
+.ph-grid-td {
+  padding: 12px 14px;
+  font-size: 14px;
+}
+
+.ph-name-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 550;
+}
+
+.ph-day-badge {
+  display: inline-flex;
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 550;
+  background: #f0fdf4;
+  color: #15803d;
+  white-space: nowrap;
+}
+
+.ph-center-state {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 0;
+}
+
+.ph-empty-state {
+  flex-direction: column;
+  color: #6c757d;
+  text-align: center;
+  font-weight: 550;
+}
+
+.ph-empty-state .material-icons {
+  font-size: 35px;
+}
+
+.ph-grid-row .ph-grid-td.ph-action-cell,
+.ph-grid-row .ph-grid-th.ph-action-cell {
+  overflow: visible !important;
+}
+
+.ph-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.ph-btn-action {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.ph-btn-action .material-icons {
+  font-size: 16px;
+}
+
+.ph-btn-edit {
+  background: #f0f4ff;
+  color: #0066ff;
+}
+
+.ph-btn-edit:hover {
+  background: #dbeafe;
+}
+
+.ph-btn-delete {
+  background: #fff1f2;
+  color: #e11d48;
+}
+
+.ph-btn-delete:hover {
+  background: #ffe4e6;
+}

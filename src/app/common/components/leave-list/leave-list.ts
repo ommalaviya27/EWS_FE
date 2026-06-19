@@ -5,11 +5,12 @@ import { LeaveService } from '../../services/leave.service';
 import { LeaveResponse, ApprovalStatus, ApplyLeaveRequest, EditLeaveRequest, LEAVE_STATUS_LABELS } from '../../models/leave.model';
 import { PaginationComponent, Button, ButtonInputConfig, ConfirmationModel, ConfirmationModelConfig } from '@common';
 import { LeaveApplyModal } from './component/leave-apply-modal/leave-apply-modal';
+import { PublicHolidayList } from './component/public-holiday-list/public-holiday-list';
 import { DEFAULT_PAGINATION } from '../../constants/app.constants';
 
 @Component({
   selector: 'app-leave-list',
-  imports: [CommonModule, PaginationComponent, Button, LeaveApplyModal, ConfirmationModel],
+  imports: [CommonModule, PaginationComponent, Button, LeaveApplyModal, ConfirmationModel, PublicHolidayList],
   templateUrl: './leave-list.html',
   styleUrl: './leave-list.css',
 })
@@ -19,6 +20,8 @@ export class LeaveList implements OnInit {
 
   readonly ApprovalStatus = ApprovalStatus;
   readonly statusLabels = LEAVE_STATUS_LABELS;
+
+  activeTab: 'my-leaves' | 'holidays' = 'my-leaves';
 
   leaves: LeaveResponse[] = [];
   totalItems = 0;
@@ -53,7 +56,22 @@ export class LeaveList implements OnInit {
   }
 
   applyBtnConfig!: ButtonInputConfig;
-  getPublicHolidayConfig!: ButtonInputConfig;
+
+  get myLeavesTabConfig(): ButtonInputConfig {
+    return {
+      variant: 'save',
+      text: 'My Leaves',
+      onClick: () => this.switchTab('my-leaves'),
+    };
+  }
+
+  get holidaysTabConfig(): ButtonInputConfig {
+    return {
+      variant: 'save',
+      text: 'Public Holidays',
+      onClick: () => this.switchTab('holidays'),
+    };
+  }
 
   ngOnInit(): void {
     this.applyBtnConfig = {
@@ -61,11 +79,11 @@ export class LeaveList implements OnInit {
       text: '+ Apply',
       onClick: () => this.openAddModal(),
     };
-    this.getPublicHolidayConfig = {
-      variant: 'save',
-      text: 'Holidays List',
-    };
     this.loadLeaves();
+  }
+
+  switchTab(tab: 'my-leaves' | 'holidays'): void {
+    this.activeTab = tab;
   }
 
   loadLeaves(): void {

@@ -1,0 +1,53 @@
+@if (visible) {
+<div class="phm-overlay">
+  <div class="phm-modal">
+    <div class="phm-card">
+      <div class="phm-header">
+        <h4 class="phm-title">{{ isEditMode ? 'Edit Public Holiday' : 'Add Public Holiday' }}</h4>
+        <button type="button" class="phm-close" (click)="onCancel()" aria-label="Close">✕</button>
+      </div>
+
+      <form (ngSubmit)="onSubmit()">
+        <div class="phm-field">
+          <fieldset class="phm-fieldset" [class.has-value]="form.get('name')?.value">
+            <legend class="phm-legend">Holiday Name</legend>
+            <input
+              type="text"
+              class="phm-text-input"
+              formControlName="name"
+              placeholder="e.g. Republic Day"
+              [formGroup]="form"
+            />
+          </fieldset>
+          @if (isInvalid('name')) {
+          <div class="phm-error">
+            @if (form.get('name')?.errors?.['required']) { Holiday name is required. } @else if
+            (form.get('name')?.errors?.['minlength']) { Name must be at least 2 characters. }
+          </div>
+          }
+        </div>
+
+        <div class="phm-field">
+          <fieldset class="phm-fieldset" [class.has-value]="form.get('holidayDate')?.value">
+            <legend class="phm-legend">Holiday Date</legend>
+            <input
+              type="date"
+              class="phm-date-input"
+              formControlName="holidayDate"
+              [formGroup]="form"
+            />
+          </fieldset>
+          @if (isInvalid('holidayDate')) {
+          <div class="phm-error">Holiday date is required.</div>
+          }
+        </div>
+
+        <div class="phm-footer">
+          <app-button [config]="cancelBtnConfig"></app-button>
+          <app-button [config]="submitBtnConfig"></app-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+}

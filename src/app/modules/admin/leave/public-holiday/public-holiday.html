@@ -1,0 +1,87 @@
+<div class="ph-wrapper">
+  <div class="ph-header-bar">
+    <div>
+      <h3 class="ph-page-title">Public Holidays</h3>
+    </div>
+    <app-button [config]="addBtnConfig"></app-button>
+  </div>
+
+  @if (isLoading) {
+  <div class="ph-center-state">
+    <div class="spinner-border text-primary"></div>
+  </div>
+  } @else if (holidays.length === 0) {
+  <div class="ph-center-state ph-empty-state">
+    <span class="material-icons">event_available</span>
+    <p>No public holidays added yet.</p>
+  </div>
+  } @else {
+  <div class="ph-table-card">
+    <div class="ph-grid-scroll">
+      <div class="ph-grid-container">
+        <div class="ph-grid-row ph-grid-header">
+          <div class="ph-grid-th">Holiday Name</div>
+          <div class="ph-grid-th">Date</div>
+          <div class="ph-grid-th">Day</div>
+          <div class="ph-grid-th text-center ph-action-cell">Actions</div>
+        </div>
+
+        @for (holiday of holidays; track holiday.id) {
+        <div class="ph-grid-row">
+          <div class="ph-grid-td">
+            <span class="ph-name-badge"> {{ holiday.name }} </span>
+          </div>
+          <div class="ph-grid-td">{{ formatDate(holiday.holidayDate) }}</div>
+          <div class="ph-grid-td">
+            <span class="ph-day-badge">{{ getDayName(holiday.holidayDate) }}</span>
+          </div>
+          <div class="ph-grid-td text-center ph-action-cell">
+            <div class="ph-actions">
+              <button
+                type="button"
+                class="ph-btn-action ph-btn-edit"
+                title="Edit"
+                (click)="openEditModal(holiday)"
+              >
+                <span class="material-icons">edit</span>
+              </button>
+              <button
+                type="button"
+                class="ph-btn-action ph-btn-delete"
+                title="Delete"
+                (click)="openDeleteConfirm(holiday)"
+              >
+                <span class="material-icons">delete</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+
+    <app-pagination
+      [currentPage]="currentPage"
+      [totalItems]="totalItems"
+      [itemsPerPage]="itemsPerPage"
+      (pageChange)="onPageChange($event)"
+      (pageSizeChange)="onPageSizeChange($event)"
+    ></app-pagination>
+  </div>
+  }
+</div>
+
+<app-public-holiday-modal
+  [visible]="showModal"
+  [isLoading]="isModalLoading"
+  [holiday]="selectedHoliday"
+  (save)="onSave($event)"
+  (closed)="closeModal()"
+></app-public-holiday-modal>
+
+<app-confirmation-model
+  [visible]="showDeleteConfirm"
+  [config]="deleteConfirmConfig"
+  (confirm)="confirmDelete()"
+  (closed)="cancelDelete()"
+></app-confirmation-model>

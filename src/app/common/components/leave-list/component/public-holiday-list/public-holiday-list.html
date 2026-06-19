@@ -1,0 +1,44 @@
+<div class="phl-wrapper">
+  @if (isLoading) {
+  <div class="phl-center-state">
+    <div class="spinner-border text-primary"></div>
+  </div>
+  } @else if (holidays.length === 0) {
+  <div class="phl-center-state phl-empty-state">
+    <span class="material-icons">event_available</span>
+    <p>No public holidays found.</p>
+  </div>
+  } @else {
+  <div class="phl-table-card">
+    <div class="phl-grid-scroll">
+      <div class="phl-grid-container">
+        <div class="phl-grid-row phl-grid-header">
+          <div class="phl-grid-th">Holiday Name</div>
+          <div class="phl-grid-th">Date</div>
+          <div class="phl-grid-th">Day</div>
+        </div>
+
+        @for (holiday of holidays; track holiday.id) {
+        <div class="phl-grid-row">
+          <div class="phl-grid-td">
+            <span class="phl-name-badge"> {{ holiday.name }} </span>
+          </div>
+          <div class="phl-grid-td">{{ formatDate(holiday.holidayDate) }}</div>
+          <div class="phl-grid-td">
+            <span class="phl-day-badge">{{ getDayName(holiday.holidayDate) }}</span>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+
+    <app-pagination
+      [currentPage]="currentPage"
+      [totalItems]="totalItems"
+      [itemsPerPage]="itemsPerPage"
+      (pageChange)="onPageChange($event)"
+      (pageSizeChange)="onPageSizeChange($event)"
+    ></app-pagination>
+  </div>
+  }
+</div>
