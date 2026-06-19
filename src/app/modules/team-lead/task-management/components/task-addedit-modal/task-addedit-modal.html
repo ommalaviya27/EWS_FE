@@ -50,7 +50,7 @@
                 [class.is-invalid-wrap]="isInvalid('dueDate')"
                 [class.has-value]="form.get('dueDate')?.value">
                 <span class="pm-legend">Due Date</span>
-                <input type="date" class="pm-date-input" formControlName="dueDate" />
+                <input type="date" class="pm-date-input" formControlName="dueDate" [min]="today"/>
               </div>
               @if (isInvalid('dueDate')) {
                 <div class="pm-error">Due date is required.</div>

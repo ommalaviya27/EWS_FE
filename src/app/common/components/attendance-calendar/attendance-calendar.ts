@@ -1,26 +1,10 @@
-import {
-  Component,
-  inject,
-  Input,
-  Output,
-  EventEmitter,
-  OnChanges,
-  SimpleChanges,
-  HostListener,
-  OnInit,
-} from '@angular/core';
+import { Component, inject, Input, Output, EventEmitter, OnChanges, SimpleChanges, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Button, ButtonInputConfig } from '@common';
 import { AttendanceService } from '../../services/attendance.service';
-import {
-  AttendanceDayResponse,
-  AttendanceMonthResponse,
-  AttendanceStatus,
-  ApprovalStatus,
-  ATTENDANCE_STATUS_OPTIONS,
-} from '../../models/attendance.model';
+import { AttendanceDayResponse, AttendanceMonthResponse, AttendanceStatus, ApprovalStatus, ATTENDANCE_STATUS_OPTIONS } from '../../models/attendance.model';
 import { MONTHS } from '../../constants/app.constants';
 
 @Component({
@@ -234,6 +218,8 @@ export class AttendanceCalendar implements OnInit, OnChanges {
 
     if (day.isAutoAbsent) return 'day-absent';
 
+    if (day.isPublicHoliday) return 'day-holiday';
+
     const isCurrMonth = this.isCurrentMonth();
 
     if (day.isToday && isCurrMonth) {
@@ -263,8 +249,7 @@ export class AttendanceCalendar implements OnInit, OnChanges {
     }
 
     const cellDate = new Date(this.selectedYear, this.selectedMonth - 1, day.day);
-    const isPast =
-      cellDate < new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate());
+    const isPast = cellDate < new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate());
 
     if (isPast) {
       if (this.canEditApproved && this.editingDay?.day === day.day && this.pendingStatus !== null) {

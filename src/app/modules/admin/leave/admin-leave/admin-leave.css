@@ -15,6 +15,12 @@
 }
 
 .al-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  align-items:center ;
+  flex-wrap: wrap;
+  gap: 12px;
   padding-bottom: 10px;
   border-bottom: 1px solid #e2e8f0;
 }
@@ -25,8 +31,7 @@
   margin: 0 0 4px;
 }
 
-.al-subtitle {
-  margin: 0;
-  font-size: 13px;
-  color: #6c757d;
+.al-tabs {
+  display: flex;
+  gap: 8px;
 }

@@ -81,4 +81,11 @@ export const API_ROUTES = {
     REVIEW: (id: number) => `/api/leave/${id}/review`,
     DELETE: (id: number) => `/api/leave/${id}`,
   },
+  PUBLIC_HOLIDAY: {
+    GET_ALL: '/api/public-holidays',
+    GET_BY_ID: (id: number) => `/api/public-holidays/${id}`,
+    CREATE: '/api/public-holidays',
+    UPDATE: (id: number) => `/api/public-holidays/${id}`,
+    DELETE: (id: number) => `/api/public-holidays/${id}`,
+  },
 };

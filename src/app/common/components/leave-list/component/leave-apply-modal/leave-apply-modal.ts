@@ -31,6 +31,13 @@ export class LeaveApplyModal implements OnInit, OnChanges {
     return this.leave !== null;
   }
 
+  today: string = new Date().toISOString().split('T')[0];
+
+  get minEndDate(): string {
+    const startDate = this.form.get('startDate')?.value;
+    return startDate ? startDate : this.today;
+  }
+
   ngOnInit(): void {
     this.buildForm();
     this.initConfigs();

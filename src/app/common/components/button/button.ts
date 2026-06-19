@@ -22,18 +22,9 @@ export class Button {
     return BUTTON_VARIANTS[this.config?.variant]?.text ?? '';
   }
 
-  get isToggle(): boolean {
-    return this.config?.variant === 'toggle';
-  }
-
   handleClick(e: MouseEvent): void {
     if (!this.config.disabled && !this.config.isLoading) {
       this.config?.onClick?.(e);
     }
-  }
-
-  handleToggle(e: Event): void {
-    const checked = (e.target as HTMLInputElement).checked;
-    this.config?.onToggle?.(checked);
   }
 }

@@ -1,14 +1,18 @@
 <div class="ll-wrapper" (click)="closeDropdown()">
   <div class="ll-header-bar">
-    <div>
-      <h3 class="ll-page-title">My Leave Requests</h3>
+    <div class="ll-tabs">
+      <app-button [config]="myLeavesTabConfig"></app-button>
+      <app-button [config]="holidaysTabConfig"></app-button>
     </div>
+
+    @if (activeTab === 'my-leaves') {
     <div class="ll-header-actions" (click)="$event.stopPropagation()">
       <app-button [config]="applyBtnConfig"></app-button>
     </div>
+    }
   </div>
 
-  @if (isLoading) {
+  @if (activeTab === 'my-leaves') { @if (isLoading) {
   <div class="ll-center-state">
     <div class="spinner-border text-primary"></div>
   </div>
@@ -38,9 +42,11 @@
           </div>
           <div class="ll-grid-td">{{ formatDate(leave.startDate) }}</div>
           <div class="ll-grid-td">{{ formatDate(leave.endDate) }}</div>
-          <div class="ll-grid-td ll-cell-truncate"
-          (mouseenter)="showTooltip($event, leave.reason)"
-          (mouseleave)="hideTooltip()">
+          <div
+            class="ll-grid-td ll-cell-truncate"
+            (mouseenter)="showTooltip($event, leave.reason)"
+            (mouseleave)="hideTooltip()"
+          >
             {{ leave.reason }}
           </div>
           <div class="ll-grid-td">
@@ -64,15 +70,26 @@
               </button>
 
               @if (activeDropdownId === leave.id) {
-              <div class="ll-action-dropdown" [class.dropdown-up]="leaves.length > 2 && i >= leaves.length - 2" (click)="$event.stopPropagation()">
+              <div
+                class="ll-action-dropdown"
+                [class.dropdown-up]="leaves.length > 2 && i >= leaves.length - 2"
+                (click)="$event.stopPropagation()"
+              >
                 @if (leave.canEdit) {
-                <button type="button" class="ll-dropdown-item ll-item" (click)="openEditModal(leave)">
+                <button
+                  type="button"
+                  class="ll-dropdown-item ll-item"
+                  (click)="openEditModal(leave)"
+                >
                   <span class="material-icons">edit</span>
                   <span>Edit</span>
                 </button>
-                }
-                @if (leave.canDelete) {
-                <button type="button" class="ll-dropdown-item ll-item" (click)="openDeleteConfirm(leave)">
+                } @if (leave.canDelete) {
+                <button
+                  type="button"
+                  class="ll-dropdown-item ll-item"
+                  (click)="openDeleteConfirm(leave)"
+                >
                   <span class="material-icons">delete</span>
                   <span>Delete</span>
                 </button>
@@ -98,14 +115,16 @@
       (pageSizeChange)="onPageSizeChange($event)"
     ></app-pagination>
   </div>
+  } } @if (activeTab === 'holidays') {
+  <app-public-holiday-list></app-public-holiday-list>
   }
 </div>
 
 @if (tooltip.visible) {
-  <div class="desc-tooltip" [style.top.px]="tooltip.y" [style.left.px]="tooltip.x">
-    {{ tooltip.text }}
-  </div>
-  }
+<div class="desc-tooltip" [style.top.px]="tooltip.y" [style.left.px]="tooltip.x">
+  {{ tooltip.text }}
+</div>
+}
 
 <app-leave-apply-modal
   [visible]="showModal"

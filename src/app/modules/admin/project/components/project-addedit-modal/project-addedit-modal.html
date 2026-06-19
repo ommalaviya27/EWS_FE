@@ -41,7 +41,7 @@
               [class.is-invalid-wrap]="isInvalid('startDate')"
               [class.has-value]="form.get('startDate')?.value">
               <span class="pm-legend">Start Date</span>
-              <input type="date" class="pm-date-input" id="startDate" formControlName="startDate" />
+              <input type="date" class="pm-date-input" id="startDate" formControlName="startDate" [min]="today"/>
             </div>
             @if (isInvalid('startDate')) {
               <div class="pm-error">Start date is required.</div>
@@ -53,7 +53,7 @@
               [class.is-invalid-wrap]="isInvalid('endDate')"
               [class.has-value]="form.get('endDate')?.value">
               <span class="pm-legend">End Date</span>
-              <input type="date" class="pm-date-input" id="endDate" formControlName="endDate" />
+              <input type="date" class="pm-date-input" id="endDate" formControlName="endDate" [min]="minEndDate"/>
             </div>
             @if (isInvalid('endDate')) {
               <div class="pm-error">End date is required.</div>

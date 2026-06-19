@@ -10,9 +10,8 @@ button {
 .btn-add {
   background-color: #0066FF;
   color: #fff;
-  width: 85px;
-  height: 42px;
-  padding: 5px;
+  width: 100%;
+  height: 48px;
   border-radius: 10px;
 }
 
@@ -44,36 +43,12 @@ button {
   border-radius: 10px;
 }
 
-.btn-toggle {
-  width: 2.5em;
-  height: 1.35em;
-  cursor: pointer;
-  display: block;
-  margin: 0 ;
-}
-
-.btn-toggle:checked {
-  background-color: #0066FF;
-  border-color: #0066FF;
-}
-
-.btn-toggle:focus {
-  box-shadow: 0 0 0 0.2rem rgba(69, 64, 225, 0.25);
-}
-
 .btn-filter {
   background-color: #e1e0fa;
   color: #0066FF;
-  border: 1.5px solid #dddcf8;
-  width: 85px;
-  height: 42px;
+  width: 100%;
+  height: 48px;
   border-radius: 10px;
-  padding: 6px 14px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  display: inline-flex;
-  align-items: center;
-  transition: background 0.15s, border-color 0.15s;
 }
 
 .btn-filter:hover {

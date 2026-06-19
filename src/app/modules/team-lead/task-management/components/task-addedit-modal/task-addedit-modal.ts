@@ -34,6 +34,7 @@ export class TaskAddeditModal implements OnInit, OnChanges {
   submitBtnConfig!: ButtonInputConfig;
 
   get isEditMode(): boolean { return this.task !== null; }
+  today: string = new Date().toISOString().split('T')[0];
 
   get lockedProjectName(): string {
     return this.projectName || this.task?.projectName || this.task?.projectId || '';
