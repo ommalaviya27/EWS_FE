@@ -1,10 +1,26 @@
-import { Component, inject, Input, Output, EventEmitter, OnChanges, SimpleChanges, HostListener, OnInit } from '@angular/core';
+import {
+  Component,
+  inject,
+  Input,
+  Output,
+  EventEmitter,
+  OnChanges,
+  SimpleChanges,
+  HostListener,
+  OnInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Button, ButtonInputConfig } from '@common';
 import { AttendanceService } from '../../services/attendance.service';
-import { AttendanceDayResponse, AttendanceMonthResponse, AttendanceStatus, ApprovalStatus, ATTENDANCE_STATUS_OPTIONS } from '../../models/attendance.model';
+import {
+  AttendanceDayResponse,
+  AttendanceMonthResponse,
+  AttendanceStatus,
+  ApprovalStatus,
+  ATTENDANCE_STATUS_OPTIONS,
+} from '../../models/attendance.model';
 import { MONTHS } from '../../constants/app.constants';
 
 @Component({
@@ -237,36 +253,32 @@ export class AttendanceCalendar implements OnInit, OnChanges {
       return 'day-today';
     }
 
-    if (!isCurrMonth) {
-      if (!day.status) return 'day-muted';
-      if (day.status === AttendanceStatus.Absent) return 'day-absent';
-      if (
-        day.status === AttendanceStatus.HalfDay_WFO ||
-        day.status === AttendanceStatus.HalfDay_WFH
-      )
-        return 'day-half';
-      return 'day-present';
-    }
-
     const cellDate = new Date(this.selectedYear, this.selectedMonth - 1, day.day);
-    const isPast = cellDate < new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate());
+    const todayDate = new Date(
+      this.today.getFullYear(),
+      this.today.getMonth(),
+      this.today.getDate()
+    );
+    const isPast = cellDate < todayDate;
 
-    if (isPast) {
-      if (this.canEditApproved && this.editingDay?.day === day.day && this.pendingStatus !== null) {
-        return 'day-today';
-      }
-      if (!day.status) return 'day-muted';
-      if (day.approvalStatus === ApprovalStatus.Rejected) return 'day-rejected';
-      if (day.status === AttendanceStatus.Absent) return 'day-absent';
-      if (
-        day.status === AttendanceStatus.HalfDay_WFO ||
-        day.status === AttendanceStatus.HalfDay_WFH
-      )
-        return 'day-half';
-      return 'day-present';
+    if (this.canEditApproved && this.editingDay?.day === day.day && this.pendingStatus !== null) {
+      return 'day-today';
     }
 
-    return 'day-empty';
+    if (!day.status) {
+      return isPast ? 'day-muted' : 'day-empty';
+    }
+
+    if (day.approvalStatus === ApprovalStatus.Rejected) return 'day-rejected';
+    if (day.status === AttendanceStatus.Absent) return 'day-absent';
+    if (
+      day.status === AttendanceStatus.HalfDay_WFO ||
+      day.status === AttendanceStatus.HalfDay_WFH
+    ) {
+      return 'day-half';
+    }
+
+    return 'day-present';
   }
 
   getDayLabel(day: AttendanceDayResponse): string {
