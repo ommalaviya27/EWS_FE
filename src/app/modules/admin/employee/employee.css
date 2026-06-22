@@ -106,6 +106,23 @@
   color: #0066FF;
 }
 
+.center-state {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.empty-state {
+  flex-direction: column;
+  color: #6c757d;
+  text-align: center;
+}
+
+.empty-state .material-icons {
+  font-size: 40px;
+  color: #6c757d;
+}
+
 .table-card {
   background: #fff;
   border-radius: 12px;

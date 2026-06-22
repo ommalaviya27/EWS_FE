@@ -46,4 +46,8 @@ export class AttendanceService {
   review(id: number, request: ReviewAttendanceRequest): Observable<ApiResponse<AttendanceResponse>> {
     return this.api.put<AttendanceResponse>(API_ROUTES.ATTENDANCE.REVIEW_ATTENDANCE(id), request);
   }
+
+  approveAllPending(): Observable<ApiResponse<number>> {
+    return this.api.post<number>(API_ROUTES.ATTENDANCE.APPROVE_ALL_PENDING);
+  }
 }

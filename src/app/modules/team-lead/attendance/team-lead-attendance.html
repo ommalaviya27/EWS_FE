@@ -11,17 +11,17 @@
       </button>
       <button
         class="tla-tab"
-        [class.tla-tab--active]="activeTab === 'team'"
-        (click)="switchTab('team')"
-      >
-        Team Attendance
-      </button>
-      <button
-        class="tla-tab"
         [class.tla-tab--active]="activeTab === 'review'"
         (click)="switchTab('review')"
       >
         Review Attendance
+      </button>
+      <button
+        class="tla-tab"
+        [class.tla-tab--active]="activeTab === 'team'"
+        (click)="switchTab('team')"
+      >
+        Team Attendance
       </button>
     </div>
   </div>

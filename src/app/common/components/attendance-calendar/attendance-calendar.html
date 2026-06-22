@@ -86,17 +86,11 @@
     </div>
   </div>
 
-  @if (canFill && !readonly) { @if (canEditApproved) {
-  @if (editingDay !== null && pendingStatus !== null) {
   <div class="att-footer">
     <app-button [config]="fillBtnConfig"></app-button>
   </div>
-  } } @else {
-  @if (isCurrentMonth() && !isTodayApproved && pendingStatus !== null) {
-  <div class="att-footer">
-    <app-button [config]="fillBtnConfig"></app-button>
-  </div>
-  } } } } @if (openDropdownDay !== null && monthData) {
+  
+  } @if (openDropdownDay !== null && monthData) {
   <div
     class="att-dropdown"
     [style.top.px]="dropdownTop"

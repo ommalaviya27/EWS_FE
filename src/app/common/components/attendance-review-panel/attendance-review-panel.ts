@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AttendanceService } from '../../services/attendance.service';
 import { AttendanceResponse, ApprovalStatus, ReviewAttendanceRequest } from '../../models/attendance.model';
 import { PaginationRequest, PaginationResponse } from '../pagination/pagination.model';
-import { PaginationComponent, Button, ButtonInputConfig} from '@common';
+import { PaginationComponent, Button, ButtonInputConfig } from '@common';
 import { DEFAULT_PAGINATION } from '../../../common/constants/app.constants';
 
 @Component({
@@ -27,26 +27,23 @@ export class AttendanceReviewPanel implements OnInit {
   currentPage = DEFAULT_PAGINATION.currentPage;
   itemsPerPage = DEFAULT_PAGINATION.itemsPerPage;
 
-  getRejectConfig(record: any): ButtonInputConfig {
-    return {
-      type: 'button',
-      variant: 'close',
-      text: 'Reject',
-      onClick: () => this.reject(record)
-    };
-  }
-
-  getApproveConfig(record: any): ButtonInputConfig {
-    return {
-      type: 'button',
-      variant: 'save',
-      text: 'Approve',
-      onClick: () => this.approve(record)
-    };
-  }
+  activeDropdownId: number | null = null;
+  approveAllBtnConfig!: ButtonInputConfig;
 
   ngOnInit(): void {
+    this.initButtonConfigs();
     this.load();
+  }
+
+  private initButtonConfigs(): void {
+    this.approveAllBtnConfig = {
+      variant: 'save',
+      text: 'Approve All',
+      onClick: (event: MouseEvent) => {
+        event?.stopPropagation();
+        this.approveAll();
+      }
+    };
   }
 
   load(): void {
@@ -56,6 +53,7 @@ export class AttendanceReviewPanel implements OnInit {
 
   private fetchPage(): void {
     this.isLoading = true;
+    this.closeDropdown();
     const pagination: PaginationRequest = {
       pageNumber: this.currentPage,
       pageSize: this.itemsPerPage,
@@ -91,12 +89,24 @@ export class AttendanceReviewPanel implements OnInit {
     this.fetchPage();
   }
 
-  approve(record: AttendanceResponse): void {
-    this.review(record, ApprovalStatus.Approved);
+  toggleDropdown(event: MouseEvent, recordId: number): void {
+    event.stopPropagation();
+    this.activeDropdownId = this.activeDropdownId === recordId ? null : recordId;
   }
 
-  reject(record: AttendanceResponse): void {
-    this.review(record, ApprovalStatus.Rejected);
+  closeDropdown(): void {
+    this.activeDropdownId = null;
+  }
+
+  onActionClick(event: MouseEvent, action: 'approve' | 'reject', record: AttendanceResponse): void {
+    event.stopPropagation();
+    this.closeDropdown();
+
+    if (action === 'approve') {
+      this.review(record, ApprovalStatus.Approved);
+    } else if (action === 'reject') {
+      this.review(record, ApprovalStatus.Rejected);
+    }
   }
 
   private review(record: AttendanceResponse, approvalStatus: ApprovalStatus): void {
@@ -107,11 +117,28 @@ export class AttendanceReviewPanel implements OnInit {
     this.svc.review(record.id, req).subscribe({
       next: (res) => {
         this.toastr.success(res.message);
+        delete this.remarkMap[record.id]; // Clean remark state tracking
         const remainingOnPage = this.records.length - 1;
         if (remainingOnPage === 0 && this.currentPage > 1) this.currentPage--;
         this.fetchPage();
       },
       error: (e) => this.toastr.error(e?.error?.message),
+    });
+  }
+
+  approveAll(): void {
+    this.isLoading = true;
+    this.svc.approveAllPending().subscribe({
+      next: (res) => {
+        this.toastr.success(res.message);
+        this.remarkMap = {};
+        this.currentPage = 1;
+        this.load();
+      },
+      error: (e) => {
+        this.toastr.error(e?.error?.message);
+        this.isLoading = false;
+      }
     });
   }
 

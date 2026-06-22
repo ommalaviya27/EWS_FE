@@ -1,4 +1,4 @@
-<div class="review-wrapper">
+<div class="review-wrapper" (click)="closeDropdown()">
   <div class="review-header">
     <div class="review-header-left">
       <h3 class="review-title">Pending Approvals</h3>
@@ -6,70 +6,110 @@
       <span class="review-count-badge">{{ totalItems }} pending</span>
       }
     </div>
-    <button class="review-refresh" (click)="load()" title="Refresh">
-      <span class="material-icons">refresh</span>
-    </button>
+
+    <div class="review-header-right">
+      <button class="review-refresh" (click)="load(); $event.stopPropagation()" title="Refresh">
+        <span class="material-icons">refresh</span>
+      </button>
+    </div>
   </div>
 
   @if (isLoading) {
   <div class="review-loading">
-    <div class="spinner-border text-primary"></div>
   </div>
   } @if (!isLoading && totalItems === 0) {
   <div class="review-empty">
     <p>No pending attendance to review.</p>
   </div>
   } @if (!isLoading && records.length > 0) {
-  <div class="review-grid">
-    @for (record of records; track trackById($index, record)) {
-    <div class="review-card">
-      <div class="review-card-header">
-        <div class="review-user">
-          <div class="review-user-avatar">
-            {{ record.userName.charAt(0).toUpperCase() }}
-          </div>
-          <div class="review-user-info">
-            <span class="review-user-name">{{ record.userName }}</span>
-            <span class="review-date">{{ record.attendanceDate | date : 'EEE, dd MMM yyyy' }}</span>
-          </div>
+  <div class="table-card">
+    <div class="grid-scroll">
+      <div class="grid-container">
+        <div class="grid-row grid-header">
+          <div class="grid-th">Employee Name</div>
+          <div class="grid-th">Attendance Date</div>
+          <div class="grid-th">Status</div>
+          <div class="grid-th">Remark</div>
+          <div class="grid-th text-center action-cell">Actions</div>
         </div>
-        <span
-          class="review-status-badge review-status-badge--{{
-            record.statusDisplay.toLowerCase().replace(' ', '-')
-          }}"
-        >
-          {{ record.statusDisplay }}
-        </span>
-      </div>
 
-      <div class="review-card-body">
-        <div class="review-field">
-          <label class="review-field-label">Remark:</label>
-          <input
-            type="text"
-            class="review-remark"
-            placeholder="Add remark: (optional)"
-            [(ngModel)]="remarkMap[record.id]"
-          />
+        @for (record of records; track trackById($index, record); let i = $index) {
+        <div class="grid-row">
+          <div class="grid-td fw-semibold cell-truncate">{{ record.userName }}</div>
+          <div class="grid-td">{{ record.attendanceDate | date : 'dd MMM yyyy (EEE)' }}</div>
+          <div class="grid-td">
+            <span
+              class="review-status-badge review-status-badge--{{
+                record.statusDisplay.toLowerCase().replace(' ', '-')
+              }}"
+            >
+              {{ record.statusDisplay }}
+            </span>
+          </div>
+          <div class="grid-td" (click)="$event.stopPropagation()">
+            <input
+              type="text"
+              class="review-remark"
+              placeholder="Add remark: (optional)"
+              [(ngModel)]="remarkMap[record.id]"
+            />
+          </div>
+
+          <div class="grid-td text-center action-cell">
+            <div class="action-container">
+              <button
+                type="button"
+                class="btn-dots"
+                [class.active]="activeDropdownId === record.id"
+                (click)="toggleDropdown($event, record.id)"
+              >
+                <span class="material-icons">more_vert</span>
+              </button>
+
+              @if (activeDropdownId === record.id) {
+              <div
+                class="action-dropdown"
+                [class.dropdown-up]="records.length > 2 && i >= records.length - 2"
+                (click)="$event.stopPropagation()"
+              >
+                <button
+                  type="button"
+                  class="dropdown-item approve-item"
+                  (click)="onActionClick($event, 'approve', record)"
+                >
+                  <span>Approve</span>
+                </button>
+                <button
+                  type="button"
+                  class="dropdown-item reject-item"
+                  (click)="onActionClick($event, 'reject', record)"
+                >
+                  <span>Reject</span>
+                </button>
+              </div>
+              }
+            </div>
+          </div>
         </div>
-        <div class="review-actions">
-          <app-button [config]="getRejectConfig(record)"></app-button>
-          <app-button [config]="getApproveConfig(record)"></app-button>
-        </div>
+        }
       </div>
     </div>
-    }
-  </div>
 
-  @if (totalItems > itemsPerPage || itemsPerPage > 5) {
-  <div>
+    @if (totalItems > itemsPerPage || itemsPerPage > 5) {
     <app-pagination
+      (click)="$event.stopPropagation()"
       [currentPage]="currentPage"
       [totalItems]="totalItems"
       [itemsPerPage]="itemsPerPage"
       (pageChange)="onPageChange($event)"
       (pageSizeChange)="onPageSizeChange($event)"
     ></app-pagination>
+    }
   </div>
-  } }
+  }
+  <div class="approve-btn">
+    @if (!isLoading && totalItems > 0) {
+    <app-button [config]="approveAllBtnConfig"></app-button>
+    }
+  </div>
 </div>

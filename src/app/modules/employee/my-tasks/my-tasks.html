@@ -21,13 +21,8 @@
   <div class="mt-center-state mt-empty-state">
     <span class="material-icons">{{ projectSearchTerm ? 'search_off' : 'folder_open' }}</span>
     <h4>
-      {{ projectSearchTerm ? 'No results for "' + projectSearchTerm + '"' : 'No Projects Found' }}
+      {{ projectSearchTerm ? 'No results for "' + projectSearchTerm + '"' + '! Clear the search.' : 'No task of any project is assigned to you.' }}
     </h4>
-    @if (projectSearchTerm) {
-    <p>Try a different name or clear the search.</p>
-    } @else {
-    <p>You have no tasks assigned to you yet under any project.</p>
-    }
   </div>
   } @else {
   <div class="mt-projects-scroll">

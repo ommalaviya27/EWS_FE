@@ -1,8 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-import { PublicHolidayService } from '../../../../common/services/public-holiday.service';
-import { HolidayResponse, CreateHolidayRequest, UpdateHolidayRequest } from '../../../../common/models/leave.model';
+import { PublicHolidayService } from './services/public-holiday.service';
+import { HolidayResponse, CreateHolidayRequest, UpdateHolidayRequest } from './models/public-holiday.model';
 import { PaginationComponent, Button, ButtonInputConfig, ConfirmationModel, ConfirmationModelConfig } from '@common';
 import { PublicHolidayModal } from './components/public-holiday-modal/public-holiday-modal';
 import { DEFAULT_PAGINATION } from '../../../../common/constants/app.constants';

@@ -24,12 +24,7 @@
   @else if (projects.length === 0) {
   <div class="center-state empty-state">
     <span class="material-icons">{{ searchTerm ? 'search_off' : 'inventory_2' }}</span>
-    <h4>{{ searchTerm ? 'No results for "' + searchTerm + '"' : 'No Projects Found' }}</h4>
-    @if (searchTerm) {
-      <p class="empty-hint">Try a different name or clear the search.</p>
-    } @else {
-      <p>No projects have been created yet.</p>
-    }
+    <h4>{{ searchTerm ? 'No results for "' + searchTerm + '"' + '! Clear the search.' : 'No Projects Found' }}</h4>
   </div>
   }
 

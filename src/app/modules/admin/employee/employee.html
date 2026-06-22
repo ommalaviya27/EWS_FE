@@ -39,10 +39,7 @@
   } @else if (employees.length === 0) {
   <div class="center-state empty-state">
     <span class="material-icons">{{ searchTerm ? 'search_off' : 'group' }}</span>
-    <h4>{{ searchTerm ? 'No results for "' + searchTerm + '"' : 'No Employees Found' }}</h4>
-    @if (searchTerm) {
-      <p class="empty-hint">Try a different name or clear the search.</p>
-    }
+    <h4>{{ searchTerm ? 'No results for "' + searchTerm + '"' + '! Clear the search.': 'No Employees Found' }}</h4>
   </div>
   } @else {
   <div class="table-card">

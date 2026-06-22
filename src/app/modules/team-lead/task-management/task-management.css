@@ -198,6 +198,11 @@
   text-align: center;
 }
 
+.empty-state .material-icons {
+  font-size: 40px;
+  color: #6c757d;
+}
+
 .desc-tooltip {
   position: fixed;
   z-index: 99999;

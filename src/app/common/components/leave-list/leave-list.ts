@@ -5,7 +5,7 @@ import { LeaveService } from '../../services/leave.service';
 import { LeaveResponse, ApprovalStatus, ApplyLeaveRequest, EditLeaveRequest, LEAVE_STATUS_LABELS } from '../../models/leave.model';
 import { PaginationComponent, Button, ButtonInputConfig, ConfirmationModel, ConfirmationModelConfig } from '@common';
 import { LeaveApplyModal } from './component/leave-apply-modal/leave-apply-modal';
-import { PublicHolidayList } from './component/public-holiday-list/public-holiday-list';
+import { PublicHolidayList } from '../public-holiday-list/public-holiday-list';
 import { DEFAULT_PAGINATION } from '../../constants/app.constants';
 
 @Component({

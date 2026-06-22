@@ -71,6 +71,7 @@ export const API_ROUTES = {
     ADD_ATTENDANCE_ADMIN: '/api/attendance/admin-fill',
     EDIT: (id: number) => `/api/attendance/${id}`,
     REVIEW_ATTENDANCE: (id: number) => `/api/attendance/${id}/review`,
+    APPROVE_ALL_PENDING: '/api/attendance/approve-all-pending',
   },
   LEAVE: {
     GET_MY_LEAVES: '/api/leave/my-leaves',

@@ -4,17 +4,17 @@
     <div class="adm-tabs">
       <button
         class="adm-tab"
-        [class.adm-tab--active]="activeTab === 'team-leads'"
-        (click)="switchTab('team-leads')"
-      >
-        Team Leads Attendance
-      </button>
-      <button
-        class="adm-tab"
         [class.adm-tab--active]="activeTab === 'review'"
         (click)="switchTab('review')"
       >
         Review Attendance
+      </button>
+      <button
+        class="adm-tab"
+        [class.adm-tab--active]="activeTab === 'team-leads'"
+        (click)="switchTab('team-leads')"
+      >
+        Team Leads Attendance
       </button>
     </div>
   </div>

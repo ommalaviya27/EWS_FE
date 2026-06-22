@@ -1,26 +1,10 @@
-import {
-  Component,
-  inject,
-  Input,
-  Output,
-  EventEmitter,
-  OnChanges,
-  SimpleChanges,
-  HostListener,
-  OnInit,
-} from '@angular/core';
+import { Component, inject, Input, Output, EventEmitter, OnChanges, SimpleChanges, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Button, ButtonInputConfig } from '@common';
 import { AttendanceService } from '../../services/attendance.service';
-import {
-  AttendanceDayResponse,
-  AttendanceMonthResponse,
-  AttendanceStatus,
-  ApprovalStatus,
-  ATTENDANCE_STATUS_OPTIONS,
-} from '../../models/attendance.model';
+import { AttendanceDayResponse, AttendanceMonthResponse, AttendanceStatus, ApprovalStatus, ATTENDANCE_STATUS_OPTIONS } from '../../models/attendance.model';
 import { MONTHS } from '../../constants/app.constants';
 
 @Component({
@@ -57,7 +41,6 @@ export class AttendanceCalendar implements OnInit, OnChanges {
   dropdownLeft = 0;
 
   pendingStatus: AttendanceStatus | null = null;
-
   editingDay: AttendanceDayResponse | null = null;
 
   searchBtnConfig!: ButtonInputConfig;
@@ -159,67 +142,39 @@ export class AttendanceCalendar implements OnInit, OnChanges {
   fillAttendance(): void {
     if (!this.monthData) return;
 
-    if (this.canEditApproved) {
-      if (!this.editingDay) {
-        this.toastr.warning('Please select a day on the calendar first.');
-        return;
-      }
+    if (this.pendingStatus === null) {
+      this.toastr.warning('Please select an attendance status before saving.');
+      return;
+    }
 
-      if (this.pendingStatus === null) {
-        this.toastr.warning('Please select an attendance status before saving.');
-        return;
-      }
+    const statusToSubmit = this.pendingStatus;
+    const targetDay = this.editingDay || this.monthData.days.find((d) => d.isToday);
 
-      const day = this.editingDay;
-      const statusToSubmit = this.pendingStatus;
+    if (!targetDay) {
+      this.toastr.warning('Please select a valid day to submit attendance.');
+      return;
+    }
 
-      const call$ = day.attendanceId
-        ? this.svc.edit(day.attendanceId, statusToSubmit)
-        : this.svc.adminFill({
+    const call$ = targetDay.attendanceId
+      ? this.svc.edit(targetDay.attendanceId, statusToSubmit)
+      : this.canEditApproved 
+        ? this.svc.adminFill({
             userId: this.monthData.userId,
             status: statusToSubmit,
-            attendanceDate: `${this.selectedYear}-${String(this.selectedMonth).padStart(
-              2,
-              '0'
-            )}-${String(day.day).padStart(2, '0')}`,
-          });
-
-      call$.subscribe({
-        next: (res) => {
-          this.toastr.success(res.message);
-          this.editingDay = null;
-          this.pendingStatus = null;
-          this.load();
-          this.attendanceChanged.emit();
-        },
-        error: (e) => this.toastr.error(e?.error?.message),
-      });
-    } else {
-      if (!this.isCurrentMonth()) return;
-      const todayEntry = this.monthData.days.find((d) => d.isToday);
-      if (!todayEntry || todayEntry.isWeekend) return;
-      if (todayEntry.approvalStatus === ApprovalStatus.Approved) return;
-
-      if (this.pendingStatus === null) {
-        this.toastr.warning('Please select an attendance status before saving.');
-        return;
-      }
-
-      const statusToSubmit = this.pendingStatus;
-
-      const call$ = todayEntry.attendanceId
-        ? this.svc.edit(todayEntry.attendanceId, statusToSubmit)
+            attendanceDate: `${this.selectedYear}-${String(this.selectedMonth).padStart(2, '0')}-${String(targetDay.day).padStart(2, '0')}`,
+          })
         : this.svc.add(statusToSubmit);
 
-      call$.subscribe({
-        next: (res) => {
-          this.toastr.success(res.message);
-          this.load();
-          this.attendanceChanged.emit();
-        },
-        error: (e) => this.toastr.error(e?.error?.message),
-      });
-    }
+    call$.subscribe({
+      next: (res) => {
+        this.toastr.success(res.message);
+        this.editingDay = null;
+        this.pendingStatus = null;
+        this.load();
+        this.attendanceChanged.emit();
+      },
+      error: (e) => this.toastr.error(e?.error?.message),
+    });
   }
 
   isCurrentMonth(): boolean {
@@ -231,9 +186,7 @@ export class AttendanceCalendar implements OnInit, OnChanges {
 
   getDayClass(day: AttendanceDayResponse): string {
     if (day.isWeekend) return 'day-muted';
-
     if (day.isAutoAbsent) return 'day-absent';
-
     if (day.isPublicHoliday) return 'day-holiday';
 
     const isCurrMonth = this.isCurrentMonth();
@@ -283,7 +236,6 @@ export class AttendanceCalendar implements OnInit, OnChanges {
 
   getDayLabel(day: AttendanceDayResponse): string {
     if (day.isWeekend) return '';
-
     if (day.isAutoAbsent) return 'A';
 
     if (day.isToday && this.isCurrentMonth()) {
