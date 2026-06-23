@@ -1,78 +1,93 @@
 @if (visible) {
-<div class="pm-overlay" (click)="onCancel()">
-  <div class="pm-modal" (click)="$event.stopPropagation()">
-    <div class="pm-card">
-      <div class="pm-header">
-        <h4 class="pm-title">{{ isEditMode ? 'Edit Employee' : 'Add New Employee' }}</h4>
-        <button type="button" class="pm-close" (click)="onCancel()">✕</button>
+<div class="eam-overlay" (click)="onCancel()">
+  <div class="eam-modal" (click)="$event.stopPropagation()">
+    <div class="eam-card">
+      <div class="eam-header">
+        <h4 class="eam-title">{{ isEditMode ? 'Edit Employee' : 'Add New Employee' }}</h4>
+        <button type="button" class="eam-close" (click)="onCancel()" aria-label="Close">✕</button>
       </div>
 
-      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
-        <div class="pm-two-col">
-          <div class="pm-field">
+      <form [formGroup]="employeeform" (ngSubmit)="onSubmit()" novalidate>
+        <div class="eam-two-col">
+          <div class="eam-field">
             <app-name-field [config]="nameConfig"></app-name-field>
           </div>
-          <div class="pm-field">
+          <div class="eam-field">
             <app-mobile [config]="mobileConfig"></app-mobile>
           </div>
         </div>
 
-        <div class="pm-field">
+        <div class="eam-field">
           <app-email [config]="emailConfig"></app-email>
         </div>
 
         @if (!isEditMode) {
-        <div class="pm-field">
+        <div class="eam-field">
           <app-password [config]="passwordConfig"></app-password>
         </div>
         }
 
-        <div class="pm-field">
-          <select
-            class="form-select pm-input"
-            formControlName="roleId"
-            [class.is-invalid]="isInvalid('roleId')"
-            (change)="onRoleChange()"
-          >
-            <option [ngValue]="null" disabled>Select role</option>
-            @for (r of roleList; track r.roleId) {
-            <option [value]="r.roleId">{{ r.roleName }}</option>
-            }
-          </select>
+        <div class="eam-field">
+          <div class="eam-fieldset" [class.has-value]="employeeform.get('roleId')?.value" [class.is-invalid-wrap]="isInvalid('roleId')">
+            <span class="eam-legend">Role</span>
+            <select
+              class="eam-select-input"
+              formControlName="roleId"
+              (change)="onRoleChange()"
+            >
+              <option [ngValue]="null" disabled>Select role</option>
+              @for (r of roleList; track r.roleId) {
+                <option [value]="r.roleId">{{ r.roleName }}</option>
+              }
+            </select>
+          </div>
           @if (isInvalid('roleId')) {
-          <div class="pm-error">Role is required.</div>
+            <div class="eam-error">Role is required.</div>
           }
         </div>
 
-        <div class="pm-field" [class.pm-field-disabled]="!showTeamLeadField">
-          <select
-            class="form-select pm-input"
-            formControlName="teamLeadId"
-            [disabled]="!showTeamLeadField"
-          >
-            <option [ngValue]="null">Not assigned</option>
-            @for (tl of teamLeads; track tl.userId) {
-            <option [value]="tl.userId">{{ tl.name }}</option>
-            }
-          </select>
+        <div class="eam-field">
+          <div class="eam-fieldset" 
+               [class.has-value]="employeeform.get('reportingId')?.value !== null"
+               [class.is-disabled]="!showTeamLeadField">
+            <span class="eam-legend">Reporting Person</span>
+            <select
+              class="eam-select-input"
+              formControlName="reportingId"
+              [disabled]="!showTeamLeadField"
+            >
+              <option [ngValue]="null">Select Reporting Person</option>
+              @for (tl of teamLeads; track tl.userId) {
+                <option [value]="tl.userId">{{ tl.name }}</option>
+              }
+            </select>
+          </div>
+          
           @if (showTeamLeadField && teamLeads.length === 0) {
-          <div class="pm-hint">No active team leads available.</div>
-          } @if (!showTeamLeadField) {
-          <div class="pm-hint pm-hint-muted">Only assign when role is Employee.</div>
+            <div class="eam-hint">No active team leads available.</div>
+          } 
+          @if (!showTeamLeadField) {
+            <div class="eam-hint eam-hint-muted">
+              @if (selectedRoleId === EmployeeRole.TeamLead) {
+                Reporting admin is automatically assigned by the system.
+              } @else {
+                Only assign when role is Employee.
+              }
+            </div>
           }
         </div>
 
-        <div class="pm-field">
-          <div class="pm-fieldset has-value">
-            <span class="pm-legend">Status</span>
-            <select class="pm-select-input" formControlName="status">
+        <div class="eam-field">
+          <div class="eam-fieldset has-value">
+            <span class="eam-legend">Status</span>
+            <select class="eam-select-input" formControlName="status">
               <option [ngValue]="true">Active</option>
               <option [ngValue]="false">Inactive</option>
             </select>
           </div>
         </div>
 
-        <div class="pm-footer">
+        <div class="eam-footer">
           <app-button [config]="cancelBtnConfig"></app-button>
           <app-button [config]="submitBtnConfig"></app-button>
         </div>

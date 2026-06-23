@@ -50,7 +50,7 @@
           <div class="grid-th">Email</div>
           <div class="grid-th">Mobile</div>
           <div class="grid-th">Role</div>
-          <div class="grid-th">Team Lead</div>
+          <div class="grid-th">Reporting</div>
           <div class="grid-th">Status</div>
           <div class="grid-th text-center">Actions</div>
         </div>
@@ -68,10 +68,10 @@
           </div>
 
           <div class="grid-td">
-            @if (employee.roleId !== 3) {
+            @if (employee.roleId === 1) {
             <span class="tl-na">N/A</span>
-            } @else if (employee.teamLeadName) {
-            <span>{{ employee.teamLeadName }}</span>
+            } @else if (employee.reportingName) {
+            <span>{{ employee.reportingName }}</span>
             } @else {
             <span class="tl-unassigned">—</span>
             }

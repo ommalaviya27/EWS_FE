@@ -25,8 +25,8 @@ export class ProjectService {
       params['ProjectStatus'] = filters.projectStatus.toString();
     }
 
-    if (filters.teamLeadId != null && filters.teamLeadId !== '') {
-      params['TeamLeadId'] = filters.teamLeadId.toString();
+    if (filters.reportingId != null && filters.reportingId !== '') {
+      params['ReportingId'] = filters.reportingId.toString();
     }
 
     if (filters.startDateFrom != null && filters.startDateFrom !== '') {

@@ -8,7 +8,6 @@ import { SessionService } from '../../../services/session.service';
 import { GetProfileResponse } from '../../../models/profile.model';
 import { AppValidators } from '../../../validators/app.validators';
 import { ROLE_NAMES, UserRole } from '../../../../modules/auth/models/auth.model';
-import { ROUTES } from '../../../constants/route-paths';
 import { APP_CONSTANTS } from '../../../constants/app.constants';
 import { Name, NameFieldConfig, Email, EmailInputConfig, MobileNumber, MobileNumberConfig, Button, ButtonInputConfig } from '@common';
 import { ChangePassword } from '../change-password/change-password';

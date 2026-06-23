@@ -14,11 +14,6 @@ export const LEAVE_TYPE_OPTIONS = [
   { value: LeaveType.HalfDay, label: 'Half Day' },
 ];
 
-export const LEAVE_TYPE_LABELS: Record<LeaveType, string> = {
-  [LeaveType.FullDay]: 'Full Day',
-  [LeaveType.HalfDay]: 'Half Day',
-};
-
 export const LEAVE_STATUS_LABELS: Record<ApprovalStatus, string> = {
   [ApprovalStatus.Pending]: 'Pending',
   [ApprovalStatus.Approved]: 'Approved',

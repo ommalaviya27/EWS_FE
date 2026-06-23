@@ -5,7 +5,6 @@ export enum EmployeeRole {
 }
 
 export const EMPLOYEE_ROLE_LABELS: Record<number, string> = {
-  [EmployeeRole.Admin]: 'Admin',
   [EmployeeRole.TeamLead]: 'Team Lead',
   [EmployeeRole.Employee]: 'Employee',
 };
@@ -22,8 +21,8 @@ export interface Employee {
   mobileNumber: string;
   roleId: number;
   roleName: string;
-  teamLeadId: number | null;
-  teamLeadName: string | null;
+  reportingId: number | null;
+  reportingName: string | null;
   status: boolean;
 }
 
@@ -42,7 +41,7 @@ export interface CreateEmployeeRequest {
   password: string;
   mobileNumber: string;
   roleId: number;
-  teamLeadId: number | null;
+  reportingId: number | null;
   status: boolean;
 }
 
@@ -51,7 +50,7 @@ export interface UpdateEmployeeRequest {
   email: string;
   mobileNumber: string;
   roleId: number;
-  teamLeadId: number | null;
+  reportingId: number | null;
   status: boolean;
 }
 

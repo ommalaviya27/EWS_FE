@@ -29,7 +29,7 @@ export class EmployeeAddeditModal implements OnInit, OnChanges {
   cancelBtnConfig!: ButtonInputConfig;
   submitBtnConfig!: ButtonInputConfig;
 
-  form!: FormGroup;
+  employeeform!: FormGroup;
   roleList: Role[] = [];
   teamLeads: TeamLead[] = [];
   readonly EmployeeRole = EmployeeRole;
@@ -39,7 +39,7 @@ export class EmployeeAddeditModal implements OnInit, OnChanges {
   }
 
   get selectedRoleId(): number {
-    return Number(this.form?.get('roleId')?.value);
+    return Number(this.employeeform?.get('roleId')?.value);
   }
 
   get showTeamLeadField(): boolean {
@@ -67,7 +67,7 @@ export class EmployeeAddeditModal implements OnInit, OnChanges {
   private loadRoles(): void {
     this.employeeService.getRoles().subscribe({
       next: (res) => {
-        this.roleList = res.data ?? [];
+        this.roleList = (res.data ?? []).filter(r => r.roleId !== EmployeeRole.Admin);
       },
       error: () => {
         this.roleList = [];
@@ -112,7 +112,7 @@ export class EmployeeAddeditModal implements OnInit, OnChanges {
 
   private buildForm(): void {
     const e = this.employee;
-    this.form = this.fb.group({
+    this.employeeform = this.fb.group({
       name: [
         e?.name ?? '',
         [Validators.required, Validators.minLength(2), Validators.maxLength(100)],
@@ -121,22 +121,22 @@ export class EmployeeAddeditModal implements OnInit, OnChanges {
       mobileNumber: [e?.mobileNumber ?? '', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       password: ['', this.isEditMode ? [] : [Validators.required, Validators.minLength(8)]],
       roleId: [e?.roleId ?? null, [Validators.required]],
-      teamLeadId: [e?.teamLeadId ?? null],
-      status: [true, Validators.required],
+      reportingId: [e?.reportingId ?? null],
+      status: [e?.status ?? true, Validators.required],
     });
 
-    this.updateTeamLeadControlState();
+    this.updateReportingControlState();
   }
 
   onRoleChange(): void {
     if (this.selectedRoleId !== EmployeeRole.Employee) {
-      this.form.get('teamLeadId')?.setValue(null);
+      this.employeeform.get('reportingId')?.setValue(null);
     }
-    this.updateTeamLeadControlState();
+    this.updateReportingControlState();
   }
 
-  private updateTeamLeadControlState(): void {
-    const ctrl = this.form?.get('teamLeadId');
+  private updateReportingControlState(): void {
+    const ctrl = this.employeeform?.get('reportingId');
     if (!ctrl) return;
     if (this.showTeamLeadField) {
       ctrl.enable();
@@ -146,13 +146,13 @@ export class EmployeeAddeditModal implements OnInit, OnChanges {
   }
 
   onSubmit(): void {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
+    if (this.employeeform.invalid) {
+      this.employeeform.markAllAsTouched();
       return;
     }
-    const v = this.form.getRawValue();
+    const v = this.employeeform.getRawValue();
     const status = v.status === true || v.status === 'true';
-    const teamLeadId = this.showTeamLeadField && v.teamLeadId ? Number(v.teamLeadId) : null;
+    const reportingId = this.showTeamLeadField && v.reportingId ? Number(v.reportingId) : null;
 
     const payload = this.isEditMode
       ? ({
@@ -160,7 +160,7 @@ export class EmployeeAddeditModal implements OnInit, OnChanges {
           email: v.email,
           mobileNumber: v.mobileNumber,
           roleId: Number(v.roleId),
-          teamLeadId,
+          reportingId,
           status,
         } as UpdateEmployeeRequest)
       : ({
@@ -169,7 +169,7 @@ export class EmployeeAddeditModal implements OnInit, OnChanges {
           password: v.password,
           mobileNumber: v.mobileNumber,
           roleId: Number(v.roleId),
-          teamLeadId,
+          reportingId,
           status,
         } as CreateEmployeeRequest);
     this.save.emit(payload as any);
@@ -180,12 +180,12 @@ export class EmployeeAddeditModal implements OnInit, OnChanges {
   }
 
   isInvalid(field: string): boolean {
-    const c = this.form.get(field);
+    const c = this.employeeform.get(field);
     return !!(c && c.invalid && c.touched);
   }
 
   getError(field: string): string {
-    const c = this.form.get(field);
+    const c = this.employeeform.get(field);
     if (!c || !c.errors || !c.touched) return '';
     if (c.errors['required']) return 'This field is required.';
     if (c.errors['minlength'])

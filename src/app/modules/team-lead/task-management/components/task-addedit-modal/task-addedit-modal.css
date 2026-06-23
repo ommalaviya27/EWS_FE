@@ -143,6 +143,7 @@ textarea.form-control {
   margin-top: 6px;
   font-size: 13px;
   color: #dc2626;
+  padding-left: 8px;
 }
 
 @media (max-width: 576px) {
@@ -159,7 +160,7 @@ textarea.form-control {
     grid-template-columns: 1fr;
   }
 }
-/* Locked project field */
+
 .pm-locked-value {
   flex: 1;
   font-size: 15px;

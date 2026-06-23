@@ -25,6 +25,7 @@
             [class.has-value]="form.get('userId')?.value">
             <span class="pm-legend">Assign Team Lead</span>
             <select class="pm-select-input" formControlName="userId">
+              <option [value]="null" disabled>Select team lead</option>
               @for (tl of teamLeaders; track tl.userId) {
                 <option [value]="tl.userId">{{ tl.name }}</option>
               }
