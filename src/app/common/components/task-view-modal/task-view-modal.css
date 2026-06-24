@@ -48,6 +48,7 @@
 .tvm-subtitle {
   margin: 0;
   font-size: 12px;
+  font-weight: 550;
   color: #6c757d;
 }
 
@@ -64,6 +65,7 @@
 
 .tvm-meta-bar {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 10px;
   padding: 10px 15px;
@@ -72,15 +74,24 @@
   flex-wrap: wrap;
 }
 
+.tvm-meta-part {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
 .tvm-meta-item {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   font-size: 13px;
-  color: #6c757d;
 }
-.tvm-meta-item .material-icons {
-  font-size: 14px;
+
+.tvm-meta-title {
+  color: #6c757d;
+  font-weight: 550;
+  font-size: 13px;
 }
 
 .tvm-status-badge {
@@ -207,13 +218,8 @@
   gap: 8px;
   padding: 48px 0;
   color: #6c757d;
+  font-weight: 550;
   text-align: center;
-}
-.tvm-empty .material-icons {
-  font-size: 24px;
-}
-.tvm-empty p {
-  margin: 0;
   font-size: 14px;
 }
 

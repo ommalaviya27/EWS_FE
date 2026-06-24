@@ -118,9 +118,13 @@
 }
 .empty-state {
   flex-direction: column;
-  gap: 8px;
   color: #6c757d;
   text-align: center;
+}
+
+.empty-state .material-icons {
+  font-size: 40px;
+  color: #6c757d;
 }
 
 .desc-tooltip {

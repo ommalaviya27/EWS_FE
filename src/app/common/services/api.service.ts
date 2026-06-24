@@ -10,7 +10,7 @@ export class ApiService {
   private http = inject(HttpClient);
   readonly baseUrl = environment.apiUrl;
 
-  get<T>(endpoint: string, params?: Record<string, string> | null): Observable<ApiResponse<T>> {
+  get<T>(endpoint: string, params?: Record<string, string | string[]> | null): Observable<ApiResponse<T>> {
     const httpParams = params ? new HttpParams({ fromObject: params }) : undefined;
     return this.http
       .get<ApiResponse<T>>(`${this.baseUrl}${endpoint}`, { params: httpParams })

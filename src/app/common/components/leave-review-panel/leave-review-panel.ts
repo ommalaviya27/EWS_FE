@@ -27,6 +27,8 @@ export class LeaveReviewPanel implements OnInit {
   currentPage = DEFAULT_PAGINATION.currentPage;
   itemsPerPage = DEFAULT_PAGINATION.itemsPerPage;
 
+  activeDropdownId: number | null = null;
+
   ngOnInit(): void {
     this.load();
   }
@@ -38,6 +40,7 @@ export class LeaveReviewPanel implements OnInit {
 
   private fetchPage(): void {
     this.isLoading = true;
+    this.closeDropdown();
     const params: Record<string, string> = {
       pageNumber: this.currentPage.toString(),
       pageSize: this.itemsPerPage.toString(),
@@ -54,6 +57,25 @@ export class LeaveReviewPanel implements OnInit {
         this.isLoading = false;
       },
     });
+  }
+
+  toggleDropdown(event: MouseEvent, recordId: number): void {
+    event.stopPropagation();
+    this.activeDropdownId = this.activeDropdownId === recordId ? null : recordId;
+  }
+
+  closeDropdown(): void {
+    this.activeDropdownId = null;
+  }
+
+  onActionClick(event: MouseEvent, action: 'approve' | 'reject', record: LeaveResponse): void {
+    event.stopPropagation();
+    this.closeDropdown();
+    if (action === 'approve') {
+      this.approve(record);
+    } else {
+      this.reject(record);
+    }
   }
 
   approve(record: LeaveResponse): void {
@@ -73,6 +95,8 @@ export class LeaveReviewPanel implements OnInit {
       next: (res) => {
         this.toastr.success(res.message);
         delete this.remarkMap[id];
+        const remainingOnPage = this.records.length - 1;
+        if (remainingOnPage === 0 && this.currentPage > 1) this.currentPage--;
         this.fetchPage();
       },
       error: (err) => this.toastr.error(err?.error?.getErrorMessage),
@@ -88,14 +112,6 @@ export class LeaveReviewPanel implements OnInit {
     this.itemsPerPage = size;
     this.currentPage = 1;
     this.fetchPage();
-  }
-
-  getRejectConfig(record: LeaveResponse): ButtonInputConfig {
-    return { variant: 'close', text: 'Reject', onClick: () => this.reject(record) };
-  }
-
-  getApproveConfig(record: LeaveResponse): ButtonInputConfig {
-    return { variant: 'save', text: 'Approve', onClick: () => this.approve(record) };
   }
 
   formatDate(dateStr: string): string {

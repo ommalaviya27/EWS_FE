@@ -1,8 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-import { PublicHolidayService } from '../../../../common/services/public-holiday.service';
-import { HolidayResponse, CreateHolidayRequest, UpdateHolidayRequest } from '../../../../common/models/leave.model';
+import { PublicHolidayService } from './services/public-holiday.service';
+import { HolidayResponse, CreateHolidayRequest, UpdateHolidayRequest } from './models/public-holiday.model';
 import { PaginationComponent, Button, ButtonInputConfig, ConfirmationModel, ConfirmationModelConfig } from '@common';
 import { PublicHolidayModal } from './components/public-holiday-modal/public-holiday-modal';
 import { DEFAULT_PAGINATION } from '../../../../common/constants/app.constants';
@@ -27,6 +27,8 @@ export class PublicHoliday implements OnInit {
 
   showModal = false;
   selectedHoliday: HolidayResponse | null = null;
+
+  activeDropdownId: string | null = null;
 
   showDeleteConfirm = false;
   holidayToDelete: HolidayResponse | null = null;
@@ -144,14 +146,35 @@ export class PublicHoliday implements OnInit {
   }
 
   onPageChange(page: number): void {
+    this.closeDropdown();
     this.currentPage = page;
     this.loadHolidays();
   }
 
   onPageSizeChange(size: number): void {
+    this.closeDropdown();
     this.itemsPerPage = size;
     this.currentPage = 1;
     this.loadHolidays();
+  }
+  toggleDropdown(event: MouseEvent, holidayId: string): void {
+    event.stopPropagation();
+    this.activeDropdownId = this.activeDropdownId === holidayId ? null : holidayId;
+  }
+
+  closeDropdown(): void {
+    this.activeDropdownId = null;
+  }
+
+  onActionClick(event: MouseEvent, action: 'edit' | 'delete', holiday: HolidayResponse): void {
+    event.stopPropagation();
+    this.closeDropdown();
+
+    if (action === 'edit') {
+      this.openEditModal(holiday);
+    } else if (action === 'delete') {
+      this.openDeleteConfirm(holiday);
+    }
   }
 
   formatDate(dateStr: string): string {

@@ -24,12 +24,7 @@
   @else if (projects.length === 0) {
   <div class="center-state empty-state">
     <span class="material-icons">{{ searchTerm ? 'search_off' : 'inventory_2' }}</span>
-    <h4>{{ searchTerm ? 'No results for "' + searchTerm + '"' : 'No Projects Found' }}</h4>
-    @if (searchTerm) {
-      <p class="empty-hint">Try a different name or clear the search.</p>
-    } @else {
-      <p>No projects have been created yet.</p>
-    }
+    <h4>{{ searchTerm ? 'No results for "' + searchTerm + '"' + '! Clear the search.' : 'No Projects Found' }}</h4>
   </div>
   }
 
@@ -84,15 +79,15 @@
 
               @if (activeDropdownId === project.id) {
                 <div class="action-dropdown" [class.dropdown-up]="projects.length > 2 && i >= projects.length - 2" (click)="$event.stopPropagation()">
-                <button type="button" class="dropdown-item view-item" (click)="onActionClick($event, 'view', project)">
+                <button type="button" class="dropdown-item" (click)="onActionClick($event, 'view', project)">
                   <span class="material-icons">visibility</span>
                   <span>View Tasks</span>
                 </button>
-                <button type="button" class="dropdown-item edit-item" (click)="onActionClick($event, 'edit', project)">
+                <button type="button" class="dropdown-item" (click)="onActionClick($event, 'edit', project)">
                   <span class="material-icons">edit</span>
                   <span>Edit</span>
                 </button>
-                <button type="button" class="dropdown-item delete-item" (click)="onActionClick($event, 'delete', project)">
+                <button type="button" class="dropdown-item" (click)="onActionClick($event, 'delete', project)">
                   <span class="material-icons">delete</span>
                   <span>Delete</span>
                 </button>

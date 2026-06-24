@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Button, ButtonInputConfig } from '@common';
-import { HolidayResponse, CreateHolidayRequest, UpdateHolidayRequest } from '../../../../../../common/models/leave.model';
+import { HolidayResponse, CreateHolidayRequest, UpdateHolidayRequest } from '../../models/public-holiday.model';
 
 @Component({
   selector: 'app-public-holiday-modal',

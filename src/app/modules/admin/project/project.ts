@@ -101,7 +101,7 @@ export class ProjectModule implements OnInit {
           options: PROJECT_STATUS_LIST,
         },
         {
-          key: 'teamLeadId',
+          key: 'reportingId',
           label: null,
           type: 'select',
           placeholder: 'Team Leads',
@@ -152,8 +152,8 @@ export class ProjectModule implements OnInit {
       if (this.activeFilterValues['projectStatus'] != null && this.activeFilterValues['projectStatus'] !== '') {
         params['projectStatus'] = this.activeFilterValues['projectStatus'].toString();
       }
-      if (this.activeFilterValues['teamLeadId'] != null && this.activeFilterValues['teamLeadId'] !== '') {
-        params['teamLeadId'] = this.activeFilterValues['teamLeadId'].toString();
+      if (this.activeFilterValues['reportingId'] != null && this.activeFilterValues['reportingId'] !== '') {
+        params['reportingId'] = this.activeFilterValues['reportingId'].toString();
       }
       if (this.activeFilterValues['startDate'] != null && this.activeFilterValues['startDate'] !== '') {
         params['startDateFrom'] = this.activeFilterValues['startDate'].toString();

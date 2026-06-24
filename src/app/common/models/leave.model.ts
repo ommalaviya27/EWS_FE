@@ -14,11 +14,6 @@ export const LEAVE_TYPE_OPTIONS = [
   { value: LeaveType.HalfDay, label: 'Half Day' },
 ];
 
-export const LEAVE_TYPE_LABELS: Record<LeaveType, string> = {
-  [LeaveType.FullDay]: 'Full Day',
-  [LeaveType.HalfDay]: 'Half Day',
-};
-
 export const LEAVE_STATUS_LABELS: Record<ApprovalStatus, string> = {
   [ApprovalStatus.Pending]: 'Pending',
   [ApprovalStatus.Approved]: 'Approved',
@@ -59,20 +54,4 @@ export interface EditLeaveRequest {
 export interface ReviewLeaveRequest {
   leaveStatus: ApprovalStatus;
   reviewerRemark?: string | null;
-}
-
-export interface HolidayResponse {
-  id: number;
-  name: string;
-  holidayDate: string;
-}
-
-export interface CreateHolidayRequest {
-  name: string;
-  holidayDate: string;
-}
-
-export interface UpdateHolidayRequest {
-  name: string;
-  holidayDate: string;
 }

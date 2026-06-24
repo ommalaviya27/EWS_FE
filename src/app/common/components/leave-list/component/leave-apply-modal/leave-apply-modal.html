@@ -7,45 +7,73 @@
         <button type="button" class="lam-close" (click)="onCancel()" aria-label="Close">✕</button>
       </div>
 
-      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <form [formGroup]="leaveForm" (ngSubmit)="onSubmit()" novalidate>
+        <div class="lam-name-ro">
+          <app-name-field [config]="userNameConfig"></app-name-field>
+          <app-name-field [config]="reportingPersonNameConfig"></app-name-field>
+        </div>
+
         <div class="lam-field">
-          <div class="lam-fieldset">
-            <span class="lam-legend">Leave Type</span>
+          <app-description-field [config]="descriptionField"></app-description-field>
+        </div>
+
+        <div class="lam-field">
+          <div class="lam-fieldset" [class.has-value]="leaveForm.get('leaveType')?.value">
+            <span class="lam-legend">Leave Type</span>          
             <select class="lam-select-input" formControlName="leaveType">
-              <option [value]="null" disabled hidden>Select leave type</option>
-              @for (opt of leaveTypeOptions; track opt.value) {
-              <option [value]="opt.value">{{ opt.label }}</option>
+              <option [value]="null" disabled>Select leave type</option>
+              @for (option of leaveTypeOptions; track option.value) {
+                <option [value]="option.value">{{ option.label }}</option>
               }
             </select>
           </div>
           @if (isInvalid('leaveType')) {
-          <div class="lam-error">Leave type is required.</div>
+            <div class="lam-error">Leave type is required.</div>
           }
         </div>
 
         <div class="lam-date-row">
           <div class="lam-field">
-            <div class="lam-fieldset" [class.has-value]="form.get('startDate')?.value">
+            <div class="lam-fieldset" [class.has-value]="leaveForm.get('startDate')?.value">
               <span class="lam-legend">Start Date</span>
-              <input  type="date" class="lam-date-input" id="startDate" formControlName="startDate" [min]="today"/>
+              <input type="date" class="lam-date-input" formControlName="startDate" [min]="today" />
             </div>
             @if (isInvalid('startDate')) {
-            <div class="lam-error">Start date is required.</div>
+              <div class="lam-error">Start date is required.</div>
             }
           </div>
 
           <div class="lam-field">
-            <div class="lam-fieldset" [class.has-value]="form.get('endDate')?.value">
+            <div class="lam-fieldset" [class.has-value]="leaveForm.get('endDate')?.value">
               <span class="lam-legend">End Date</span>
-              <input  type="date" class="lam-date-input" id="endDate" formControlName="endDate" [min]="minEndDate"/>
+              <input type="date" class="lam-date-input" formControlName="endDate" [min]="minEndDate"/>
             </div>
             @if (isInvalid('endDate')) {
-            <div class="lam-error">End date is required.</div>
+              <div class="lam-error">End date is required.</div>
             }
           </div>
         </div>
 
-        <app-description-field [config]="descriptionField"></app-description-field>
+        <div class="lam-summary-row">
+          <div class="lam-field">
+            <div class="lam-fieldset has-value">
+              <span class="lam-legend">Total Days</span>
+              <input type="text" class="lam-date-input" [value]="totalDays" readonly/>
+            </div>
+          </div>
+        
+          <div class="lam-field">
+            <div class="lam-fieldset has-value">
+              <span class="lam-legend">Return Date</span>
+              <input type="text" class="lam-date-input" [value]="returnDate" readonly/>
+            </div>
+          </div>
+        </div>
+
+        <div class="lam-info">
+          <app-email [config]="userEmailConfig"></app-email>
+          <app-mobile [config]="userMobileConfig"></app-mobile>
+        </div>
 
         <div class="lam-footer">
           <app-button [config]="cancelBtnConfig"></app-button>

@@ -39,10 +39,7 @@
   } @else if (employees.length === 0) {
   <div class="center-state empty-state">
     <span class="material-icons">{{ searchTerm ? 'search_off' : 'group' }}</span>
-    <h4>{{ searchTerm ? 'No results for "' + searchTerm + '"' : 'No Employees Found' }}</h4>
-    @if (searchTerm) {
-      <p class="empty-hint">Try a different name or clear the search.</p>
-    }
+    <h4>{{ searchTerm ? 'No results for "' + searchTerm + '"' + '! Clear the search.': 'No Employees Found' }}</h4>
   </div>
   } @else {
   <div class="table-card">
@@ -53,7 +50,7 @@
           <div class="grid-th">Email</div>
           <div class="grid-th">Mobile</div>
           <div class="grid-th">Role</div>
-          <div class="grid-th">Team Lead</div>
+          <div class="grid-th">Reporting</div>
           <div class="grid-th">Status</div>
           <div class="grid-th text-center">Actions</div>
         </div>
@@ -71,10 +68,10 @@
           </div>
 
           <div class="grid-td">
-            @if (employee.roleId !== 3) {
+            @if (employee.roleId === 1) {
             <span class="tl-na">N/A</span>
-            } @else if (employee.teamLeadName) {
-            <span>{{ employee.teamLeadName }}</span>
+            } @else if (employee.reportingName) {
+            <span>{{ employee.reportingName }}</span>
             } @else {
             <span class="tl-unassigned">—</span>
             }

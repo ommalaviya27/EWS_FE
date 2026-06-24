@@ -227,14 +227,13 @@
 
 .mt-empty-state {
   flex-direction: column;
-  gap: 8px;
   color: #6c757d;
   text-align: center;
 }
 
 .mt-empty-state .material-icons {
-  font-size: 48px;
-  color: #d1d5db;
+  font-size: 40px;
+  color: #6c757d;
 }
 
 .mt-empty-hint {

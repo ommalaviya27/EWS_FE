@@ -7,7 +7,8 @@
         <button type="button" class="phm-close" (click)="onCancel()" aria-label="Close">✕</button>
       </div>
 
-      <form (ngSubmit)="onSubmit()">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        
         <div class="phm-field">
           <fieldset class="phm-fieldset" [class.has-value]="form.get('name')?.value">
             <legend class="phm-legend">Holiday Name</legend>
@@ -16,7 +17,6 @@
               class="phm-text-input"
               formControlName="name"
               placeholder="e.g. Republic Day"
-              [formGroup]="form"
             />
           </fieldset>
           @if (isInvalid('name')) {
@@ -34,7 +34,6 @@
               type="date"
               class="phm-date-input"
               formControlName="holidayDate"
-              [formGroup]="form"
             />
           </fieldset>
           @if (isInvalid('holidayDate')) {

@@ -8,7 +8,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  align-items: flex-start;
   flex-shrink: 0;
   gap: 12px;
   flex-wrap: wrap;
@@ -100,6 +99,7 @@
   color: #6c757d;
   text-align: center;
   font-weight: 550;
+  margin-top: 100px;
 }
 
 .ph-empty-state .material-icons {
@@ -118,36 +118,60 @@
   gap: 6px;
 }
 
-.ph-btn-action {
+.action-container {
+  position: relative;
+  display: inline-block;
+}
+
+.btn-dots {
   width: 32px;
   height: 32px;
   border: none;
-  border-radius: 8px;
+  background: transparent;
+  border-radius: 50%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  color: #6c757d;
   cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-.ph-btn-action .material-icons {
+.action-dropdown {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: 4px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  z-index: 100;
+  min-width: 120px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 4px 0;
+  transform: translateX(-20px);
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 13px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.dropdown-item .material-icons {
   font-size: 16px;
 }
-
-.ph-btn-edit {
-  background: #f0f4ff;
-  color: #0066ff;
-}
-
-.ph-btn-edit:hover {
-  background: #dbeafe;
-}
-
-.ph-btn-delete {
-  background: #fff1f2;
-  color: #e11d48;
-}
-
-.ph-btn-delete:hover {
-  background: #ffe4e6;
+.action-dropdown.dropdown-up {
+  top: auto;
+  bottom: 100%;
+  margin-top: 0;
+  margin-bottom: 4px;
 }

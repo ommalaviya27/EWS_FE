@@ -1,10 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-import { PublicHolidayService } from '../../../../services/public-holiday.service';
-import { HolidayResponse } from '../../../../models/leave.model';
+import { PublicHolidayService } from '../../../modules/admin/leave/public-holiday/services/public-holiday.service';
+import { HolidayResponse } from '../../../modules/admin/leave/public-holiday/models/public-holiday.model';
 import { PaginationComponent } from '@common';
-import { DEFAULT_PAGINATION } from '../../../../constants/app.constants';
+import { DEFAULT_PAGINATION } from '../../constants/app.constants';
 
 @Component({
   selector: 'app-public-holiday-list',

@@ -1,10 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiService } from './api.service';
-import { ApiResponse } from '../models/api-response.model';
-import { HolidayResponse, CreateHolidayRequest, UpdateHolidayRequest } from '../models/leave.model';
-import { PaginationResponse } from '../components/pagination/pagination.model';
-import { API_ROUTES } from '../constants';
+import { ApiService } from '../../../../../common/services/api.service';
+import { ApiResponse } from '../../../../../common/models/api-response.model';
+import { HolidayResponse, CreateHolidayRequest, UpdateHolidayRequest } from '../models/public-holiday.model';
+import { PaginationResponse } from '../../../../../common/components/pagination/pagination.model';
+import { API_ROUTES } from '../../../../../common/constants/api-routes';
 
 @Injectable({ providedIn: 'root' })
 export class PublicHolidayService {

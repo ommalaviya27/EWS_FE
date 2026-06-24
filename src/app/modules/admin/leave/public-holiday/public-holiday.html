@@ -26,7 +26,7 @@
           <div class="ph-grid-th text-center ph-action-cell">Actions</div>
         </div>
 
-        @for (holiday of holidays; track holiday.id) {
+        @for (holiday of holidays; track holiday.id; let i = $index) {
         <div class="ph-grid-row">
           <div class="ph-grid-td">
             <span class="ph-name-badge"> {{ holiday.name }} </span>
@@ -36,23 +36,32 @@
             <span class="ph-day-badge">{{ getDayName(holiday.holidayDate) }}</span>
           </div>
           <div class="ph-grid-td text-center ph-action-cell">
-            <div class="ph-actions">
+            <div class="action-container">
               <button
                 type="button"
-                class="ph-btn-action ph-btn-edit"
-                title="Edit"
-                (click)="openEditModal(holiday)"
+                class="btn-dots"
+                [class.active]="activeDropdownId === holiday.id.toString()"
+                (click)="toggleDropdown($event, holiday.id.toString())"
               >
-                <span class="material-icons">edit</span>
+                <span class="material-icons">more_vert</span>
               </button>
-              <button
-                type="button"
-                class="ph-btn-action ph-btn-delete"
-                title="Delete"
-                (click)="openDeleteConfirm(holiday)"
-              >
-                <span class="material-icons">delete</span>
-              </button>
+          
+              @if (activeDropdownId === holiday.id.toString()) {
+                <div 
+                  class="action-dropdown" 
+                  [class.dropdown-up]="holidays.length > 2 && i >= holidays.length - 2" 
+                  (click)="$event.stopPropagation()"
+                >
+                  <button type="button" class="dropdown-item" (click)="onActionClick($event, 'edit', holiday)">
+                    <span class="material-icons">edit</span>
+                    <span>Edit</span>
+                  </button>
+                  <button type="button" class="dropdown-item" (click)="onActionClick($event, 'delete', holiday)">
+                    <span class="material-icons">delete</span>
+                    <span>Delete</span>
+                  </button>
+                </div>
+              }
             </div>
           </div>
         </div>

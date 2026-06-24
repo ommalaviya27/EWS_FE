@@ -1,4 +1,4 @@
-.pm-overlay {
+.eam-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.7);
@@ -9,31 +9,33 @@
   padding: 20px;
 }
 
-.pm-modal {
+.eam-modal {
   width: 100%;
-  max-width: 680px;
+  max-width: 600px;
 }
 
-.pm-card {
+.eam-card {
   background: #ffffff;
   border-radius: 18px;
   padding: 24px 24px 22px;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
-.pm-header {
+.eam-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 22px;
 }
 
-.pm-title {
+.eam-title {
   margin: 0;
-  font-size: 30px;
-  font-weight: 7550;
+  font-size: 20px;
+  font-weight: 550;
 }
 
-.pm-close {
+.eam-close {
   border: none;
   background: transparent;
   font-size: 22px;
@@ -43,154 +45,112 @@
   line-height: 1;
 }
 
-.pm-field {
-  margin-bottom: 18px;
+.eam-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
 }
 
-.pm-input,
-.form-control,
-.form-select {
-  height: 60px;
-  width: 100%;
-  border-radius: 12px;
-  padding-left: 10px;
-  border: 1px solid #e2e8f0;
-  font-size: 15px;
-  box-shadow: none;
+.eam-field {
+  margin-bottom: 20px;
 }
 
-.form-control:focus,
-.form-select:focus {
-  border-color: #0066ff;
-  box-shadow: 0 0 0 0.15rem rgba(91, 61, 245, 0.15);
-}
-
-.pm-fieldset {
+.eam-fieldset {
   position: relative;
   border: 1.5px solid #e2e8f0;
   border-radius: 12px;
-  height: 52px;
+  height: 50px;
   background: #fff;
   display: flex;
   align-items: center;
   padding: 0 12px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.pm-fieldset:focus-within {
+.eam-fieldset:focus-within {
   border-color: #0066ff;
-  box-shadow: 0 0 0 0.15rem rgba(91, 61, 245, 0.15);
+  box-shadow: 0 0 0 0.15rem rgba(0, 102, 255, 0.12);
 }
 
-.pm-fieldset.is-invalid-wrap {
+.eam-fieldset.is-invalid-wrap {
   border-color: #dc2626;
 }
 
-.pm-legend {
+.eam-fieldset.is-disabled {
+  background: #f3f4f6;
+  cursor: not-allowed;
+}
+
+.eam-legend {
   position: absolute;
-  top: -7px;
+  top: -8px;
   left: 12px;
   background: #fff;
   padding: 0 4px;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 11px;
   color: #6c757d;
-  line-height: 1;
+  font-weight: 550;
   pointer-events: none;
-  transition: color 0.15s ease;
 }
 
-.pm-fieldset.has-value .pm-legend,
-.pm-fieldset:focus-within .pm-legend {
-  color: #0066FF;
+.eam-fieldset.has-value .eam-legend,
+.eam-fieldset:focus-within .eam-legend {
+  color: #0066ff;
 }
 
-.pm-fieldset.is-invalid-wrap .pm-legend {
+.eam-fieldset.is-invalid-wrap .eam-legend {
   color: #dc2626;
 }
 
-.pm-select-input {
+.eam-fieldset.is-disabled .eam-legend {
+  color: #9ca3af;
+  background: transparent;
+}
+
+.eam-select-input {
   border: none;
   outline: none;
   width: 100%;
   height: 100%;
-  font-size: 15px;
+  font-size: 14px;
   background: transparent;
   box-shadow: none;
   appearance: auto;
 }
 
-.pm-select-input:focus {
-  border: none;
-  outline: none;
-  box-shadow: none;
-}
-
-.pm-two-col {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-
-.pm-footer {
-  margin-top: 28px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-
-.pm-error {
-  margin-top: 6px;
-  font-size: 13px;
-  color: #dc2626;
-}
-
-/* Responsive */
-@media (max-width: 576px) {
-  .pm-card {
-    padding: 20px;
-  }
-
-  .pm-title {
-    font-size: 24px;
-  }
-
-  .pm-two-col,
-  .pm-footer {
-    grid-template-columns: 1fr;
-  }
-}
-
-.pm-required {
-  color: #dc3545;
-  margin-left: 2px;
-}
-
-.pm-optional {
-  font-size: 12px;
-  font-weight: 400;
-  color: #6c757d;
-  margin-left: 4px;
-}
-
-.pm-hint {
-  font-size: 12px;
-  color: #6c757d;
-  margin-top: 4px;
-}
-
-.pm-field-disabled .pm-label {
-  color: #6c757d;
-}
-
-.pm-field-disabled .form-select,
-.pm-field-disabled .pm-input {
-  background: #f3f4f6;
+.eam-select-input:disabled {
   color: #6c757d;
   cursor: not-allowed;
-  pointer-events: none;
 }
 
-.pm-hint-muted {
+.eam-error {
+  margin-top: 5px;
+  font-size: 12px;
+  color: #dc2626;
+  padding-left: 8px;
+}
+
+.eam-hint {
+  font-size: 11px;
   color: #6c757d;
+  margin-top: 5px;
+  padding-left: 8px;
+}
+
+.eam-hint-muted {
   font-style: italic;
+}
+
+.eam-footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+@media (max-width: 576px) {
+  .eam-two-col,
+  .eam-footer {
+    grid-template-columns: 1fr;
+  }
 }

@@ -20,14 +20,10 @@
   </div>
   } @else if (projectCards.length === 0) {
   <div class="center-state empty-state">
+    <span class="material-icons">{{ projectSearchTerm ? 'search_off' : 'folder_open' }}</span>
     <h4>
-      {{ projectSearchTerm ? 'No results for "' + projectSearchTerm + '"' : 'No Projects Found' }}
+      {{ projectSearchTerm ? 'No results for "' + projectSearchTerm + '"' + '! Clear the search.' : 'No Projects Found' }}
     </h4>
-    @if (projectSearchTerm) {
-    <p class="empty-hint">Try a different project name or clear the search.</p>
-    } @else {
-    <p class="empty-hint">Yet, no project is assigned to you.</p>
-    }
   </div>
   } @else {
   <div class="projects-scroll">
