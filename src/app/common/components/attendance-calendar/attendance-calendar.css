@@ -44,7 +44,7 @@
   height: 48px;
 }
 .att-select:focus {
-  border-color: #8e00ed;
+  border-color: #0066ff;
 }
 .att-filter-btns {
   display: flex;

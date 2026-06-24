@@ -2,14 +2,14 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { AttendanceCalendar } from '../../../common/components/attendance-calendar/attendance-calendar';
-import { AttendanceReviewPanel } from '../../../common/components/attendance-review-panel/attendance-review-panel';
+import { TeamAttendanceGrid } from '../../../common/components/team-attendance-grid/team-attendance-grid';
 import { ProjectService } from '../project/services/project.service';
 import { TeamLeader } from '../project/models/project.model';
+import { TeamMember } from '../../team-lead/task-management/models/task-management.model';
 
 @Component({
   selector: 'app-admin-attendance',
-  imports: [CommonModule, FormsModule, AttendanceCalendar, AttendanceReviewPanel],
+  imports: [CommonModule, FormsModule, TeamAttendanceGrid],
   templateUrl: './admin-attendance.html',
   styleUrl: './admin-attendance.css',
 })
@@ -17,11 +17,9 @@ export class AdminAttendance implements OnInit {
   private projectSvc = inject(ProjectService);
   private toastr = inject(ToastrService);
 
-  activeTab: 'team-leads' | 'review' = 'review';
-
   teamLeads: TeamLeader[] = [];
   teamLeadsLoading = false;
-  selectedUserId: number | null = null;
+  teamLeadsAsMembers: TeamMember[] = [];
 
   ngOnInit(): void {
     this.loadTeamLeads();
@@ -32,6 +30,7 @@ export class AdminAttendance implements OnInit {
     this.projectSvc.getTeamLeaders().subscribe({
       next: (res) => {
         this.teamLeads = res.data ?? [];
+        this.teamLeadsAsMembers = this.teamLeads.map((tl) => ({ userId: tl.userId, name: tl.name }));
         this.teamLeadsLoading = false;
       },
       error: () => {
@@ -39,14 +38,5 @@ export class AdminAttendance implements OnInit {
         this.teamLeadsLoading = false;
       },
     });
-  }
-
-  switchTab(tab: 'team-leads' | 'review'): void {
-    this.activeTab = tab;
-    if (tab !== 'team-leads') this.selectedUserId = null;
-  }
-
-  onTeamLeadSelect(value: string): void {
-    this.selectedUserId = value ? Number(value) : null;
   }
 }

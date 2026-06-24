@@ -52,6 +52,13 @@ export interface AttendanceMonthResponse {
   days: AttendanceDayResponse[];
 }
 
+export interface AttendanceTeamMonthResponse {
+  month: number;
+  year: number;
+  monthLabel: string;
+  members: AttendanceMonthResponse[];
+}
+
 export interface AttendanceResponse {
   id: number;
   userId: number;
@@ -77,7 +84,8 @@ export interface EditAttendanceRequest {
   status: AttendanceStatus;
 }
 
-export interface ReviewAttendanceRequest {
-  approvalStatus: ApprovalStatus;
-  reviewerRemark?: string;
-}
+export type MemberRow = AttendanceMonthResponse & {
+  isGroupHeader: boolean;
+  groupLabel?: string;
+  dayMap: Record<number, AttendanceDayResponse>;
+};

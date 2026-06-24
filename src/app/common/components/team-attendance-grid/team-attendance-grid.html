@@ -1,0 +1,116 @@
+<div class="tag-wrapper">
+  <div class="tag-header">
+    <span class="tag-title">Team Attendance</span>
+  </div>
+  <div class="tag-filters">
+    <div class="tag-filter-group">
+      <label class="tag-label">Month</label>
+      <select class="tag-select" [(ngModel)]="selectedMonth">
+        @for (m of months; track $index) {
+        <option [value]="$index + 1">{{ m }}</option>
+        }
+      </select>
+    </div>
+    <div class="tag-filter-group">
+      <label class="tag-label">Year</label>
+      <select class="tag-select" [(ngModel)]="selectedYear">
+        @for (y of years; track y) {
+        <option [value]="y">{{ y }}</option>
+        }
+      </select>
+    </div>
+    <div class="tag-filter-btns">
+      <app-button [config]="searchBtnConfig"></app-button>
+      <app-button [config]="resetBtnConfig"></app-button>
+    </div>
+  </div>
+
+  @if (isLoading) {
+  <div class="tag-loading"><div class="spinner-border text-primary"></div></div>
+  } @if (!isLoading && memberRows.length === 0) {
+  <div class="tag-empty">No team members found.</div>
+  } @if (!isLoading && memberRows.length > 0) {
+
+  <div class="tag-card">
+    <div class="tag-card-header">
+      <span class="tag-month-label">{{ monthLabel }}</span>
+      <div class="tag-marks">
+        <span class="tag-legend-item"><span class="tag-dot tag-dot--present"></span>Present</span>
+        <span class="tag-legend-item"><span class="tag-dot tag-dot--absent"></span>Absent</span>
+        <span class="tag-legend-item"><span class="tag-dot tag-dot--halfday"></span>Half-Day</span>
+      </div>
+    </div>
+
+    <div class="tag-table-scroll">
+      <table class="tag-table">
+        <thead>
+          <tr>
+            <th class="tag-th tag-th-name">Name</th>
+            @for (day of calendarDays; track day.day) {
+            <th
+              class="tag-th"
+              [class.tag-th-weekend]="day.isWeekend"
+              [class.tag-th-today]="day.isToday"
+            >
+              <div class="tag-th-num">{{ day.day }}</div>
+              <div class="tag-th-day">{{ day.dayName }}</div>
+            </th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of memberRows; track row.userId) { @if (row.isGroupHeader) {
+          <tr class="tag-group-row">
+            <td [attr.colspan]="calendarDays.length + 1" class="tag-group-cell">
+              {{ row.groupLabel }}
+            </td>
+          </tr>
+          } @else {
+          <tr class="tag-data-row">
+            <td class="tag-td tag-td-name">
+              <span class="tag-member-name">{{ row.userName }}</span>
+            </td>
+            @for (day of calendarDays; track day.day) {
+            <td
+              class="tag-td"
+              [ngClass]="getCellClass(row, day)"
+              [class.tag-td--clickable]="isCellEditable(row, day)"
+              [title]="day.isPublicHoliday ? day.holidayName || 'Holiday' : ''"
+              (click)="isCellEditable(row, day) && openDropdown($event, row, day)"
+            >
+              <span class="tag-cell-label">{{ getCellLabel(row, day) }}</span>
+            </td>
+            }
+          </tr>
+          } }
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="tag-footer">
+    <app-button [config]="approveBtnConfig"></app-button>
+  </div>
+
+  } @if (openDropdownInfo) {
+  <div
+    class="tag-dropdown"
+    [class.tag-dropdown--upward]="dropdownOpenUpward"
+    [style.top.px]="dropdownTop"
+    [style.left.px]="dropdownLeft"
+    (click)="$event.stopPropagation()"
+  >
+    @for (opt of statusOptions; track opt.value) {
+    <button
+      class="tag-dropdown-item"
+      [class.tag-dropdown-item--active]="
+        getActiveDayStatus(openDropdownInfo.row, openDropdownInfo.day) === opt.value
+      "
+      (click)="selectStatus(opt.value)"
+    >
+      {{ opt.label }}
+    </button>
+    }
+  </div>
+  }
+</div>

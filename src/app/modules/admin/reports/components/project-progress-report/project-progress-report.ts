@@ -32,8 +32,8 @@ export class ProjectProgressReport implements OnInit, OnDestroy {
   isGridLoading = false;
 
   private readonly STATUS_COLORS = {
-    active: '#8B5CF6',
-    completed: '#22c55e',
+    active: '#22c55e',
+    completed: '#8B5CF6',
   };
 
   ngOnInit(): void {

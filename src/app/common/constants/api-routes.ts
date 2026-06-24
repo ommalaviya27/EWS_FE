@@ -66,7 +66,7 @@ export const API_ROUTES = {
   },
   ATTENDANCE: {
     GET_MONTHLY: '/api/attendance/monthly',
-    GET_PENDING_ATTENDANCE: '/api/attendance/pending-review',
+    GET_TEAM_MONTHLY: '/api/attendance/team-monthly',
     ADD: '/api/attendance',
     ADD_ATTENDANCE_ADMIN: '/api/attendance/admin-fill',
     EDIT: (id: number) => `/api/attendance/${id}`,

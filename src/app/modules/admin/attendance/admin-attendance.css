@@ -13,137 +13,20 @@
   gap: 16px;
 }
 
-.adm-page-header {
+.adm-loading {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #e2e8f0;
+  justify-content: center;
+  padding: 60px 0;
 }
 
-.adm-title {
-  font-size: 22px;
-  font-weight: 700;
-  margin: 0;
-}
-
-.adm-tabs {
-  display: flex;
-  gap: 10px;
-}
-
-.adm-tab {
-  padding: 8px 10px;
-  border-radius: 8px;
-  border: 1px solid #e2e8f0;
-  background: #fff;
-  font-size: 13px;
-  font-weight: 600;
+.adm-empty {
+  text-align: center;
+  font-size: 15px;
   color: #6c757d;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.adm-tab:hover {
-  background: #f1f5f9;
-}
-.adm-tab--active {
-  background: #0066FF;
-  color: #fff;
-  border-color: #0066FF;
+  padding: 40px 0;
 }
 
-.adm-team-section {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.adm-user-filter {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  max-width: 320px;
-}
-
-.adm-label {
-  font-size: 14px;
-  font-weight: 600;
-  color: #6c757d;
-}
-
-.adm-select-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.adm-select {
-  width: 100%;
-  appearance: none;
-  -webkit-appearance: none;
-  padding: 9px 36px 9px 12px;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  font-size: 14px;
-  background: #fff;
-  height: 48px;
-  cursor: pointer;
-}
-
-.adm-select:focus {
-  border-color: #0066FF;
-  outline: none;
-}
-
-.adm-select-icon {
-  position: absolute;
-  right: 10px;
-  font-size: 20px;
-  color: #6c757d;
-  pointer-events: none;
-}
-
-.adm-select-skeleton {
-  height: 48px;
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  padding: 0 12px;
-}
-
-.adm-loading-text {
-  font-size: 13px;
-  color: #6c757d;
-  animation: pulse 1.4s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.4;
-  }
-}
-
-.adm-empty-members {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  color: #6c757d;
-  padding: 10px 0;
-}
-
-.adm-hint {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 16px;
-  padding: 20px 0;
+.adm-divider {
+  border-top: 1px solid #e2e8f0;
+  margin: 4px 0;
 }
