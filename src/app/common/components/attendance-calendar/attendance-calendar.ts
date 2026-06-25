@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Button, ButtonInputConfig } from '@common';
-import { AttendanceService } from '../../services/attendance.service';
-import { AttendanceDayResponse, AttendanceMonthResponse, AttendanceStatus, ApprovalStatus, ATTENDANCE_STATUS_OPTIONS } from '../../models/attendance.model';
-import { MONTHS } from '../../constants/app.constants';
+import { AttendanceService } from '@services';
+import { AttendanceDayResponse, AttendanceMonthResponse, AttendanceStatus, ApprovalStatus, ATTENDANCE_STATUS_OPTIONS } from '@models';
+import { MONTHS } from '@constants';
 
 @Component({
   selector: 'app-attendance-calendar',
@@ -242,42 +242,38 @@ export class AttendanceCalendar implements OnInit, OnChanges {
       if (day.approvalStatus === ApprovalStatus.Approved) {
         if (!day.status) return '';
         if (day.status === AttendanceStatus.Absent) return 'A';
-        if (
-          day.status === AttendanceStatus.HalfDay_WFO ||
-          day.status === AttendanceStatus.HalfDay_WFH
-        )
-          return 'H';
-        return 'P';
+        if (day.status === AttendanceStatus.HalfDay_WFO) return 'HO';
+        if (day.status === AttendanceStatus.HalfDay_WFH) return 'HH';
+        if (day.status === AttendanceStatus.Present_WFO) return 'PO';
+        if (day.status === AttendanceStatus.Present_WFH) return 'PH';
       }
       if (day.approvalStatus === ApprovalStatus.Rejected) return 'R';
       if (this.pendingStatus && !this.canEditApproved) {
         if (this.pendingStatus === AttendanceStatus.Absent) return 'A';
-        if (
-          this.pendingStatus === AttendanceStatus.HalfDay_WFO ||
-          this.pendingStatus === AttendanceStatus.HalfDay_WFH
-        )
-          return 'H';
-        return 'P';
+        if (this.pendingStatus === AttendanceStatus.HalfDay_WFO) return 'HO';
+        if (this.pendingStatus === AttendanceStatus.HalfDay_WFH) return 'HH';
+        if (this.pendingStatus === AttendanceStatus.Present_WFO) return 'PO';
+        if (this.pendingStatus === AttendanceStatus.Present_WFH) return 'PH';
       }
       return '';
     }
 
     if (this.canEditApproved && this.editingDay?.day === day.day && this.pendingStatus !== null) {
       if (this.pendingStatus === AttendanceStatus.Absent) return 'A';
-      if (
-        this.pendingStatus === AttendanceStatus.HalfDay_WFO ||
-        this.pendingStatus === AttendanceStatus.HalfDay_WFH
-      )
-        return 'H';
-      return 'P';
+      if (this.pendingStatus === AttendanceStatus.HalfDay_WFO) return 'HO';
+      if (this.pendingStatus === AttendanceStatus.HalfDay_WFH) return 'HH';
+      if (this.pendingStatus === AttendanceStatus.Present_WFO) return 'PO';
+      if (this.pendingStatus === AttendanceStatus.Present_WFH) return 'PH';
     }
 
     if (!day.status) return '';
     if (day.approvalStatus === ApprovalStatus.Rejected) return 'R';
     if (day.status === AttendanceStatus.Absent) return 'A';
-    if (day.status === AttendanceStatus.HalfDay_WFO || day.status === AttendanceStatus.HalfDay_WFH)
-      return 'H';
-    return 'P';
+    if (day.status === AttendanceStatus.HalfDay_WFO) return 'HO';
+    if (day.status === AttendanceStatus.HalfDay_WFH) return 'HH';
+    if (day.status === AttendanceStatus.Present_WFO) return 'PO';
+    if (day.status === AttendanceStatus.Present_WFH) return 'PH';
+    return '';
   }
 
   get workingDays(): number {

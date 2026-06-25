@@ -6,7 +6,7 @@ import { MyTaskService } from './services/my-task.service';
 import { MyTask, TaskStatuses, TaskPriority, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS, MyTaskFilterParams, TASK_STATUS_LIST, TASK_PRIORITY_LIST } from './models/my-task.model';
 import { TaskDetailModel } from './components/task-detail-model/task-detail-model';
 import { PaginationComponent, ProjectList, SearchBarComponent, FilterPanel, FilterPanelConfig, FilterValues, Button, ButtonInputConfig } from '@common';
-import { DEFAULT_PAGINATION } from '../../../common/constants/app.constants';
+import { DEFAULT_PAGINATION } from '@constants';
 import { Project } from '../../admin/project/models/project.model';
 
 @Component({

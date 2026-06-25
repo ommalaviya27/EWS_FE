@@ -4,9 +4,8 @@ import { ToastrService } from 'ngx-toastr';
 import { Subject, takeUntil } from 'rxjs';
 import { ReportService } from '../../services/report.service';
 import { EmployeeTaskSummary, TopEmployeeTask, ReportFilter } from '../../models/report.model';
-import { SearchBarComponent } from 'src/app/common/components/search-bar/search-bar';
-import { PaginationComponent } from 'src/app/common/components/pagination/pagination';
-import { DEFAULT_PAGINATION } from 'src/app/common/constants/app.constants';
+import { SearchBarComponent, PaginationComponent } from '@common';
+import { DEFAULT_PAGINATION } from '@constants';
 
 @Component({
   selector: 'app-employee-performnace-report',

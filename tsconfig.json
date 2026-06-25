@@ -20,7 +20,9 @@
     "paths": {
       "@common": ["src/app/common/components/index.ts"],
       "@Validators": ["src/app/common/validators/index.ts"],
-      
+      "@services": ["src/app/common/services/index.ts"],
+      "@models": ["src/app/common/models/index.ts"],
+      "@constants": ["src/app/common/constants/index.ts"],
     }
   },
   "angularCompilerOptions": {

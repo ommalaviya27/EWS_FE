@@ -1,11 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { SessionService } from '../../../common/services/session.service';
-import { ApiService } from '../../../common/services/api.service';
-import { ROUTES } from '../../../common/constants/route-paths';
-import { API_ROUTES } from '../../../common/constants/api-routes';
-import { ApiResponse } from '../../../common/models/api-response.model';
+import { SessionService, ApiService } from '@services';
+import { ROUTES, API_ROUTES } from '@constants';
+import { ApiResponse } from '@models';
 import { LoginRequest, LoginResponse, SignupRequest, SignupResponse, ForgotPasswordRequest, ResetPasswordRequest, RefreshTokenRequest, UserRole } from '../models/auth.model';
 
 @Injectable({ providedIn: 'root' })

@@ -1,4 +1,4 @@
-import { PaginationResponse } from 'src/app/common/components/pagination/pagination.model';
+import { PaginationResponse } from '@models';
 
 export type ReportFilter = 'weekly' | 'monthly';
 

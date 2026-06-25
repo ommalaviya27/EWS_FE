@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule, NavigationEnd } from '@angular/router';
 import { SidebarConfig, SidebarNavItem, ROLE_SIDEBAR_CONFIGS } from './sidebar.config';
 import { ROLE_NAMES } from '../../../modules/auth/models/auth.model';
-import { SessionService } from '../../services';
+import { SessionService } from '@services';
 import { Subject, filter, takeUntil } from 'rxjs';
 
 @Component({

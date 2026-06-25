@@ -1,4 +1,5 @@
-import { PaginationRequest, PaginationResponse } from '../components/pagination/pagination.model';
+import { PaginationRequest, PaginationResponse } from './pagination.model';
+import { ApprovalStatus } from './leave.model';
 
 export type { PaginationRequest, PaginationResponse };
 
@@ -8,12 +9,6 @@ export enum AttendanceStatus {
   Absent = 3,
   HalfDay_WFO = 4,
   HalfDay_WFH = 5,
-}
-
-export enum ApprovalStatus {
-  Pending = 1,
-  Approved = 2,
-  Rejected = 3,
 }
 
 export const ATTENDANCE_STATUS_OPTIONS = [

@@ -2,9 +2,9 @@ import { Component, inject, Input, OnChanges, OnInit, SimpleChanges, HostListene
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { AttendanceService } from '../../services/attendance.service';
-import { AttendanceDayResponse, MemberRow, AttendanceStatus, ApprovalStatus, ATTENDANCE_STATUS_OPTIONS, AdminAddAttendanceRequest } from '../../models/attendance.model';
-import { MONTHS } from '../../constants/app.constants';
+import { AttendanceService } from '@services';
+import { AttendanceDayResponse, MemberRow, AttendanceStatus, ApprovalStatus, ATTENDANCE_STATUS_OPTIONS, AdminAddAttendanceRequest } from '@models';
+import { MONTHS } from '@constants';
 import { TeamMember } from '../../../modules/team-lead/task-management/models/task-management.model';
 import { Button, ButtonInputConfig } from '@common';
 
@@ -127,6 +127,7 @@ export class TeamAttendanceGrid implements OnInit, OnChanges {
               absentCount: 0,
               days: [],
             }),
+            userName: member.name,
             isGroupHeader: false,
             dayMap,
           });
@@ -219,9 +220,10 @@ export class TeamAttendanceGrid implements OnInit, OnChanges {
     if (d.isAutoAbsent) return 'A';
     if (!d.status) return '';
     if (d.status === AttendanceStatus.Absent) return 'A';
-    if (d.status === AttendanceStatus.HalfDay_WFO || d.status === AttendanceStatus.HalfDay_WFH)
-      return 'H';
-    return 'P';
+    if (d.status === AttendanceStatus.HalfDay_WFO) return 'HO';
+    if (d.status === AttendanceStatus.HalfDay_WFH) return 'HH';
+    if (d.status === AttendanceStatus.Present_WFO) return 'PO';
+    return 'PH';
   }
 
   getActiveDayStatus(row: MemberRow, day: AttendanceDayResponse): AttendanceStatus | null {
@@ -254,6 +256,7 @@ export class TeamAttendanceGrid implements OnInit, OnChanges {
     this.openDropdownInfo = null;
 
     const existingDay = row.dayMap[day.day];
+    const isNewEntry = !existingDay?.attendanceId;
     const dateStr = `${this.selectedYear}-${String(this.selectedMonth).padStart(2, '0')}-${String(
       day.day
     ).padStart(2, '0')}`;
@@ -269,6 +272,10 @@ export class TeamAttendanceGrid implements OnInit, OnChanges {
     call$.subscribe({
       next: (res) => {
         this.toastr.success(res.message);
+        if (isNewEntry) {
+          this.load();
+          return;
+        }
         const prev = row.dayMap[day.day];
         const updated = res.data;
 

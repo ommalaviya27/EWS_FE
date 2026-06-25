@@ -1,12 +1,12 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-import { LeaveService } from '../../services/leave.service';
-import { LeaveResponse, ApprovalStatus, ApplyLeaveRequest, EditLeaveRequest, LEAVE_STATUS_LABELS } from '../../models/leave.model';
+import { LeaveService } from '@services';
+import { LeaveResponse, ApprovalStatus, ApplyLeaveRequest, EditLeaveRequest, LEAVE_STATUS_LABELS } from '@models';
 import { PaginationComponent, Button, ButtonInputConfig, ConfirmationModel, ConfirmationModelConfig } from '@common';
 import { LeaveApplyModal } from './component/leave-apply-modal/leave-apply-modal';
 import { PublicHolidayList } from '../public-holiday-list/public-holiday-list';
-import { DEFAULT_PAGINATION } from '../../constants/app.constants';
+import { DEFAULT_PAGINATION } from '@constants';
 
 @Component({
   selector: 'app-leave-list',

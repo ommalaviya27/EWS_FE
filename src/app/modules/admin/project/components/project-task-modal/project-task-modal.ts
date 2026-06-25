@@ -4,9 +4,8 @@ import { ToastrService } from 'ngx-toastr';
 import { ProjectService } from '../../services/project.service';
 import { Project } from '../../models/project.model';
 import { Task, TaskStatuses, TaskPriority, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS } from '../../../../team-lead/task-management/models/task-management.model';
-import { PaginationComponent, SearchBarComponent } from '@common';
-import { DEFAULT_PAGINATION } from '../../../../../common/constants/app.constants';
-import { TaskViewModal } from '@common';
+import { PaginationComponent, SearchBarComponent, TaskViewModal } from '@common';
+import { DEFAULT_PAGINATION } from '@constants';
 
 @Component({
   selector: 'app-project-tasks-modal',

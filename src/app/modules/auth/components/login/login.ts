@@ -4,11 +4,11 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { Router, RouterModule } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Email, Password, EmailInputConfig, PasswordInputConfig, Button, ButtonInputConfig } from '@common';
-import { AppValidators } from '../../../../common/validators/app.validators';
+import { AppValidators } from '@Validators';
 import { AuthService } from '../../services/auth.service';
-import { SessionService } from '../../../../common/services/session.service';
-import { ROUTES } from '../../../../common/constants/route-paths';
-import { ApiResponse } from '../../../../common/models/api-response.model';
+import { SessionService } from '@services';
+import { ROUTES } from '@constants';
+import { ApiResponse } from '@models';
 import { LoginResponse } from '../../models/auth.model';
 
 @Component({

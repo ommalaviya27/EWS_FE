@@ -3,12 +3,11 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { ProfileService } from '../../../services/profile.service';
-import { SessionService } from '../../../services/session.service';
-import { AppValidators } from '../../../validators/app.validators';
+import { SessionService, ProfileService } from '@services';
+import { AppValidators } from '@Validators';
 import { Password, PasswordInputConfig, Button, ButtonInputConfig } from '@common';
-import { ROUTES } from '../../../constants/route-paths';
-import { ApiResponse } from '../../../models/api-response.model';
+import { ROUTES } from '@constants';
+import { ApiResponse } from '@models';
 
 @Component({
   selector: 'app-change-password',

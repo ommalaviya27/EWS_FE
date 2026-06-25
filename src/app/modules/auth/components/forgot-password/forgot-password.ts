@@ -4,10 +4,10 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Email, EmailInputConfig, Button, ButtonInputConfig} from '@common';
-import { AppValidators } from '../../../../common/validators/app.validators';
+import { AppValidators } from '@Validators';
 import { AuthService } from '../../services/auth.service';
-import { ROUTES } from '../../../../common/constants/route-paths';
-import { ApiResponse } from '../../../../common/models/api-response.model';
+import { ROUTES } from '@constants';
+import { ApiResponse } from '@models';
 
 @Component({
   selector: 'app-forgot-password',

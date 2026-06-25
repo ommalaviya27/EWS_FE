@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DEFAULT_PAGINATION } from '../../../common/constants/app.constants';
+import { DEFAULT_PAGINATION } from '@constants';
 
 @Component({
   selector: 'app-pagination',

@@ -227,11 +227,6 @@
   background: #f9fafb;
 }
 
-.ll-item:hover {
-  background: #f5f7ff;
-  color: #0066FF;
-}
-
 .ll-dropdown-item .material-icons {
   font-size: 16px;
 }

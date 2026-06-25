@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiService } from '../../../../common/services/api.service';
-import { ApiResponse } from '../../../../common/models/api-response.model';
-import { API_ROUTES } from '../../../../common/constants/api-routes';
+import { ApiService } from '@services';
+import { ApiResponse } from '@models';
+import { API_ROUTES } from '@constants';
 import { TeamLeadDashboard } from '../models/team-lead-dashboard.model';
 
 @Injectable({ providedIn: 'root' })
