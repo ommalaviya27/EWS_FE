@@ -3,12 +3,11 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { ProfileService } from '../../../services/profile.service';
-import { SessionService } from '../../../services/session.service';
-import { GetProfileResponse } from '../../../models/profile.model';
-import { AppValidators } from '../../../validators/app.validators';
-import { ROLE_NAMES, UserRole } from '../../../../modules/auth/models/auth.model';
-import { APP_CONSTANTS } from '../../../constants/app.constants';
+import { SessionService,ProfileService } from '@services';
+import { GetProfileResponse } from '@models';
+import { AppValidators } from '@Validators';
+import { ROLE_NAMES } from '../../../../modules/auth/models/auth.model';
+import { APP_CONSTANTS } from '@constants';
 import { Name, NameFieldConfig, Email, EmailInputConfig, MobileNumber, MobileNumberConfig, Button, ButtonInputConfig } from '@common';
 import { ChangePassword } from '../change-password/change-password';
 

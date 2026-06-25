@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { ApiService } from './api.service';
 import { ApiResponse } from '../models/api-response.model';
 import { LeaveResponse, ApplyLeaveRequest, EditLeaveRequest, ReviewLeaveRequest } from '../models/leave.model';
-import { PaginationResponse } from '../components/pagination/pagination.model';
+import { PaginationResponse } from '../models/pagination.model';
 import { API_ROUTES } from '../constants';
 
 @Injectable({ providedIn: 'root' })

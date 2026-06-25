@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { TeamLeadDashboardService } from '../dashboard/services/team-lead-dashboard.service';
-import { TeamLeadDashboard, TeamLeadDashboardTask, TaskPriority, TASK_PRIORITY_LABELS } from '../dashboard/models/team-lead-dashboard.model';
+import { TeamLeadDashboard, TaskPriority, TASK_PRIORITY_LABELS } from '../dashboard/models/team-lead-dashboard.model';
 
 @Component({
   selector: 'app-team-lead-dashboard',

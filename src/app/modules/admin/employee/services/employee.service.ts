@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiService } from '../../../../common/services/api.service';
-import { API_ROUTES } from '../../../../common/constants/api-routes';
-import { ApiResponse } from '../../../../common/models/api-response.model';
+import { ApiService } from '@services';
+import { API_ROUTES } from '@constants';
+import { ApiResponse } from '@models';
 import { Employee, Role, TeamLead, CreateEmployeeRequest, UpdateEmployeeRequest, UserPaginationRequest, UserPagedResponse } from '../models/employee.model';
 
 @Injectable({ providedIn: 'root' })

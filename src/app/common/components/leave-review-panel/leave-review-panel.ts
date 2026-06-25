@@ -2,14 +2,14 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { LeaveService } from '../../services/leave.service';
-import { LeaveResponse, ApprovalStatus, ReviewLeaveRequest } from '../../models/leave.model';
-import { PaginationComponent, Button, ButtonInputConfig } from '@common';
+import { LeaveService } from '@services';
+import { LeaveResponse, ApprovalStatus, ReviewLeaveRequest } from '@models';
+import { PaginationComponent } from '@common';
 import { DEFAULT_PAGINATION } from '../../constants/app.constants';
 
 @Component({
   selector: 'app-leave-review-panel',
-  imports: [CommonModule, FormsModule, PaginationComponent, Button],
+  imports: [CommonModule, FormsModule, PaginationComponent],
   templateUrl: './leave-review-panel.html',
   styleUrl: './leave-review-panel.css',
 })

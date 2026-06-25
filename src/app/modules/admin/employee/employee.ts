@@ -4,8 +4,8 @@ import { ToastrService } from 'ngx-toastr';
 import { EmployeeService } from './services/employee.service';
 import { DeleteModel, PaginationComponent, Button, ButtonInputConfig, SearchBarComponent, FilterPanel, FilterPanelConfig, FilterValues } from '@common';
 import { EmployeeAddeditModal } from './components/employee-addedit-modal/employee-addedit-modal';
-import { createDeleteConfig } from '../../../common/components/delete-model/delete-model.config';
-import { DEFAULT_PAGINATION } from '../../../common/constants/app.constants';
+import { createDeleteConfig } from '@common';
+import { DEFAULT_PAGINATION } from '@constants';
 import { Employee, Role, EMPLOYEE_ROLE_LABELS, CreateEmployeeRequest, UpdateEmployeeRequest, UserSummary } from './models/employee.model';
 
 type TabType = 'all' | 'assigned' | 'unassigned';

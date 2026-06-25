@@ -2,11 +2,10 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { ProjectService } from './services/project.service';
-import { DeleteModel, PaginationComponent, Button, ButtonInputConfig, SearchBarComponent, FilterPanel, FilterPanelConfig, FilterValues } from '@common';
+import { DeleteModel, PaginationComponent, Button, ButtonInputConfig, SearchBarComponent, FilterPanel, FilterPanelConfig, FilterValues, createDeleteConfig } from '@common';
 import { ProjectAddeditModal } from './components/project-addedit-modal/project-addedit-modal';
 import { ProjectTasksModal } from './components/project-task-modal/project-task-modal';
-import { createDeleteConfig } from '../../../common/components/delete-model/delete-model.config';
-import { DEFAULT_PAGINATION } from '../../../common/constants/app.constants';
+import { DEFAULT_PAGINATION } from '@constants';
 import { Project, TeamLeader, ProjectStatus, PROJECT_STATUS_LABELS, PROJECT_STATUS_LIST, CreateProjectRequest, UpdateProjectRequest } from './models/project.model';
 
 @Component({

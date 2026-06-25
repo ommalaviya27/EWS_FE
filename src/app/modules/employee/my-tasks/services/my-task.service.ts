@@ -3,11 +3,10 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, throwError } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
-import { ApiService } from '../../../../common/services/api.service';
-import { ApiResponse } from '../../../../common/models/api-response.model';
-import { API_ROUTES } from '../../../../common/constants/api-routes';
+import { ApiService } from '@services';
+import { PaginationResponse, ApiResponse } from '@models';
+import { API_ROUTES } from '@constants';
 import { MyTask, TaskComment, TaskAttachment, AddCommentRequest, UpdateCommentRequest, UpdateTaskStatusRequest, EmployeeDashboard, MyTaskFilterParams } from '../models/my-task.model';
-import { PaginationResponse } from '../../../../common/components/pagination/pagination.model';
 import { Project } from '../../../admin/project/models/project.model';
 
 @Injectable({ providedIn: 'root' })

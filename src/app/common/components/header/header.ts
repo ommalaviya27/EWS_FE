@@ -2,8 +2,8 @@ import { Component, inject, Input, OnInit, Output, EventEmitter } from '@angular
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { HeaderConfig, DEFAULT_HEADER_CONFIG } from './header.config';
-import { SessionService } from '../../services';
-import { ROLE_NAMES } from 'src/app/modules/auth/models';
+import { SessionService } from '@services';
+import { ROLE_NAMES } from '../../../modules/auth/models/auth.model';
 import { AuthService } from '../../../modules/auth/services/auth.service';
 import { ConfirmationModel, ConfirmationModelConfig } from '@common';
 import { MyProfile } from '../profile/my-profile/my-profile';

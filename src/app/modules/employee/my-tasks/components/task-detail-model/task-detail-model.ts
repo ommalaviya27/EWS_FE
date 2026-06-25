@@ -4,10 +4,8 @@ import { FormsModule, FormBuilder, FormGroup, ReactiveFormsModule, Validators } 
 import { ToastrService } from 'ngx-toastr';
 import { MyTask, TaskComment, TaskAttachment, TaskStatuses, TaskPriority, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS } from '../../models/my-task.model';
 import { MyTaskService } from '../../services/my-task.service';
-import { ConfirmationModel } from '../../../../../common/components/confirmation-model/confirmation-model';
-import { ConfirmationModelConfig } from '../../../../../common/components/confirmation-model/confirmation-model.config';
-import { Description, DescriptionFieldConfig, Button, ButtonInputConfig, PaginationComponent } from '@common';
-import { SessionService } from 'src/app/common/services';
+import { Description, DescriptionFieldConfig, Button, ButtonInputConfig, PaginationComponent, ConfirmationModel, ConfirmationModelConfig } from '@common';
+import { SessionService } from '@services';
 
 const MODAL_PAGE_SIZE = 5;
 

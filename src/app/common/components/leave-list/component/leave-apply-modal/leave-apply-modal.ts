@@ -2,9 +2,8 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Button, ButtonInputConfig, Description, DescriptionFieldConfig, Name, NameFieldConfig, Email, EmailInputConfig, MobileNumber, MobileNumberConfig } from '@common';
-import { LeaveResponse, ApplyLeaveRequest, EditLeaveRequest, LeaveType, LEAVE_TYPE_OPTIONS } from '../../../../models/leave.model';
-import { ProfileService } from '../../../../services/profile.service';
-import { GetProfileResponse } from '../../../../models/profile.model';
+import { LeaveResponse, ApplyLeaveRequest, EditLeaveRequest, LeaveType, LEAVE_TYPE_OPTIONS, GetProfileResponse } from '@models';
+import { ProfileService } from '@services';
 
 @Component({
   selector: 'app-leave-apply-modal',

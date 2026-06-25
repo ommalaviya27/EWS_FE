@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { TaskManagementService } from './services/task-management.service';
 import { DeleteModel, createDeleteConfig, PaginationComponent, Button, ButtonInputConfig, SearchBarComponent, TaskViewModal, ProjectList, FilterPanel, FilterPanelConfig, FilterValues } from '@common';
 import { TaskAddeditModal } from './components/task-addedit-modal/task-addedit-modal';
-import { DEFAULT_PAGINATION } from '../../../common/constants/app.constants';
+import { DEFAULT_PAGINATION } from '@constants';
 import { Task, TeamMember, TaskStatuses, TaskPriority, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS, TASK_STATUS_LIST, TASK_PRIORITY_LIST, CreateTaskRequest, UpdateTaskRequest } from './models/task-management.model';
 import { Project } from '../../admin/project/models/project.model';
 

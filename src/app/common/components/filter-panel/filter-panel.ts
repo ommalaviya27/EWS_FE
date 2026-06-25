@@ -2,7 +2,7 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Button, ButtonInputConfig } from '@common';
-import { FilterPanelConfig, FilterFieldConfig, FilterValues } from './filter-panel.config';
+import { FilterPanelConfig, FilterValues } from './filter-panel.config';
 
 @Component({
   selector: 'app-filter-panel',

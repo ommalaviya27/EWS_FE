@@ -1,9 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ApiService } from '../../../../common/services/api.service';
-import { API_ROUTES } from '../../../../common/constants/api-routes';
-import { ApiResponse } from '../../../../common/models/api-response.model';
-import { PaginationRequest, PaginationResponse } from '../../../../common/components/pagination/pagination.model';
+import { ApiService } from '@services';
+import { API_ROUTES } from '@constants';
+import { ApiResponse, PaginationRequest, PaginationResponse } from '@models';
 import { Project, TeamLeader, CreateProjectRequest, UpdateProjectRequest, ProjectFilterParams } from '../models/project.model';
 import { Task } from '../../../team-lead/task-management/models/task-management.model';
 

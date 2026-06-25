@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { TeamAttendanceGrid } from '../../../common/components/team-attendance-grid/team-attendance-grid';
+import { TeamAttendanceGrid } from '@common';
 import { ProjectService } from '../project/services/project.service';
 import { TeamLeader } from '../project/models/project.model';
 import { TeamMember } from '../../team-lead/task-management/models/task-management.model';
